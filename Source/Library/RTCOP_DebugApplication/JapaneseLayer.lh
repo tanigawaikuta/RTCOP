@@ -1,0 +1,33 @@
+#import_baseclass "Hello.h"
+
+layer JapaneseLayer
+{
+	partial class Hello
+	{
+	private:
+		int _JapaneseMember;
+	public:
+		partial void Print();
+		partial void Print2(char arg);
+	private:
+		// レイヤードオブジェクトのインスタンス化時の初期化
+		[Initialize(Instantiation)]
+		void InitializePartialClass();
+		// レイヤードオブジェクトのデストラクト時の終了処理
+		[Finalize(Destruction)]
+		void FinalizePartialClass();
+	};
+
+	// レイヤアクティベーション開始時に実行される
+	[EventHandler(Activating)]
+	void OnActivating();
+	// レイヤアクティベーション終了時に実行される
+	[EventHandler(Activated)]
+	void OnActivated();
+	// レイヤディアクティベーション開始時に実行される
+	[EventHandler(Deactivating)]
+	void OnDeactivating();
+	// レイヤディアクティベーション終了時に実行される
+	[EventHandler(Deactivated)]
+	void OnDeactivated();
+}

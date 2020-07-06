@@ -1,0 +1,52 @@
+#import_layer "EnglishLayer.lh"
+#include <stdio.h>
+
+layer EnglishLayer
+{
+
+void Hello::Print()
+{
+	printf("Hello %d\n", _EnglishMember);
+	proceed();
+}
+
+// パーシャルクラスの初期化
+void Hello::InitializePartialClass()
+{
+	_EnglishMember = 5;
+}
+
+// パーシャルクラスの後始末
+void Hello::FinalizePartialClass()
+{
+	_EnglishMember = 0;
+}
+
+//=================================================
+// イベントハンドラ
+//=================================================
+// アクティベート開始時に実行される
+void OnActivating()
+{
+	printf("%s Activating: %d\n", _Private->_Name, _Private->_LayerState);
+}
+
+// アクティベート終了時に実行される
+void OnActivated()
+{
+	printf("%s Activated: %d\n", _Private->_Name, _Private->_LayerState);
+}
+
+// ディアクティベート開始時に実行される
+void OnDeactivating()
+{
+	printf("%s Deactivating: %d\n", _Private->_Name, _Private->_LayerState);
+}
+
+// ディアクティベート終了時に実行される
+void OnDeactivated()
+{
+	printf("%s Deactivated: %d\n", _Private->_Name, _Private->_LayerState);
+}
+
+} // layer EnglishLayer {}

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\Hello.cpp" />
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\Main.cpp" />
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\BaseLayer.cpp">
+      <Filter>RTCOP_Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\EnglishLayer.cpp">
+      <Filter>RTCOP_Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\JapaneseLayer.cpp">
+      <Filter>RTCOP_Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\RTCOPAppInitializer.cpp">
+      <Filter>RTCOP_Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\Windows\x86\ExecuteProceed.cpp">
+      <Filter>RTCOP_Generated\DependentCode\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\Windows\x86\GetLayerdObjectFinalizer.cpp">
+      <Filter>RTCOP_Generated\DependentCode\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\Windows\x64\ExecuteProceed.cpp">
+      <Filter>RTCOP_Generated\DependentCode\x64</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="RTCOP_Generated">
+      <UniqueIdentifier>{0e37cff8-dd3b-4fe9-badd-c2f4ea18ed16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTCOP_Generated\DependentCode">
+      <UniqueIdentifier>{a851ccac-4769-4aec-b79c-125c4c62926d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTCOP_Generated\DependentCode\x86">
+      <UniqueIdentifier>{6ea8656b-1e40-49a1-bd6a-91551cdcc1e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTCOP_Generated\DependentCode\x64">
+      <UniqueIdentifier>{fc847adc-2acc-4345-a9a1-726455ec8c35}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Source\Library\RTCOP_DebugApplication\EnglishLayer.lcpp" />
+    <None Include="..\..\..\Source\Library\RTCOP_DebugApplication\JapaneseLayer.lcpp" />
+    <None Include="..\..\..\Source\Library\RTCOP_DebugApplication\EnglishLayer.lh" />
+    <None Include="..\..\..\Source\Library\RTCOP_DebugApplication\JapaneseLayer.lh" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\Hello.h" />
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\BaseLayer.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\EnglishLayer.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\JapaneseLayer.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\RTCOPAppInitializer.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\ExecuteProceed.h">
+      <Filter>RTCOP_Generated\DependentCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\GetVirtualFunctionTable.h">
+      <Filter>RTCOP_Generated\DependentCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\GetLayerdObjectFinalizer.h">
+      <Filter>RTCOP_Generated\DependentCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\LayerdObject_Private.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\Layer_Private.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\API.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\COPNewForApp.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\ActivationForApp.h">
+      <Filter>RTCOP_Generated</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\Windows\x64\GetLayerdObjectFinalizer.asm">
+      <Filter>RTCOP_Generated\DependentCode\x64</Filter>
+    </MASM>
+    <MASM Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\Windows\x64\GetVirtualFunctionTable.asm">
+      <Filter>RTCOP_Generated\DependentCode\x64</Filter>
+    </MASM>
+    <MASM Include="..\..\..\Source\Library\RTCOP_DebugApplication\RTCOP_Generated\DependentCode\Windows\x86\GetVirtualFunctionTable.asm">
+      <Filter>RTCOP_Generated\DependentCode\x86</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>

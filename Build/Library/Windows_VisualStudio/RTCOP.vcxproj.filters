@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Core\Initializer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Core\Layer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Core\LayerActivater.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Core\LayerdObjectInitializer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Core\RTCOPManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Activation.cpp" />
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Framework.cpp" />
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\DependentCode\Windows\x86\ExecuteLayerdObjectFinalizer.cpp">
+      <Filter>DependentCode\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\Core\LayerdObject.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\Library\RTCOP\DependentCode\Windows\x64\ExecuteLayerdObjectFinalizer.cpp">
+      <Filter>DependentCode\x64</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{aa8a09a3-4a20-4ae4-b054-057fd596a84f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DependentCode">
+      <UniqueIdentifier>{9818c942-19a7-4689-b370-6d05b0149d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DependentCode\x86">
+      <UniqueIdentifier>{62353fee-c5ba-48cc-8022-e17bad125fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DependentCode\x64">
+      <UniqueIdentifier>{006d166b-cb41-41a8-a3d1-55f56b8408f3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Include\RTCOP\Core\Initializer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Include\RTCOP\Core\Layer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Include\RTCOP\Core\LayerActivater.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Include\RTCOP\Core\LayerdObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Include\RTCOP\Core\LayerdObjectInitializer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Include\RTCOP\Core\PartialClassMembers.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Include\RTCOP\Core\RTCOPManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Include\RTCOP\Activation.h" />
+    <ClInclude Include="..\..\..\Include\RTCOP\COPNew.h" />
+    <ClInclude Include="..\..\..\Include\RTCOP\Framework.h" />
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\DependentCode\ExecuteLayerdObjectFinalizer.h">
+      <Filter>DependentCode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\Framework_Private.h" />
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\Core\Layer_Private.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\Core\LayerActivater_Private.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\Core\LayerdObject_Private.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\Core\LayerdObjectInitializer_Private.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\Core\RTCOPManager_Private.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\Library\RTCOP\Core\HasVFTableObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
