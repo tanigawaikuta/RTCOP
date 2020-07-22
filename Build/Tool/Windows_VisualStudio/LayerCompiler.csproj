@@ -86,6 +86,30 @@
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CompilerOptions.cs">
       <Link>Source\CompilerOptions.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Model\Comment.cs">
+      <Link>Source\Model\Comment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Model\PreprocessDirective.cs">
+      <Link>Source\Model\PreprocessDirective.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Model\RTCOPObjects.cs">
+      <Link>Source\Model\RTCOPObjects.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Model\Tokens.cs">
+      <Link>Source\Model\Tokens.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Parsers\CommentParser.cs">
+      <Link>Source\Parsers\CommentParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Parsers\PreprocessParser.cs">
+      <Link>Source\Parsers\PreprocessParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Parsers\RTCOPParser.cs">
+      <Link>Source\Parsers\RTCOPParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\Parsers\TokenParser.cs">
+      <Link>Source\Parsers\TokenParser.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\Program.cs">
       <Link>Source\Program.cs</Link>
     </Compile>
@@ -100,11 +124,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Source\Compilers\Model\" />
-    <Folder Include="Source\CppParsers\Model\" />
-    <Folder Include="Source\LayerParsers\Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\ExtLib\Packages\ClangSharp.3.8.0\build\ClangSharp.targets" Condition="Exists('..\..\..\ExtLib\Packages\ClangSharp.3.8.0\build\ClangSharp.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

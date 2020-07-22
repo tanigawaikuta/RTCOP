@@ -1,5 +1,6 @@
-Object
-Test/TestSpace
+/Object/
+/Test/TestSpace/
+.vs/
 .DS_Store
 *~
 *.obj

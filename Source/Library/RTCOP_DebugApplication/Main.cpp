@@ -31,4 +31,6 @@ int main()
 
 	// RTCOPの終了処理
 	RTCOP::Framework::Instance->Finalize();
+
+	return 0;
 }
