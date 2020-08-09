@@ -24,27 +24,27 @@ class Layer
 {
 public:
 	// コンストラクタ
-	Layer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
+	explicit Layer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
 	// デストラクタ
 	virtual ~Layer();
 public:
 	// IDの取得
-	const int GetID();
+	const int GetID() const;
 	// 名前の取得
-	const char* const GetName();
+	const char* const GetName() const;
 	// パーシャルクラスのための仮想関数テーブルの取得
-	volatile void** const GetVirtualFunctionTable(int classid);
+	volatile void** const GetVirtualFunctionTable(int classid) const;
 	// Proceedを実現するための仮想関数テーブルの取得
-	volatile void** const GetVirtualFunctionTableForProceeding(int classid);
+	volatile void** const GetVirtualFunctionTableForProceeding(int classid) const;
 	// レイヤ状態のゲッタ
-	LayerState GetLayerState();
+	LayerState GetLayerState() const;
 private:
 	// レイヤ状態のセッタ
 	void SetLayerState(LayerState state);
 	// 前に連結されているアクティブなレイヤのゲッタ
-	Layer* const GetLinkedPrevLayer();
+	Layer* const GetLinkedPrevLayer() const;
 	// 後に連結されているアクティブなレイヤのゲッタ
-	Layer* const GetLinkedNextLayer();
+	Layer* const GetLinkedNextLayer() const;
 	// 前に連結されているアクティブなレイヤのセッタ
 	void SetLinkedPrevLayer(Layer* const layer);
 	// 後に連結されているアクティブなレイヤのセッタ

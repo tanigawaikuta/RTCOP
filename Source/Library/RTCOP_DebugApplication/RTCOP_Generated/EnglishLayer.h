@@ -25,17 +25,17 @@ public:
 	static EnglishLayer* GetInstance();
 public:
 	// コンストラクタ・デストラクタ
-	EnglishLayer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
-	virtual ~EnglishLayer();
+	explicit EnglishLayer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
+	virtual ~EnglishLayer() override;
 protected:
 	// レイヤードオブジェクトの初期化
-	virtual void* InitializeLayerdObject(void* obj, int classID);
+	virtual void* InitializeLayerdObject(void* obj, int classID) override;
 protected:
 	// イベント発生時に実行されるメソッド
-	virtual void OnActivating();		// アクティベート開始時に実行される
-	virtual void OnActivated();			// アクティベート終了時に実行される
-	virtual void OnDeactivating();		// ディアクティベート開始時に実行される
-	virtual void OnDeactivated();		// ディアクティベート終了時に実行される
+	virtual void OnActivating() override;		// アクティベート開始時に実行される
+	virtual void OnActivated() override;		// アクティベート終了時に実行される
+	virtual void OnDeactivating() override;		// ディアクティベート開始時に実行される
+	virtual void OnDeactivated() override;		// ディアクティベート終了時に実行される
 };
 
 // EnglishレイヤのHello
@@ -50,7 +50,7 @@ public:
 	};
 public:
 	EnglishLayer_Hello();
-	virtual void Print();
+	virtual void Print() override;
 private:
 	void _InitializePartialClass();
 	void _FinalizePartialClass();

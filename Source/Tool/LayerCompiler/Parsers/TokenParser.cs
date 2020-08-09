@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Sprache;
 
-using LayerCompiler.Model;
-
 namespace LayerCompiler.Parsers
 {
     static class TokenParser
@@ -26,9 +24,9 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// C++の識別子の読み取り
         /// </summary>
-        public static readonly Parser<Identifier> Identifier =
+        public static readonly Parser<Model.Identifier> Identifier =
                                                     from identifier in IdentifierString
-                                                    select new Identifier(identifier);
+                                                    select new Model.Identifier(identifier);
 
         /// <summary>
         /// RTCOPの識別子となる文字列
@@ -43,9 +41,9 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// RTCOPの識別子の読み取り
         /// </summary>
-        public static readonly Parser<Identifier> RTCOPIdentifier =
+        public static readonly Parser<Model.Identifier> RTCOPIdentifier =
                                                     from identifier in RTCOPIdentifierString
-                                                    select new Identifier(identifier);
+                                                    select new Model.Identifier(identifier);
 
         #endregion
 
@@ -53,48 +51,48 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// 整数リテラル
         /// </summary>
-        public static readonly Parser<IntegerLiteral> IntegerLiteral =
+        public static readonly Parser<Model.IntegerLiteral> IntegerLiteral =
                                                     from num in Parse.Regex(@"((0x|0X)[0-9a-fA-F]+)|(0[0-7]*)|([1-9][0-9]*)")
                                                     from suffix in Parse.Regex(@"((u|U)((ll|LL)|(l|L))?)|((ll|LL)(u|U)?)|((l|L)(u|U)?)").XOr(Parse.Return(""))
                                                     from usersuffix in IdentifierString.XOr(Parse.Return(""))
-                                                    select new IntegerLiteral(num + suffix + usersuffix, num, suffix, usersuffix);
+                                                    select new Model.IntegerLiteral(num + suffix + usersuffix, num, suffix, usersuffix);
 
         /// <summary>
         /// 文字リテラル
         /// </summary>
-        public static readonly Parser<CharacterLiteral> CharacterLiteral =
+        public static readonly Parser<Model.CharacterLiteral> CharacterLiteral =
                                                     from prefix in Parse.Regex(@"u|U|L").XOr(Parse.Return(""))
                                                     from begin in Parse.Char('\'')
                                                     from character in Parse.Regex(@"([^\r\n\'\\])|(\\(\'|""|\?|\\|a|b|f|n|r|t|v))|(\\[0-7]{1,3})|(\\x[0-9a-fA-F]{1,2})|(\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}))")
                                                     from end in Parse.Char('\'')
                                                     from usersuffix in IdentifierString.XOr(Parse.Return(""))
-                                                    select new CharacterLiteral(prefix + begin + character + end + usersuffix, prefix, character, usersuffix);
+                                                    select new Model.CharacterLiteral(prefix + begin + character + end + usersuffix, prefix, character, usersuffix);
 
         /// <summary>
         /// 浮動小数リテラル
         /// </summary>
-        public static readonly Parser<FloatingLiteral> FloatingLiteral =
+        public static readonly Parser<Model.FloatingLiteral> FloatingLiteral =
                                                     from value in Parse.Regex(@"(([.][0-9]+)|([0-9]+[.][0-9]*))((e|E)(\+|\-)?([0-9])+)?").Or(Parse.Regex(@"[0-9]+(e|E)(\+|\-)?[0-9]+"))
                                                     from suffix in Parse.Regex(@"(f|l|F|L)").XOr(Parse.Return(""))
                                                     from usersuffix in IdentifierString.XOr(Parse.Return(""))
-                                                    select new FloatingLiteral(value + suffix + usersuffix, value, suffix, usersuffix);
+                                                    select new Model.FloatingLiteral(value + suffix + usersuffix, value, suffix, usersuffix);
 
         /// <summary>
         /// 通常の文字列リテラル
         /// </summary>
-        public static readonly Parser<StringLiteral> NormalStringLiteral =
+        public static readonly Parser<Model.StringLiteral> NormalStringLiteral =
                                                     from prefix in Parse.Regex(@"((u8)|u|U|L)").XOr(Parse.Return(""))
                                                     from begin in Parse.Char('"')
                                                     from str in Parse.Regex(@"(([^\r\n""\\])|(\\(\'|""|\?|\\|a|b|f|n|r|t|v))|(\\[0-7]{1,3})|(\\x[0-9a-fA-F]{1,2})|(\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})))*")
                                                     from end in Parse.Char('"')
                                                     from usersuffix in IdentifierString.XOr(Parse.Return(""))
-                                                    select new StringLiteral(prefix + begin + str + end + usersuffix, str, prefix, usersuffix);
+                                                    select new Model.StringLiteral(prefix + begin + str + end + usersuffix, str, prefix, usersuffix);
 
         /// <summary>
         /// 文字列リテラル (生文字列)
         /// 実際のC++よりマッチするケースが多くなってしまっているが、面倒なのでこのままでいく
         /// </summary>
-        public static readonly Parser<StringLiteral> RawStringLiteral =
+        public static readonly Parser<Model.StringLiteral> RawStringLiteral =
                                                     from prefix in Parse.Regex(@"((u8)|u|U|L)").XOr(Parse.Return(""))
                                                     from r in Parse.Char('R')
                                                     from begin1 in Parse.Regex(@"("")")
@@ -103,39 +101,39 @@ namespace LayerCompiler.Parsers
                                                     from str in Parse.Regex(@"(.|\r\n|\n)*(?=(\)" + begin2 + @"""))")
                                                     from end in Parse.Regex(@"\)" + begin2 + @"""")
                                                     from usersuffix in IdentifierString.XOr(Parse.Return(""))
-                                                    select new StringLiteral(prefix + r + begin1 + begin2 + begin3 + str + end + usersuffix, str, prefix, usersuffix);
+                                                    select new Model.StringLiteral(prefix + r + begin1 + begin2 + begin3 + str + end + usersuffix, str, prefix, usersuffix);
 
         /// <summary>
         /// 文字列リテラル
         /// </summary>
-        public static readonly Parser<StringLiteral> StringLiteral =
+        public static readonly Parser<Model.StringLiteral> StringLiteral =
                                                     NormalStringLiteral
                                                     .Or(RawStringLiteral);
 
         /// <summary>
         /// 真偽値
         /// </summary>
-        public static readonly Parser<BooleanLiteral> BooleanLiteral =
+        public static readonly Parser<Model.BooleanLiteral> BooleanLiteral =
                                                     from boolean in Parse.String("true").Or(Parse.String("false")).Text()
-                                                    select new BooleanLiteral(boolean);
+                                                    select new Model.BooleanLiteral(boolean);
 
         /// <summary>
         /// ポインタリテラル
         /// </summary>
-        public static readonly Parser<PointerLiteral> PointerLiteral =
+        public static readonly Parser<Model.PointerLiteral> PointerLiteral =
                                                     from ptr in Parse.String("nullptr").Text()
-                                                    select new PointerLiteral(ptr);
+                                                    select new Model.PointerLiteral(ptr);
 
         /// <summary>
         /// リテラル
         /// </summary>
-        public static readonly Parser<Literal> Literal =
+        public static readonly Parser<Model.Literal> Literal =
                                                     FloatingLiteral
-                                                    .Or<Literal>(IntegerLiteral)
-                                                    .Or<Literal>(StringLiteral)
-                                                    .Or<Literal>(CharacterLiteral)
-                                                    .Or<Literal>(BooleanLiteral)
-                                                    .Or<Literal>(PointerLiteral);
+                                                    .Or<Model.Literal>(IntegerLiteral)
+                                                    .Or<Model.Literal>(StringLiteral)
+                                                    .Or<Model.Literal>(CharacterLiteral)
+                                                    .Or<Model.Literal>(BooleanLiteral)
+                                                    .Or<Model.Literal>(PointerLiteral);
 
         #endregion
 
@@ -144,11 +142,10 @@ namespace LayerCompiler.Parsers
         /// 演算子・区切り文字となる文字列
         /// </summary>
         public static readonly string[] OperatorOrPunctuatorStrings = new string[]
-            { "{", "}", "[", "]", "#", "##", "(", ")", "<:", ":>", "<%", "%>", "%:", "%:%:", ";", ":", "...",
-              "?", "::", ".", ".*", "+", "-", "*", "/", "%", "?", "&", "|", "~", "!", "=", "<", ">", "+=", "-=",
-              "*=", "/=", "%=", "?=", "&=", "|=", "<<", ">>", ">>=", "<<=", "==", "!=", "<=", ">=", "&&", "||",
-              "++", "--", ",", "->*", "->", "new", "delete", "and", "and_eq", "bitand", "bitor", "compl", "not",
-              "not_eq", "or", "or_eq", "xor", "xor_eq"
+            { "new", "delete", "and_eq", "and", "bitand", "bitor", "compl", "not_eq", "not", "or_eq", "or", "xor_eq", "xor",
+              "%:%:", "...", ">>=", "<<=", "->*", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=", "<<", ">>", "==", "!=", 
+              "<=", ">=", "&&", "||", "++", "--", "->", "<:", ":>", "<%", "%>", "%:", "::", ".*", "##", "#", ",", "{", "}", 
+              "[", "]", "(", ")",  ";", ":", "?", ".", "+", "-", "*", "/", "%", "?", "&", "|", "^", "!", "=", "<", ">",  
             };
 
         /// <summary>
@@ -167,9 +164,9 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// 演算子・区切り文字
         /// </summary>
-        public static readonly Parser<OperatorOrPunctuator> OperatorOrPunctuator =
+        public static readonly Parser<Model.OperatorOrPunctuator> OperatorOrPunctuator =
                                                     from op in IsOperatorOrPunctuator()
-                                                    select new OperatorOrPunctuator(op);
+                                                    select new Model.OperatorOrPunctuator(op);
 
         #endregion
 
@@ -179,15 +176,15 @@ namespace LayerCompiler.Parsers
         /// </summary>
         public static readonly string[] KeywordStrings = new string[]
             {
-              "alignas", "alignof", "and", "and_eq", "asm", "auto", "bitand", "bitor", "bool", "break", "case",
-              "catch", "char", "char16_t", "char32_t", "class", "compl", "const", "constexpr", "const_cast",
-              "continue", "decltype", "default", "delete", "do", "double", "dynamic_cast", "else", "enum",
+              "alignas", "alignof", "and_eq", "and", "asm", "auto", "bitand", "bitor", "bool", "break", "case",
+              "catch", "char16_t", "char32_t", "char", "class", "compl", "constexpr", "const_cast", "const",
+              "continue", "decltype", "default", "delete", "double", "do", "dynamic_cast", "else", "enum",
               "explicit", "export", "extern", "false", "float", "for", "friend", "goto", "if", "inline", "int",
-              "long", "mutable", "namespace", "new", "noexcept", "not", "not_eq", "nullptr", "operator", "or",
-              "or_eq", "private", "protected", "public", "register", "reinterpret_cast", "return", "short",
-              "signed", "sizeof", "static", "static_assert", "static_cast", "struct", "switch", "template",
+              "long", "mutable", "namespace", "new", "noexcept", "not_eq", "not", "nullptr", "operator", 
+              "or_eq", "or", "private", "protected", "public", "register", "reinterpret_cast", "return", "short",
+              "signed", "sizeof", "static_assert", "static_cast", "static", "struct", "switch", "template",
               "this", "thread_local", "throw", "true", "try", "typedef", "typeid", "typename", "union",
-              "unsigned", "using", "virtual", "void", "volatile", "wchar_t", "while", "xor", "xor_eq"
+              "unsigned", "using", "virtual", "void", "volatile", "wchar_t", "while", "xor_eq", "xor",
             };
 
         /// <summary>
@@ -206,16 +203,16 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// C++11のキーワード
         /// </summary>
-        public static readonly Parser<Keyword> Keyword =
+        public static readonly Parser<Model.Keyword> Keyword =
                                                     from keyword in IsKeyword()
-                                                    select new Keyword(keyword);
+                                                    select new Model.Keyword(keyword);
 
         /// <summary>
         /// RTCOPのキーワードとなる文字列
         /// </summary>
         public static readonly string[] RTCOPKeywordStrings = new string[]
             {
-              "layer", "baselayer", "base", "partial", "proceed"
+              "layer_members", "layer", "baselayer", "base", "partial", "proceed"
             };
 
         /// <summary>
@@ -234,9 +231,9 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// RTCOPのキーワード
         /// </summary>
-        public static readonly Parser<Keyword> RTCOPKeyword =
+        public static readonly Parser<Model.Keyword> RTCOPKeyword =
                                                     from keyword in IsRTCOPKeyword()
-                                                    select new Keyword(keyword);
+                                                    select new Model.Keyword(keyword);
 
         #endregion
 
@@ -246,28 +243,28 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// 不明なトークン
         /// </summary>
-        public static readonly Parser<Token> Unknown =
+        public static readonly Parser<Model.Token> Unknown =
                                                     from str in Parse.Regex(@"\S*")
-                                                    select new Token(str);
+                                                    select new Model.Token(str);
 
         /// <summary>
         /// トークン
         /// </summary>
-        public static readonly Parser<Token> Token =
+        public static readonly Parser<Model.Token> Token =
                                                     Literal
-                                                    .Or<Token>(Identifier)
-                                                    .Or<Token>(OperatorOrPunctuator)
-                                                    .Or<Token>(Keyword);
+                                                    .Or<Model.Token>(Identifier)
+                                                    .Or<Model.Token>(OperatorOrPunctuator)
+                                                    .Or<Model.Token>(Keyword);
 
         /// <summary>
         /// RTCOPのトークン
         /// </summary>
-        public static readonly Parser<Token> RTCOPToken =
+        public static readonly Parser<Model.Token> RTCOPToken =
                                                     Literal
-                                                    .Or<Token>(RTCOPIdentifier)
-                                                    .Or<Token>(OperatorOrPunctuator)
-                                                    .Or<Token>(Keyword)
-                                                    .Or<Token>(RTCOPKeyword);
+                                                    .Or<Model.Token>(RTCOPIdentifier)
+                                                    .Or<Model.Token>(OperatorOrPunctuator)
+                                                    .Or<Model.Token>(Keyword)
+                                                    .Or<Model.Token>(RTCOPKeyword);
 
         #endregion
 

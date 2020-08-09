@@ -77,31 +77,31 @@ Layer::~Layer()
 }
 
 // IDの取得
-const int Layer::GetID()
+const int Layer::GetID() const
 {
 	return _Private->_ID;
 }
 
 // 名前の取得
-const char* const Layer::GetName()
+const char* const Layer::GetName() const
 {
 	return _Private->_Name;
 }
 
 // パーシャルクラスのための仮想関数テーブルの取得
-volatile void** const Layer::GetVirtualFunctionTable(int classid)
+volatile void** const Layer::GetVirtualFunctionTable(int classid) const
 {
 	return _Private->_VirtualFunctionTables[classid];
 }
 
 // Proceedを実現するための仮想関数テーブルの取得
-volatile void** const Layer::GetVirtualFunctionTableForProceeding(int classid)
+volatile void** const Layer::GetVirtualFunctionTableForProceeding(int classid) const
 {
 	return _Private->_VirtualFunctionTablesForProceeding[classid];
 }
 
 // レイヤ状態の取得
-LayerState Layer::GetLayerState()
+LayerState Layer::GetLayerState() const
 {
 	return _Private->_LayerState;
 }
@@ -113,13 +113,13 @@ void Layer::SetLayerState(LayerState state)
 }
 
 // 前に連結されているアクティブなレイヤのゲッタ
-Layer* const Layer::GetLinkedPrevLayer()
+Layer* const Layer::GetLinkedPrevLayer() const
 {
 	return _Private->_LinkedPrevLayer;
 }
 
 // 後に連結されているアクティブなレイヤのゲッタ
-Layer* const Layer::GetLinkedNextLayer()
+Layer* const Layer::GetLinkedNextLayer() const
 {
 	return _Private->_LinkedNextLayer;
 }

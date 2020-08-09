@@ -79,19 +79,19 @@ void Framework::Finalize()
 }
 
 // RTCOPManagerの取得
-Core::RTCOPManager* const Framework::GetRTCOPManager()
+Core::RTCOPManager* const Framework::GetRTCOPManager() const
 {
 	return _Private->_RTCOPManager;
 }
 
 // LayerdObjectInitializerの取得
-Core::LayerdObjectInitializer* const Framework::GetLayerdObjectInitializer()
+Core::LayerdObjectInitializer* const Framework::GetLayerdObjectInitializer() const
 {
 	return _Private->_LayerdObjectInitializer;
 }
 
 // LayerActivaterの取得
-Core::LayerActivater* const Framework::GetLayerActivater()
+Core::LayerActivater* const Framework::GetLayerActivater() const
 {
 	return _Private->_LayerActivater;
 }

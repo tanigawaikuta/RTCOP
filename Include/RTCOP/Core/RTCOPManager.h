@@ -19,24 +19,24 @@ class RTCOPManager
 {
 public:
 	// コンストラクタ
-	RTCOPManager(int numOfLayers, int numOfBaseClasses, int* numOfBaseMethods);
+	explicit RTCOPManager(int numOfLayers, int numOfBaseClasses, int* numOfBaseMethods);
 	// デストラクタ
 	virtual ~RTCOPManager();
 public:
 	// レイヤの登録
 	void RegisterLayer(Layer* layer);
 	// レイヤの取得
-	Layer* const GetLayer(int layerid);
+	Layer* const GetLayer(int layerid) const;
 	// クラスIDで指定した仮想関数テーブルを取得
-	volatile void** const GetVirtualFunctionTable(int classid);
+	volatile void** const GetVirtualFunctionTable(int classid) const;
 	// レイヤの個数を取得
-	const int GetNumOfLayers();
+	const int GetNumOfLayers() const;
 	// ベースクラスの個数を取得
-	const int GetNumOfBaseClasses();
+	const int GetNumOfBaseClasses() const;
 	// ベースメソッドの個数を取得
-	int* const GetNumOfBaseMethods();
+	int* const GetNumOfBaseMethods() const;
 	// ベースメソッドの個数を取得
-	const int GetNumOfBaseMethods(int classid);
+	const int GetNumOfBaseMethods(int classid) const;
 protected:
 	// プライベートクラス
 	class RTCOPManager_Private* _Private;

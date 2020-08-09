@@ -18,7 +18,7 @@ class LayerdObjectInitializer
 {
 public:
 	// コンストラクタ
-	LayerdObjectInitializer(RTCOPManager* manager);
+	explicit LayerdObjectInitializer(RTCOPManager* manager);
 	// デストラクタ
 	virtual ~LayerdObjectInitializer();
 public:

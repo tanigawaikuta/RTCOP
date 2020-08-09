@@ -20,11 +20,11 @@ class BaseLayer : public Core::Layer
 	static BaseLayer* GetInstance();
 public:
 	// コンストラクタ・デストラクタ
-	BaseLayer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
-	virtual ~BaseLayer();
+	explicit BaseLayer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
+	virtual ~BaseLayer() override;
 protected:
 	// レイヤードオブジェクトの初期化
-	virtual void* InitializeLayerdObject(void* obj, int classID);
+	virtual void* InitializeLayerdObject(void* obj, int classID) override;
 };
 
 } // namespace Generated {}

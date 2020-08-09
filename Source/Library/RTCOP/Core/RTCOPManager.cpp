@@ -85,37 +85,37 @@ void RTCOPManager::RegisterLayer(Layer* layer)
 }
 
 // レイヤの取得
-Layer* const RTCOPManager::GetLayer(int layerid)
+Layer* const RTCOPManager::GetLayer(int layerid) const
 {
 	return _Private->_RegisterdLayers[layerid];
 }
 
 // クラスIDで指定した仮想関数テーブルを取得
-volatile void** const RTCOPManager::GetVirtualFunctionTable(int classid)
+volatile void** const RTCOPManager::GetVirtualFunctionTable(int classid) const
 {
 	return _Private->_VirtualFunctionTables[classid];
 }
 
 // レイヤ、ベースクラス、ベースメソッドの個数を取得
-const int RTCOPManager::GetNumOfLayers()
+const int RTCOPManager::GetNumOfLayers() const
 {
 	return _Private->_NumOfLayers;
 }
 
 // レイヤ、ベースクラス、ベースメソッドの個数を取得
-const int RTCOPManager::GetNumOfBaseClasses()
+const int RTCOPManager::GetNumOfBaseClasses() const
 {
 	return _Private->_NumOfBaseClasses;
 }
 
 // レイヤ、ベースクラス、ベースメソッドの個数を取得
-int* const RTCOPManager::GetNumOfBaseMethods()
+int* const RTCOPManager::GetNumOfBaseMethods() const
 {
 	return _Private->_NumOfBaseMethods;
 }
 
 // レイヤ、ベースクラス、ベースメソッドの個数を取得
-const int RTCOPManager::GetNumOfBaseMethods(int classid)
+const int RTCOPManager::GetNumOfBaseMethods(int classid) const
 {
 	return _Private->_NumOfBaseMethods[classid];
 }

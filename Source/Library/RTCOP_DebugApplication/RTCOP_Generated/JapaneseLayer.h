@@ -25,17 +25,17 @@ public:
 	static JapaneseLayer* GetInstance();
 public:
 	// コンストラクタ・デストラクタ
-	JapaneseLayer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
-	virtual ~JapaneseLayer();
+	explicit JapaneseLayer(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods);
+	virtual ~JapaneseLayer() override;
 protected:
 	// レイヤードオブジェクトの初期化
-	virtual void* InitializeLayerdObject(void* obj, int classID);
+	virtual void* InitializeLayerdObject(void* obj, int classID) override;
 protected:
 	// イベント発生時に実行されるメソッド
-	virtual void OnActivating();		// アクティベート開始時に実行される
-	virtual void OnActivated();			// アクティベート終了時に実行される
-	virtual void OnDeactivating();		// ディアクティベート開始時に実行される
-	virtual void OnDeactivated();		// ディアクティベート終了時に実行される
+	virtual void OnActivating() override;		// アクティベート開始時に実行される
+	virtual void OnActivated() override;		// アクティベート終了時に実行される
+	virtual void OnDeactivating() override;		// ディアクティベート開始時に実行される
+	virtual void OnDeactivated() override;		// ディアクティベート終了時に実行される
 };
 
 // JapaneseレイヤのHello
@@ -50,8 +50,8 @@ public:
 	};
 public:
 	JapaneseLayer_Hello();
-	virtual void Print();
-	virtual void Print2(char arg);
+	virtual void Print() override;
+	virtual void Print2(char arg) override;
 private:
 	void _InitializePartialClass();
 	void _FinalizePartialClass();

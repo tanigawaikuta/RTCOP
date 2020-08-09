@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Sprache;
 
-using LayerCompiler.Model;
-
 namespace LayerCompiler.Parsers
 {
     /// <summary>
@@ -19,24 +17,24 @@ namespace LayerCompiler.Parsers
         /// <summary>
         /// 一行コメント
         /// </summary>
-        public static readonly Parser<Comment> SingleLineComment =
+        public static readonly Parser<Model.Comment> SingleLineComment =
                                                     from slash in Parse.String("//").Text()
                                                     from comment in Parse.Regex(@".*")
-                                                    select new Comment(slash + comment);
+                                                    select new Model.Comment(slash + comment);
 
         /// <summary>
         /// 複数行コメント
         /// </summary>
-        public static readonly Parser<Comment> DelimitedComment =
+        public static readonly Parser<Model.Comment> DelimitedComment =
                                                     from begin in Parse.String("/*").Text()
                                                     from comment in Parse.Regex(@"((/*\**[^\*/]+)|([^\*/]*))*")
                                                     from end in Parse.Regex(@"\*+/")
-                                                    select new Comment(begin + comment + end);
+                                                    select new Model.Comment(begin + comment + end);
 
         /// <summary>
         /// 一行コメントか複数行コメント
         /// </summary>
-        public static readonly Parser<Comment> Comment =
+        public static readonly Parser<Model.Comment> Comment =
                                                     SingleLineComment
                                                     .Or(DelimitedComment);
 
@@ -53,9 +51,9 @@ namespace LayerCompiler.Parsers
         {
             if (parser == null) throw new ArgumentNullException("parser");
 
-            return from leading in Comment.Or(Parse.WhiteSpace.Return((Comment)null)).Many()
+            return from leading in Comment.Or(Parse.WhiteSpace.Return((Model.Comment)null)).Many()
                    from item in parser
-                   from trailing in Comment.Or(Parse.WhiteSpace.Return((Comment)null)).Many()
+                   from trailing in Comment.Or(Parse.WhiteSpace.Return((Model.Comment)null)).Many()
                    select item;
         }
 

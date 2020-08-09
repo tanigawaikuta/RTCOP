@@ -18,7 +18,7 @@ class LayerActivater
 {
 public:
 	// コンストラクタ
-	LayerActivater(RTCOPManager* manager);
+	explicit LayerActivater(RTCOPManager* manager);
 	// デストラクタ
 	virtual ~LayerActivater();
 public:

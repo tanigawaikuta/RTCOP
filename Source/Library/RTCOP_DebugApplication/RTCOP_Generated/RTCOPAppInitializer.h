@@ -28,16 +28,16 @@ class RTCOPAppInitializer : public Core::Initializer
 {
 public:
 	// コンストラクタ・デストラクタ
-	RTCOPAppInitializer();
+	explicit RTCOPAppInitializer();
 	virtual ~RTCOPAppInitializer();
 	// オブジェクトの生成
-	virtual Core::RTCOPManager* InitializeRTCOPManager();
-	virtual Core::LayerdObjectInitializer* InitializeLayerdObjectInitializer(Core::RTCOPManager* manager);
-	virtual Core::LayerActivater* InitializeLayerActivater(Core::RTCOPManager* manager);
+	virtual Core::RTCOPManager* InitializeRTCOPManager() override;
+	virtual Core::LayerdObjectInitializer* InitializeLayerdObjectInitializer(Core::RTCOPManager* manager) override;
+	virtual Core::LayerActivater* InitializeLayerActivater(Core::RTCOPManager* manager) override;
 	// レイヤの登録
-	virtual void RegisterLayers(Core::RTCOPManager* manager);
+	virtual void RegisterLayers(Core::RTCOPManager* manager) override;
 	// 初回レイヤアクティベーション
-	virtual void FirstLayerActivation(Core::LayerActivater* activater);
+	virtual void FirstLayerActivation(Core::LayerActivater* activater) override;
 };
 
 } // namespace Generated {}

@@ -22,7 +22,7 @@ class Initializer
 {
 public:
 	// コンストラクタ
-	Initializer();
+	explicit Initializer();
 	// デストラクタ
 	virtual ~Initializer();
 public:

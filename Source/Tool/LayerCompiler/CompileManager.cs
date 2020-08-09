@@ -131,10 +131,10 @@ namespace LayerCompiler
         /// </summary>
         /// <param name="fileName">ファイル名。</param>
         /// <returns>コンパイル結果。</returns>
-        /*private LayerObjectFile CompileLCppToObjectFile(string fileName)
+        private object CompileLCppToObjectFile(string fileName)
         {
             return null;
-        }*/
+        }
 
         #endregion
 

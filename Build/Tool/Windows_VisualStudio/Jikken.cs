@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Sprache;
 using LayerCompiler.Parsers;
 using System.CodeDom;
-using LayerCompiler.Model;
 
 namespace LayerCompiler
 {
@@ -17,15 +16,33 @@ namespace LayerCompiler
         {
             string src =
 @"
-#include <stdio.h>
-namespace aaa 
+baselayer
 {
-   int a;
-   class A { int m1() { } };
+    base class Aho
+    {
+        int a[10] = {0};
+        int b = 0;
+        base void m1() const;
+        void* m2(int a, int b = (1 + 1));
+    };
+    namespace ABC
+    {
+        base class Baka : public Aho
+        {
+        };
+    }
+    void Aho::m1() const
+    {
+        int a = 0;
+        ++a;
+        for (int i = 0; i < 10; ++i)
+            a += i;
+        return;
+    }
 }
-namespace{}
 ";
-            var text = RTCOPParser.ToIgnoringTokenAndDirective.TokenWithSkipComment().Many().Parse(src);
+            //var text = IgnoreParser.TokenOrDirective.TokenWithSkipComment().Many().Parse(src);
+            var text = RTCOPParser.BaseLayerDefinition.TokenWithSkipComment().Many().Parse(src);
             //var text = TokenParser.Token.TokenWithSkipComment().Many().Parse(src);
             //var text = CppTokenParser.Keyword.Token().Many().Parse(src);
 

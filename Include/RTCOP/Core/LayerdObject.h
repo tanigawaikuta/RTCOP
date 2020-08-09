@@ -26,7 +26,7 @@ class LayerdObject : public Base
 public:
 	// コンストラクタ (引数のパターンに合わせて用意する)
 	template<class... ArgTypes>
-	LayerdObject(ArgTypes... args) : Base(args...)
+	explicit LayerdObject(ArgTypes... args) : Base(args...)
 	{
 		_Private = LayerdObject_CreatePrivate();
 	}
@@ -37,7 +37,7 @@ public:
 		_Private = 0;
 	}
 	// ベースクラスのサイズの取得
-	int GetBaseClassSize()
+	int GetBaseClassSize() const
 	{
 		return sizeof(Base);
 	}

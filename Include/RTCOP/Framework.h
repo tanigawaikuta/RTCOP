@@ -32,14 +32,14 @@ public:
 	// RTCOPの終了処理 最後に実行すること
 	virtual void Finalize();
 	// RTCOPマネージャの取得
-	Core::RTCOPManager* const GetRTCOPManager();
+	Core::RTCOPManager* const GetRTCOPManager() const;
 	// LayerdObject初期化の取得
-	Core::LayerdObjectInitializer* const GetLayerdObjectInitializer();
+	Core::LayerdObjectInitializer* const GetLayerdObjectInitializer() const;
 	// レイヤアクティベータの取得
-	Core::LayerActivater* const GetLayerActivater();
+	Core::LayerActivater* const GetLayerActivater() const;
 protected:
 	// コンストラクタ
-	Framework();
+	explicit Framework();
 	// デストラクタ
 	virtual ~Framework();
 protected:
