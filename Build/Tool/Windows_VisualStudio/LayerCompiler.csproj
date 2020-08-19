@@ -33,7 +33,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\..\Test\TestSpace\Windows\Tool\Debug\</OutputPath>
-    <IntermediateOutputPath>..\..\..\Object\Windows\Tool\Debug\</IntermediateOutputPath>
+    <IntermediateOutputPath>..\..\..\Object\Windows\Tool\LayerCompiler\Debug\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\..\..\Test\TestSpace\Windows\Tool\Debug\LayerCompiler.XML</DocumentationFile>
     <DebugType>full</DebugType>
@@ -44,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\..\..\Test\TestSpace\Windows\Tool\Release\</OutputPath>
-    <IntermediateOutputPath>..\..\..\Object\Windows\Tool\Release\</IntermediateOutputPath>
+    <IntermediateOutputPath>..\..\..\Object\Windows\Tool\LayerCompiler\Release\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>..\..\..\Test\TestSpace\Windows\Tool\Release\LayerCompiler.XML</DocumentationFile>
     <Optimize>true</Optimize>
@@ -69,6 +69,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\RTCOPObjectFile.cs">
+      <Link>Source\CodeGeneration\Model\RTCOPObjectFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\RTCOPSourceFile.cs">
+      <Link>Source\CodeGeneration\Model\RTCOPSourceFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCompiler.cs">
+      <Link>Source\CodeGeneration\RTCOPCompiler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPPreprocessor.cs">
+      <Link>Source\CodeGeneration\RTCOPPreprocessor.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CompileManager.cs">
       <Link>Source\CompileManager.cs</Link>
     </Compile>
@@ -114,16 +126,33 @@
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\Program.cs">
       <Link>Source\Program.cs</Link>
     </Compile>
-    <Compile Include="..\_PropertiesAndConfigFiles\LayerCompiler\AssemblyInfo.cs">
+    <Compile Include="Jikken.cs" />
+    <Compile Include="..\_Properties\LayerCompiler\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Jikken.cs" />
+    <Compile Include="..\_Properties\LayerCompiler\Resources.Designer.cs">
+      <Link>Properties\Resources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\_Properties\LayerCompiler\Settings.Designer.cs">
+      <Link>Properties\Settings.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\_PropertiesAndConfigFiles\LayerCompiler\App.config">
-      <Link>App.config</Link>
+    <None Include="..\_Properties\LayerCompiler\app.config">
+      <Link>app.config</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="..\_Properties\LayerCompiler\Settings.settings">
+      <Link>Properties\Settings.settings</Link>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -138,7 +167,19 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Source\CodeGeneration\Model\" />
+    <Content Include="..\..\..\Source\Library\RTCOP\Core\LayerdObject_Private.h">
+      <Link>Resource\LayerdObject_Private.h</Link>
+    </Content>
+    <Content Include="..\..\..\Source\Library\RTCOP\Core\Layer_Private.h">
+      <Link>Resource\Layer_Private.h</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\_Properties\LayerCompiler\Resources.resx">
+      <Link>Properties\Resources.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

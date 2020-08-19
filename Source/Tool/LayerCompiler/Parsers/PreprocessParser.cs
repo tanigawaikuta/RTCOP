@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Sprache;
+using LayerCompiler.Parsers.Model;
+using System.IO;
+using System.ComponentModel.Design;
 
 namespace LayerCompiler.Parsers
 {
@@ -89,15 +92,35 @@ namespace LayerCompiler.Parsers
                                                     select new Model.PreprocessDirective(Model.DirectiveKind.Endif);
 
         /// <summary>
+        /// defineのパラメータ
+        /// </summary>
+        private static readonly Parser<string> DefineFuncParameters_After =
+                                                    from colon in Parse.String(",").TokenWithSkipCommentForPreprocessParser()
+                                                    from parameter in IdentifierForDefine.TokenWithSkipCommentForPreprocessParser()
+                                                    select parameter;
+
+        /// <summary>
+        /// defineのパラメータ
+        /// </summary>
+        private static readonly Parser<IEnumerable<string>> DefineFuncParameters =
+                                                    from begin in Parse.String("(").TokenWithSkipCommentForPreprocessParser()
+                                                    from first in IdentifierForDefine.TokenWithSkipCommentForPreprocessParser()
+                                                    from then in DefineFuncParameters_After.TokenWithSkipCommentForPreprocessParser().Many()
+                                                    from end in Parse.String(")").TokenWithSkipCommentForPreprocessParser()
+                                                    select new List<string> { first }.Concat(then);
+
+        /// <summary>
         /// 読み取り: #define Aho
         /// </summary>
         public static readonly Parser<Model.PreprocessDirective> Define =
                                                     from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
                                                     from keyword in Parse.String("define").TokenWithSkipCommentForPreprocessParser()
                                                     from name in IdentifierForDefine.TokenWithSkipCommentForPreprocessParser()
+                                                    from parameters in DefineFuncParameters.XOr(Parse.Return(new string[0])).TokenWithSkipCommentForPreprocessParser()
                                                     from expression in ExpressionForDefine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
-                                                    select new Model.PreprocessDirective(Model.DirectiveKind.Define, name, expression);
+                                                    let param2 = new List<string>(parameters).Concat(new string[] { expression })
+                                                    select new Model.PreprocessDirective(Model.DirectiveKind.Define, name, param2);
 
         /// <summary>
         /// 読み取り: #undef Aho
@@ -135,6 +158,40 @@ namespace LayerCompiler.Parsers
                                                     where (begin == '"' && end == '"') || (begin == '<' && end == '>')
                                                     select new Model.PreprocessDirective(Model.DirectiveKind.Include, filename);
 
+        /// <summary>
+        /// 読み取り: #import_lh "Hello.lh"
+        /// RTCOP用のディレクティブ
+        /// </summary>
+        public static readonly Parser<Model.PreprocessDirective> ImportLayerHeader =
+                                                    from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
+                                                    from keyword in Parse.String("import_lh").Text().TokenWithSkipCommentForPreprocessParser()
+                                                    from begin in Parse.Char('"').Or(Parse.Char('<'))
+                                                    from space1 in Parse.Regex(@"(\\(\n|\r\n))|[ \t]").Many()
+                                                    from filename in FilenameForInclude
+                                                    from space2 in Parse.Regex(@"(\\(\n|\r\n))|[ \t]").Many()
+                                                    from end in Parse.Char('"').Or(Parse.Char('>'))
+                                                    from lineend in Parse.LineTerminator.TokenWithSkipCommentForPreprocessParser()
+                                                    where (begin == '"' && end == '"') || (begin == '<' && end == '>')
+                                                    where Path.GetExtension(filename) == ".lh"
+                                                    select new Model.PreprocessDirective(Model.DirectiveKind.ImportLayerHeader, filename);
+
+        /// <summary>
+        /// 読み取り: #import_baseclass "Hello.h"
+        /// RTCOP用のディレクティブ
+        /// </summary>
+        public static readonly Parser<Model.PreprocessDirective> ImportBaseClassHeader =
+                                                    from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
+                                                    from keyword in Parse.String("import_baseclass").Text().TokenWithSkipCommentForPreprocessParser()
+                                                    from begin in Parse.Char('"').Or(Parse.Char('<'))
+                                                    from space1 in Parse.Regex(@"(\\(\n|\r\n))|[ \t]").Many()
+                                                    from filename in FilenameForInclude
+                                                    from space2 in Parse.Regex(@"(\\(\n|\r\n))|[ \t]").Many()
+                                                    from end in Parse.Char('"').Or(Parse.Char('>'))
+                                                    from lineend in Parse.LineTerminator.TokenWithSkipCommentForPreprocessParser()
+                                                    where (begin == '"' && end == '"') || (begin == '<' && end == '>')
+                                                    where Path.GetExtension(filename) != ".lh"
+                                                    select new Model.PreprocessDirective(Model.DirectiveKind.ImportBaseClassHeader, filename);
+
         #endregion
 
         #region その他
@@ -167,7 +224,7 @@ namespace LayerCompiler.Parsers
                                                     from num in NumberForLine.TokenWithSkipCommentForPreprocessParser()
                                                     from filename in FilenameForLine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
-                                                    select new Model.PreprocessDirective(Model.DirectiveKind.Line, num, filename);
+                                                    select new Model.PreprocessDirective(Model.DirectiveKind.Line, num, new string[] { filename });
 
         /// <summary>
         /// 読み取り: #error
@@ -197,7 +254,7 @@ namespace LayerCompiler.Parsers
                                                     from keyword in IdentifierForDefine.TokenWithSkipCommentForPreprocessParser()
                                                     from param in ExpressionForDefine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
-                                                    select new Model.PreprocessDirective(Model.DirectiveKind.NonStandard, keyword, param);
+                                                    select new Model.PreprocessDirective(Model.DirectiveKind.NonStandard, keyword, new string[] { param });
 
         /// <summary>
         /// 読み取り: #
@@ -228,6 +285,208 @@ namespace LayerCompiler.Parsers
                                                     .Or(Pragma)
                                                     .Or(NonStandard)
                                                     .Or(None);
+
+        /// <summary>
+        /// RTCOPのディレクティブ
+        /// </summary>
+        public static readonly Parser<Model.PreprocessDirective> RTCOPDirective =
+                                                    ImportLayerHeader
+                                                    .Or(ImportBaseClassHeader)
+                                                    .Or(Directive);
+
+        #endregion
+
+        #region 行
+        /// <summary>
+        /// 非ディレクティブ行
+        /// </summary>
+        public static readonly Parser<Model.NonDirectiveLine> NonDirectiveLine =
+                                                    from tokens in TokenParser.RTCOPToken.TokenWithSkipCommentForPreprocessParser().Many()
+                                                    from lineend in Parse.LineTerminator
+                                                    select new Model.NonDirectiveLine(tokens);
+
+        /// <summary>
+        /// ディレクティブか行
+        /// </summary>
+        public static readonly Parser<object> DirectiveOrLine =
+                                                    RTCOPDirective
+                                                    .Or<object>(NonDirectiveLine);
+
+        #endregion
+
+        #region ifセクション
+        /// <summary>
+        /// ifセクション
+        /// </summary>
+        public static readonly Parser<IfSection> IfSection =
+                                                    from ifdirective in If.Or(Ifdef).Or(Ifndef).TokenWithSkipCommentForPreprocessParser()
+                                                    from children in IfSection.Or(DirectiveOrLine).TokenWithSkipCommentForPreprocessParser().Many()
+                                                    from elifgroups in ElifGroup.TokenWithSkipCommentForPreprocessParser().Many()
+                                                    from elsegroup in ElseGroup.TokenWithSkipCommentForPreprocessParser().XOr(Parse.Return<IEnumerable<object>>(null))
+                                                    from endifdirective in Endif.TokenWithSkipCommentForPreprocessParser()
+                                                    let ifgroup = new List<object>() { ifdirective }.Concat(children)
+                                                    select new IfSection(ifgroup, elifgroups, elsegroup);
+
+        /// <summary>
+        /// elifグループ
+        /// </summary>
+        private static readonly Parser<IEnumerable<object>> ElifGroup =
+                                                    from elifdirective in Elif.TokenWithSkipCommentForPreprocessParser()
+                                                    from children in IfSection.Or(DirectiveOrLine).TokenWithSkipCommentForPreprocessParser().Many()
+                                                    select new List<object>() { elifdirective }.Concat(children);
+
+        /// <summary>
+        /// elseグループ
+        /// </summary>
+        private static readonly Parser<IEnumerable<object>> ElseGroup =
+                                                    from elsedirective in Else.TokenWithSkipCommentForPreprocessParser()
+                                                    from children in IfSection.Or(DirectiveOrLine).TokenWithSkipCommentForPreprocessParser().Many()
+                                                    select new List<object>() { elsedirective }.Concat(children);
+
+        #endregion
+
+        #region ifディレクティブの式読み取り用のパーサ
+        private static readonly Parser<Model.Leaf_IfDirectiveExpression> Leaf_IfDirectiveExpression =
+                                                    from unarys in Parse.String("!").Or(Parse.String("-")).Or(Parse.String("+")).Text().TokenWithSkipComment().Many()
+                                                    from literal in TokenParser.Literal.TokenWithSkipComment()
+                                                    where !(literal is StringLiteral)
+                                                    select new Model.Leaf_IfDirectiveExpression(literal, unarys);
+
+        private static readonly Parser<Model.IfDirectiveExpression> Parentheses_IfDirectiveExpression =
+                                                    from unarys in Parse.String("!").Or(Parse.String("-")).Or(Parse.String("+")).Text().TokenWithSkipComment().Many()
+                                                    from begin in Parse.String("(").TokenWithSkipComment()
+                                                    from expression in IfDirectiveExpression.TokenWithSkipComment()
+                                                    from end in Parse.String(")").TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression(expression, unarys);
+
+        private static readonly Parser<Model.IfDirectiveExpression> LeafOrParentheses_IfDirectiveExpression =
+                                                    Parentheses_IfDirectiveExpression
+                                                    .Or(Leaf_IfDirectiveExpression);
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> MultiplicativeExpression_After =
+                                                    from op in Parse.String("*").Or(Parse.String("/")).Or(Parse.String("%")).Text().TokenWithSkipComment()
+                                                    from right in LeafOrParentheses_IfDirectiveExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> MultiplicativeExpression =
+                                                    from left in LeafOrParentheses_IfDirectiveExpression.TokenWithSkipComment()
+                                                    from afters in MultiplicativeExpression_After.TokenWithSkipComment().Many()
+                                                    let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                    let operators = afters.Select((obj) => obj.Operator)
+                                                    select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> AdditiveExpression_After =
+                                                    from op in Parse.String("+").Or(Parse.String("-")).Text().TokenWithSkipComment()
+                                                    from right in MultiplicativeExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> AdditiveExpression =
+                                                   from left in MultiplicativeExpression.TokenWithSkipComment()
+                                                   from afters in AdditiveExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> ShiftExpression_After =
+                                                    from op in Parse.String("<<").Or(Parse.String(">>")).Text().TokenWithSkipComment()
+                                                    from right in AdditiveExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> ShiftExpression =
+                                                   from left in AdditiveExpression.TokenWithSkipComment()
+                                                   from afters in ShiftExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> RelationalExpression_After =
+                                                    from op in Parse.String("<=").Or(Parse.String(">=")).Or(Parse.String("<")).Or(Parse.String(">")).Text().TokenWithSkipComment()
+                                                    from right in ShiftExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> RelationalExpression =
+                                                   from left in ShiftExpression.TokenWithSkipComment()
+                                                   from afters in RelationalExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> EqualityExpression_After =
+                                                    from op in Parse.String("==").Or(Parse.String("!=")).Text().TokenWithSkipComment()
+                                                    from right in RelationalExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> EqualityExpression =
+                                                   from left in RelationalExpression.TokenWithSkipComment()
+                                                   from afters in EqualityExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> AndExpression_After =
+                                                    from op in Parse.String("&").Text().TokenWithSkipComment()
+                                                    from right in EqualityExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> AndExpression =
+                                                   from left in EqualityExpression.TokenWithSkipComment()
+                                                   from afters in AndExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> ExclusiveOrExpression_After =
+                                                    from op in Parse.String("^").Text().TokenWithSkipComment()
+                                                    from right in AndExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> ExclusiveOrExpression =
+                                                   from left in AndExpression.TokenWithSkipComment()
+                                                   from afters in ExclusiveOrExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> InclusiveOrExpression_After =
+                                                    from op in Parse.String("|").Text().TokenWithSkipComment()
+                                                    from right in ExclusiveOrExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> InclusiveOrExpression =
+                                                   from left in ExclusiveOrExpression.TokenWithSkipComment()
+                                                   from afters in InclusiveOrExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> LogicalAndExpression_After =
+                                                    from op in Parse.String("&&").Text().TokenWithSkipComment()
+                                                    from right in InclusiveOrExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> LogicalAndExpression =
+                                                   from left in InclusiveOrExpression.TokenWithSkipComment()
+                                                   from afters in LogicalAndExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        private static readonly Parser<Model.IfDirectiveExpression.OperatorAndRightExpression> LogicalOrExpression_After =
+                                                    from op in Parse.String("||").Text().TokenWithSkipComment()
+                                                    from right in LogicalAndExpression.TokenWithSkipComment()
+                                                    select new Model.IfDirectiveExpression.OperatorAndRightExpression(op, right);
+
+        private static readonly Parser<Model.IfDirectiveExpression> LogicalOrExpression =
+                                                   from left in LogicalAndExpression.TokenWithSkipComment()
+                                                   from afters in LogicalOrExpression_After.TokenWithSkipComment().Many()
+                                                   let afterexpressions = afters.Select((obj) => obj.RightExpression)
+                                                   let operators = afters.Select((obj) => obj.Operator)
+                                                   select new Model.IfDirectiveExpression(operators, new List<Model.IfDirectiveExpression>() { left }.Concat(afterexpressions));
+
+        /// <summary>
+        /// ifディレクティブの式
+        /// </summary>
+        public static readonly Parser<Model.IfDirectiveExpression> IfDirectiveExpression = LogicalOrExpression;
 
         #endregion
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using LayerCompiler.CodeGeneration;
+using LayerCompiler.CodeGeneration.Model;
 
 namespace LayerCompiler
 {
@@ -14,56 +16,56 @@ namespace LayerCompiler
     {
         #region プロパティ
         /// <summary>
-        /// 入力ファイル。
-        /// .lobjファイルか.lcppファイルを指定。
+        /// 入力ファイル
+        /// .lobjファイルか.lcppファイルを指定
         /// </summary>
-        public List<string> SourceFiles { get; protected set; }
+        public List<string> SourceFiles { get; protected set; } = new List<string>();
 
         /// <summary>
-        /// 出力ファイル。.lobjファイルかディレクトリパスを指定。
-        /// ディレクトリパスの場合、その場所にC++ソースコードを出力する。
+        /// 出力ファイル。.lobjファイルかディレクトリパスを指定する
+        /// ディレクトリパスの場合、その場所にC++ソースコードを出力する
         /// </summary>
-        public string OutputFile { get; protected set; }
+        public string OutputFile { get; protected set; } = "./";
 
         /// <summary>
-        /// ヘッダファイルのディレクトリパス。
+        /// ヘッダファイルのディレクトリパス
         /// </summary>
-        public List<string> IncludePaths { get; protected set; }
+        public List<string> IncludePaths { get; protected set; } = new List<string>() { "./" };
 
         /// <summary>
-        /// レイヤクラスのデフォルトの名前空間。
+        /// レイヤクラスのデフォルトの名前空間
         /// </summary>
-        public string Namespace { get; protected set; }
+        public string Namespace { get; protected set; } = "RTCOP::Generated";
 
         /// <summary>
-        /// レイヤコンパイラに与えるマクロ定義。
+        /// レイヤコンパイラに与えるマクロ定義
         /// </summary>
-        public List<string> Macros { get; protected set; }
+        public List<string> Macros { get; protected set; } = new List<string>();
 
         /// <summary>
-        /// 入出力ファイルの文字コード。
+        /// 入出力ファイルの文字コード
         /// </summary>
-        public Encoding Encoding { get; protected set; }
+        public Encoding Encoding { get; protected set; } = new UTF8Encoding(false);
 
         /// <summary>
-        /// 改行文字。
+        /// 改行文字
         /// </summary>
-        public string NewLine { get; protected set; }
+        public string LineTerminator { get; protected set; } = "\r\n";
 
         /// <summary>
-        /// 開発対象。
+        /// コンパイルオンリーフラグ
         /// </summary>
-        public DevelopmentTarget Target { get; protected set; }
+        public bool IsCompileOnlyFlag { get; protected set; } = false;
 
         /// <summary>
-        /// 開発環境。
+        /// 開発対象
         /// </summary>
-        public DevelopmentEnvironment Environment { get; protected set; }
+        public DevelopmentTarget Target { get; protected set; } = DevelopmentTarget.None;
 
         /// <summary>
-        /// 機能無効化オプション。
+        /// 開発環境
         /// </summary>
-        public WithoutOptions WithoutOptions { get; protected set; }
+        public DevelopmentEnvironment Environment { get; protected set; } = DevelopmentEnvironment.None;
 
         #endregion
 
@@ -74,66 +76,33 @@ namespace LayerCompiler
         /// <param name="args">コマンドライン引数。</param>
         public CompileManager(string[] args)
         {
-            // コンパイルオプションのチェック
-            CheckCompileOptions(args);
-        }
-
-        #endregion
-
-        #region コンパイル関連のメソッド
-        /// <summary>
-        /// コンパイル実行。
-        /// </summary>
-        /// <returns>成功したか。</returns>
-        public void Compile()
-        {
-            // ソースファイルが無い場合
-            if (SourceFiles.Count <= 0)
+            Namespace = Properties.Settings.Default.NameSpace;
+            string newLine = Properties.Settings.Default.LineTerminator.ToLower();
+            if ((newLine == "\\r") || (newLine == "cr"))
             {
-                // エラー
-                throw new Exception("ソースファイルが1つも無いです。");
+                LineTerminator = "\r";
             }
-
-            // 出力ファイルがC++のソースコードか、オブジェクトファイルかを確認
-            bool outputIsCpp = (OutputFile.EndsWith("/") || OutputFile.EndsWith("\\"));
-            if (outputIsCpp)
+            else if ((newLine == "\\n") || (newLine == "lf"))
             {
-                // オブジェクトファイルを読み込む
-                // cppファイルはオブジェクトファイルに変換する
-                foreach (string fileName in SourceFiles)
-                {
-                    if (Path.GetExtension(fileName) == ".lcpp")
-                    {
-                        // .lcppをコンパイル
-                        //LayerObjectFile result = CompileLCppToObjectFile(fileName);
-                    }
-                    else
-                    {
-                        // オブジェクトファイルの読み込み
-                    }
-                }
+                LineTerminator = "\n";
             }
             else
             {
-                // 対象がオブジェクトファイルの場合、ソースファイルは1つ
-                string fileName = SourceFiles[0];
-                // .lcppをコンパイル
-                if (Path.GetExtension(fileName) == ".lcpp")
-                {
-                    // .lcppをコンパイル
-                    //LayerObjectFile result = CompileLCppToObjectFile(fileName);
-                }
+                LineTerminator = "\r\n";
             }
-        }
-
-        /// <summary>
-        /// .lcppからオブジェクトファイルにコンパイル。
-        /// </summary>
-        /// <param name="fileName">ファイル名。</param>
-        /// <returns>コンパイル結果。</returns>
-        private object CompileLCppToObjectFile(string fileName)
-        {
-            return null;
+            string encoding = Properties.Settings.Default.Encoding;
+            if (encoding.ToLower() == "utf-8n")
+            {
+                Encoding = new UTF8Encoding(false);
+            }
+            else
+            {
+                Encoding enc = Encoding;
+                try { enc = Encoding.GetEncoding(encoding); } catch (Exception) { }
+                Encoding = enc;
+            }
+            // コンパイルオプションのチェック
+            CheckCompileOptions(args);
         }
 
         #endregion
@@ -145,17 +114,6 @@ namespace LayerCompiler
         /// <param name="args"></param>
         private void CheckCompileOptions(string[] args)
         {
-            // デフォルトの値の設定
-            SourceFiles = new List<string>();
-            OutputFile = "./";
-            IncludePaths = new List<string>();
-            Namespace = @"RTCOP::Generated";
-            Macros = new List<string>();
-            Encoding = new UTF8Encoding(false);
-            NewLine = "\r\n";
-            Target = DevelopmentTarget.None;
-            Environment = DevelopmentEnvironment.None;
-            WithoutOptions = WithoutOptions.Default;
             // オプションの読み取り
             Func<string, string> getPath = (s) =>
             {
@@ -172,6 +130,12 @@ namespace LayerCompiler
                 string arg = args[i];
                 switch (arg)
                 {
+                    // コンパイルのみ
+                    case "-c":
+                    case "-C":
+                        IsCompileOnlyFlag = true;
+                        offset = 1;
+                        break;
                     // 出力ファイル
                     case "-o":
                     case "-O":
@@ -191,20 +155,6 @@ namespace LayerCompiler
                             foreach (string inc in includes)
                             {
                                 IncludePaths.Add(getPath(inc));
-                            }
-                        }
-                        offset = 2;
-                        break;
-                    // 名前空間
-                    case "-n":
-                    case "-N":
-                        if ((i + 1) < args.Length)
-                        {
-                            string arg2 = args[i + 1];
-                            string[] macros = arg2.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                            foreach (string macro in macros)
-                            {
-                                Namespace = args[i + 1];
                             }
                         }
                         offset = 2;
@@ -343,74 +293,6 @@ namespace LayerCompiler
                         }
                         offset = 2;
                         break;
-                    // 文字コード
-                    case "-c":
-                    case "-C":
-                        if ((i + 1) < args.Length)
-                        {
-                            string arg2 = args[i + 1];
-                            if (arg2 == "utf-8n")
-                            {
-                                Encoding = new UTF8Encoding(false);
-                            }
-                            else
-                            {
-                                Encoding enc = Encoding;
-                                try { enc = Encoding.GetEncoding(arg2); } catch (Exception) { }
-                                Encoding = enc;
-                            }
-                        }
-                        offset = 2;
-                        break;
-                    // 改行文字
-                    case "-l":
-                    case "-L":
-                        if ((i + 1) < args.Length)
-                        {
-                            string arg2 = args[i + 1];
-                            switch(arg2)
-                            {
-                                case @"\r\n":
-                                case @"CR+LF":
-                                    NewLine = "\r\n";
-                                    break;
-                                case @"\\n":
-                                case @"LF":
-                                    NewLine = "\n";
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        offset = 2;
-                        break;
-                    // 機能有効化
-                    case "-w":
-                    case "-W":
-                    case "-with":
-                    case "-With":
-                    case "-WITH":
-                        if ((i + 1) < args.Length)
-                        {
-                            string arg2 = args[i + 1];
-                            // 後で実装
-                        }
-                        offset = 2;
-                        break;
-                    // 機能無効化
-                    case "-wo":
-                    case "-Wo":
-                    case "-WO":
-                    case "-without":
-                    case "-Without":
-                    case "-WITHOUT":
-                        if ((i + 1) < args.Length)
-                        {
-                            string arg2 = args[i + 1];
-                            // 後で実装
-                        }
-                        offset = 2;
-                        break;
                     // ヘルプ
                     case "--help":
                         break;
@@ -429,6 +311,67 @@ namespace LayerCompiler
                         break;
                 }
             }
+        }
+
+        #endregion
+
+        #region コンパイル関連のメソッド
+        /// <summary>
+        /// コンパイル実行。
+        /// </summary>
+        public void Compile()
+        {
+            // ソースファイルが無い場合
+            if (SourceFiles.Count <= 0)
+            {
+                // エラー
+                throw new Exception("ソースファイルが1つも無いです。");
+            }
+
+            // .lcppをコンパイル
+            foreach (string fileName in SourceFiles)
+            {
+                if (Path.GetExtension(fileName) == ".lcpp")
+                {
+                    // .lcppをコンパイル
+                    //LayerObjectFile result = CompileLCppToObjectFile(fileName);
+                }
+            }
+            // 出力ファイルがC++のソースコードか、オブジェクトファイルかを確認
+            bool outputIsCpp = (OutputFile.EndsWith("/") || OutputFile.EndsWith("\\"));
+            if (outputIsCpp)
+            {
+                // オブジェクトファイルを読み込む
+                foreach (string fileName in SourceFiles)
+                {
+                    if (Path.GetExtension(fileName) == ".lobj")
+                    {
+                        // .lcppをコンパイル
+                        //LayerObjectFile result = CompileLCppToObjectFile(fileName);
+                    }
+                }
+            }
+            else
+            {
+            }
+        }
+
+        /// <summary>
+        /// .lcppからオブジェクトファイルにコンパイル。
+        /// </summary>
+        /// <param name="fileName">ファイル名。</param>
+        /// <returns>コンパイル結果。</returns>
+        private RTCOPObjectFile CompileLCppToObjectFile(string fileName)
+        {
+            // ファイルオープン
+            RTCOPSourceFile src = null;
+            using (StreamReader sr = new StreamReader(fileName, Encoding))
+            {
+                string text = sr.ReadToEnd();
+                src = new RTCOPSourceFile(fileName, text);
+            }
+            // プリプロセス
+            return null;
         }
 
         #endregion

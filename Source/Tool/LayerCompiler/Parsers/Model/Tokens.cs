@@ -116,6 +116,7 @@ namespace LayerCompiler.Parsers.Model
         }
 
         #endregion
+
     }
 
     /// <summary>
@@ -180,6 +181,7 @@ namespace LayerCompiler.Parsers.Model
         }
 
         #endregion
+
     }
 
     /// <summary>
@@ -235,6 +237,7 @@ namespace LayerCompiler.Parsers.Model
         }
 
         #endregion
+
     }
 
     /// <summary>
@@ -283,6 +286,7 @@ namespace LayerCompiler.Parsers.Model
         }
 
         #endregion
+
     }
 
     /// <summary>
@@ -339,6 +343,7 @@ namespace LayerCompiler.Parsers.Model
         }
 
         #endregion
+
     }
 
     /// <summary>
@@ -373,6 +378,7 @@ namespace LayerCompiler.Parsers.Model
         }
 
         #endregion
+
     }
 
     /// <summary>
@@ -401,6 +407,7 @@ namespace LayerCompiler.Parsers.Model
         }
 
         #endregion
+
     }
 
 }

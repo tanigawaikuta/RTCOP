@@ -23,6 +23,17 @@ namespace LayerCompiler.Parsers.Model
         public List<object> Contents { get; private set; }
 
         /// <summary>
+        /// ベースレイヤであるかどうか
+        /// </summary>
+        public bool IsBase
+        {
+            get
+            {
+                return Name == "baselayer";
+            }
+        }
+
+        /// <summary>
         /// レイヤ内の名前空間
         /// </summary>
         public IEnumerable<NamespaceDefinition> Namespaces
@@ -78,7 +89,51 @@ namespace LayerCompiler.Parsers.Model
         /// <returns>文字列</returns>
         public override string ToString()
         {
-            return Name;
+            string result = "";
+            // キーワードと名前
+            if (IsBase)
+            {
+                result += "baselayer";
+            }
+            else
+            {
+                result += "layer " + Name;
+            }
+            // 中身
+            result += "\r\n{\r\n";
+            foreach (var content in Contents)
+            {
+                if (content is IgnoreObject)
+                {
+                    if (((IgnoreObject)content).Content is PreprocessDirective)
+                    {
+                        result += (content + "\r\n");
+                    }
+                    else if (!(content is IgnoreObjectBlock))
+                    {
+                        string text = content.ToString();
+                        if ((text == ";") || (text == ":"))
+                        {
+                            result += (text + "\r\n");
+                        }
+                        else
+                        {
+                            result += (text + " ");
+                        }
+                    }
+                    else
+                    {
+                        result += ("\r\n" + content + "\r\n");
+                    }
+                }
+                else
+                {
+                    result += (content + "\r\n");
+                }
+            }
+            result += "\r\n}";
+
+            return result;
         }
 
         #endregion
@@ -96,7 +151,7 @@ namespace LayerCompiler.Parsers.Model
         public string Name { get; protected set; }
 
         /// <summary>
-        /// インタライン名前空間であるかどうか
+        /// インライン名前空間であるかどうか
         /// </summary>
         public bool IsInline { get; protected set; }
 
@@ -163,7 +218,49 @@ namespace LayerCompiler.Parsers.Model
         /// <returns>文字列</returns>
         public override string ToString()
         {
-            return Name;
+            string result = "";
+            // インライン
+            if (IsInline)
+                result += "inline ";
+            // キーワード
+            result += "namespace ";
+            // 名前
+            result += Name;
+            // 中身
+            result += "\r\n{\r\n";
+            foreach (var content in Contents)
+            {
+                if (content is IgnoreObject)
+                {
+                    if (((IgnoreObject)content).Content is PreprocessDirective)
+                    {
+                        result += (content + "\r\n");
+                    }
+                    else if (!(content is IgnoreObjectBlock))
+                    {
+                        string text = content.ToString();
+                        if ((text == ";") || (text == ":"))
+                        {
+                            result += (text + "\r\n");
+                        }
+                        else
+                        {
+                            result += (text + " ");
+                        }
+                    }
+                    else
+                    {
+                        result += ("\r\n" + content + "\r\n");
+                    }
+                }
+                else
+                {
+                    result += (content + "\r\n");
+                }
+            }
+            result += "\r\n}";
+
+            return result;
         }
 
         #endregion
@@ -277,19 +374,9 @@ namespace LayerCompiler.Parsers.Model
         /// <returns>文字列</returns>
         public override string ToString()
         {
-            return ToString(true);
-        }
-
-        /// <summary>
-        /// 文字列を返す
-        /// </summary>
-        /// <param name="enableCOPKeyword">COPキーワードを含むかどうか</param>
-        /// <returns>文字列</returns>
-        public virtual string ToString(bool enableCOPKeyword)
-        {
             string result = "";
             // キーワード
-            if (enableCOPKeyword && (IsBase != null))
+            if (IsBase != null)
             {
                 if (IsBase.Value) result = "base ";
                 else result = "partial ";
@@ -297,7 +384,46 @@ namespace LayerCompiler.Parsers.Model
             // class key
             result += (ClassKey + " ");
             // 名前
-            result += (Name + " ");
+            result += Name;
+            // スーパークラス
+            if (SuperClasses.Count > 0)
+            {
+                result += " : ";
+                result += string.Join(", ", SuperClasses);
+            }
+            // 中身
+            result += "\r\n{\r\n";
+            foreach (var content in Contents)
+            {
+                if (content is IgnoreObject)
+                {
+                    if (((IgnoreObject)content).Content is PreprocessDirective)
+                    {
+                        result += (content + "\r\n");
+                    }
+                    else if (!(content is IgnoreObjectBlock))
+                    {
+                        string text = content.ToString();
+                        if ((text == ";") || (text == ":"))
+                        {
+                            result += (text + "\r\n");
+                        }
+                        else
+                        {
+                            result += (text + " ");
+                        }
+                    }
+                    else
+                    {
+                        result += ("\r\n" + content + "\r\n");
+                    }
+                }
+                else
+                {
+                    result += (content + "\r\n");
+                }
+            }
+            result += "\r\n}";
 
             return result;
         }
@@ -433,7 +559,7 @@ namespace LayerCompiler.Parsers.Model
         /// <summary>
         /// コンテンツ
         /// </summary>
-        public object Contents { get; protected set; }
+        public IgnoreObjectBlock Contents { get; protected set; }
 
         /// <summary>
         /// thisポインタの修飾子
@@ -457,7 +583,7 @@ namespace LayerCompiler.Parsers.Model
         /// <param name="contents">コンテンツ</param>
         /// <param name="thisModifiers">修飾子</param>
         /// <param name="isNoexcept">noexceptであるかどうか</param>
-        public MethodImplementation(string name, VariableType returnType, IEnumerable<VariableDeclaration> parameters, object contents, IEnumerable<string> thisModifiers, bool isNoexcept)
+        public MethodImplementation(string name, VariableType returnType, IEnumerable<VariableDeclaration> parameters, IgnoreObjectBlock contents, IEnumerable<string> thisModifiers, bool isNoexcept)
         {
             FullName = name;
             ReturnType = returnType;
@@ -482,16 +608,7 @@ namespace LayerCompiler.Parsers.Model
             // メソッド名
             result += (FullName + " (");
             // パラメータ
-            int n = Parameters.Count;
-            for (int i = 0; i < n; ++i)
-            {
-                VariableDeclaration arg = Parameters[i];
-                result += arg;
-                if (i < (n - 1))
-                {
-                    result += ", ";
-                }
-            }
+            result += string.Join(", ", Parameters);
             result += ")";
             // 修飾子
             foreach (string modifier in ThisModifiers)
@@ -501,6 +618,7 @@ namespace LayerCompiler.Parsers.Model
             // noexcept
             if (IsNoexcept) result += " noexcept";
             // コンテンツ
+            result += "\r\n";
             result += Contents.ToString();
 
             return result;
@@ -631,19 +749,9 @@ namespace LayerCompiler.Parsers.Model
         /// <returns>文字列</returns>
         public override string ToString()
         {
-            return ToString(true);
-        }
-
-        /// <summary>
-        /// 文字列を返す
-        /// </summary>
-        /// <param name="enableCOPKeyword">COPキーワードを含むかどうか</param>
-        /// <returns>文字列</returns>
-        public virtual string ToString(bool enableCOPKeyword)
-        {
             string result = "";
             // キーワード
-            if (enableCOPKeyword && (IsBase != null))
+            if (IsBase != null)
             {
                 if (IsBase.Value) result = "base ";
                 else result = "partial ";
@@ -658,16 +766,7 @@ namespace LayerCompiler.Parsers.Model
             // メソッド名
             result += (Name + " (");
             // パラメータ
-            int n = Parameters.Count;
-            for (int i = 0; i < n; ++i)
-            {
-                VariableDeclaration arg = Parameters[i];
-                result += arg;
-                if (i < (n - 1))
-                {
-                    result += ", ";
-                }
-            }
+            result += string.Join(", ", Parameters);
             result += ")";
             // 修飾子
             foreach (string modifier in ThisModifiers)
@@ -677,6 +776,8 @@ namespace LayerCompiler.Parsers.Model
             // noexcept
             if (IsNoexcept) result += " noexcept";
             // コンテンツ
+            if (Contents is IgnoreObjectBlock)
+                result += "\r\n";
             result += Contents.ToString();
 
             return result;

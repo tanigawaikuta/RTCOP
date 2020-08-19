@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Sprache;
-using System.Security.Policy;
 
 namespace LayerCompiler.Parsers
 {
@@ -74,6 +73,7 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.LayerdMethodDefinition> PartialMethodDefinition =
                                                     from copkeyword in Parse.String("partial").Text().TokenWithSkipComment()
                                                     from method in MethodDefinition.TokenWithSkipComment()
+                                                    where !(method.Modifiers.Contains("static"))
                                                     select method.SetIsBase(false);
 
         /// <summary>
@@ -82,6 +82,7 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.LayerdMethodDefinition> BaseMethodDefinition =
                                                     from copkeyword in Parse.String("base").Text().TokenWithSkipComment()
                                                     from method in MethodDefinition.TokenWithSkipComment()
+                                                    where !(method.Modifiers.Contains("static"))
                                                     select method.SetIsBase(true);
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace LayerCompiler.Parsers
                                                                    .Or(IgnoreParser.IgnoreObject)
                                                                    .TokenWithSkipComment().Many()
                                                     from endblock in Parse.String("}").Text().TokenWithSkipComment()
-                                                    from semicolon in Parse.String(";").Text().TokenWithSkipComment()
+                                                    from semicolon in Parse.String(";").XOr(Parse.Return("")).Text().TokenWithSkipComment()
                                                     select new Model.LayerdClassDefinition(identifier, classkey, supers, members, true);
 
         /// <summary>
@@ -151,6 +152,7 @@ namespace LayerCompiler.Parsers
                                                     from copkeyword in Parse.String("partial").Text().TokenWithSkipComment()
                                                     from classdef in ClassDefinition.TokenWithSkipComment()
                                                     let result = classdef.SetIsBase(false)
+                                                    where result.SuperClasses.Count == 0
                                                     where CheckClassDefinition(result)
                                                     select result;
 
@@ -231,7 +233,7 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.NamespaceDefinition> NamespaceDefinition =
                                                     from inline in Parse.String("inline").XOr(Parse.Return("")).Text().TokenWithSkipComment()
                                                     from keyword in Parse.String("namespace").Text().TokenWithSkipComment()
-                                                    from identifier in TokenParser.RTCOPIdentifierString.TokenWithSkipComment()
+                                                    from identifier in TokenParser.RTCOPIdentifierString.XOr(Parse.Return("")).TokenWithSkipComment()
                                                     from beginblock in Parse.String("{").Text().TokenWithSkipComment()
                                                     from objs in NamespaceDefinition
                                                                    .Or<object>(PartialClassDefinition)
@@ -288,7 +290,7 @@ namespace LayerCompiler.Parsers
         /// <returns>レイヤ内の名前空間が正しいかどうか</returns>
         private static bool CheckLayerNamespace(Model.LayerDefinition layer)
         {
-            bool isBaseLayer = (layer.Name == "baselayer");
+            bool isBaseLayer = (layer.IsBase);
             // 名前空間を調べる
             Func<Model.NamespaceDefinition, bool> checker = null;
             checker = new Func<Model.NamespaceDefinition, bool>((names) => 

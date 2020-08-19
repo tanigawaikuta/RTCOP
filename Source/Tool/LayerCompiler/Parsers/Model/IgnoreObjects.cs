@@ -84,18 +84,7 @@ namespace LayerCompiler.Parsers.Model
         /// <returns>文字列</returns>
         public override string ToString()
         {
-            return ToString(0);
-        }
-
-        /// <summary>
-        /// 文字列を返す
-        /// </summary>
-        /// <param name="indentCount">インデントの数</param>
-        /// <returns>文字列</returns>
-        public virtual string ToString(int indentCount)
-        {
-            string result = "\r\n";
-            bool indentFlag = true;
+            string result = "";
             // コンテンツの書き出し
             foreach (IgnoreObject content in Contents)
             {
@@ -104,48 +93,23 @@ namespace LayerCompiler.Parsers.Model
                 {
                     string text = content.ToString();
                     result += (text + "\r\n");
-                    indentFlag = true;
                 }
                 // それ以外
                 else
                 {
-                    // インデント
-                    if (indentFlag)
-                    {
-                        for (int i = 0; i < indentCount; ++i)
-                        {
-                            result += "\t";
-                        }
-                        indentFlag = false;
-                    }
-                    // コンテンツ
                     if (content is IgnoreObjectBlock)
                     {
                         var block = (IgnoreObjectBlock)content;
-                        string text = block.ToString(indentCount);
+                        string text = block.ToString();
                         result += (text + "\r\n");
-                        indentFlag = true;
                     }
                     else
                     {
                         string text = content.ToString();
                         // コンテンツに応じて後に続く文字を変更
-                        if (text == "{")
+                        if ((text == "{") || (text == "}") || (text == ";") || (text == ":"))
                         {
                             result += (text + "\r\n");
-                            indentCount += 1;
-                            indentFlag = true;
-                        }
-                        else if (text == "}")
-                        {
-                            // 末尾のインデントを書き換えて終了
-                            result = (result.Remove(result.Length - 1, 1) + text);
-                            break;
-                        }
-                        else if ((text == ";") || text == ":")
-                        {
-                            result += (text + "\r\n");
-                            indentFlag = true;
                         }
                         else
                         {
@@ -160,4 +124,5 @@ namespace LayerCompiler.Parsers.Model
         #endregion
 
     }
+
 }

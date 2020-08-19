@@ -59,7 +59,7 @@ namespace LayerCompiler.Parsers
         /// 無視するディレクティブ
         /// </summary>
         public static readonly Parser<Model.IgnoreObject> Directive =
-                                                    from directive in PreprocessParser.Directive
+                                                    from directive in PreprocessParser.RTCOPDirective
                                                     select new Model.IgnoreObject(directive);
 
         /// <summary>

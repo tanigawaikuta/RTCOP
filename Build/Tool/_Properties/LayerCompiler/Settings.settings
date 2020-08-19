@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LayerCompiler.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="NameSpace" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RTCOP::Generated</Value>
+    </Setting>
+    <Setting Name="LineTerminator" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CR+LF</Value>
+    </Setting>
+    <Setting Name="Encoding" Type="System.String" Scope="User">
+      <Value Profile="(Default)">utf-8n</Value>
+    </Setting>
+    <Setting Name="DefaultDevelopmentTarget" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WindowsX86</Value>
+    </Setting>
+    <Setting Name="DefaultDevelopmentEnvironment" Type="System.String" Scope="User">
+      <Value Profile="(Default)">VisualStudio</Value>
+    </Setting>
+    <Setting Name="RTCOPIncludePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">RTCOP/</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

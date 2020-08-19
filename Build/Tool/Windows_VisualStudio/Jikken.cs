@@ -16,6 +16,7 @@ namespace LayerCompiler
         {
             string src =
 @"
+//#define Aho(aa, bb) aa + bb
 baselayer
 {
     base class Aho
@@ -23,12 +24,13 @@ baselayer
         int a[10] = {0};
         int b = 0;
         base void m1() const;
-        void* m2(int a, int b = (1 + 1));
+        void* m2(int a, int b = (1 + 1)) { return 0; }
     };
     namespace ABC
     {
         base class Baka : public Aho
         {
+            volatile const int*** const c;
         };
     }
     void Aho::m1() const
@@ -41,12 +43,15 @@ baselayer
     }
 }
 ";
-            //var text = IgnoreParser.TokenOrDirective.TokenWithSkipComment().Many().Parse(src);
-            var text = RTCOPParser.BaseLayerDefinition.TokenWithSkipComment().Many().Parse(src);
+            //var text = PreprocessParser.DirectiveOrLine.TokenWithSkipCommentForPreprocessParser().Many().Parse(src);
+            //var text = RTCOPParser.BaseLayerDefinition.TokenWithSkipComment().Many().Parse(src);
             //var text = TokenParser.Token.TokenWithSkipComment().Many().Parse(src);
-            //var text = CppTokenParser.Keyword.Token().Many().Parse(src);
+            //var text = PreprocessParser.Directive.TokenWithSkipCommentForPreprocessParser().Many().Parse(src);
 
-            foreach (var t in text) Console.WriteLine(t);
+            var ex = PreprocessParser.IfDirectiveExpression.TokenWithSkipComment().Parse("10 > 3 && false");
+            var result = ex.Evaluate();
+            
+            //foreach (var t in text) Console.WriteLine(t);
             //Console.WriteLine(text);
         }
     }

@@ -9,6 +9,7 @@ namespace LayerCompiler
     /// <summary>
     /// 開発対象。
     /// </summary>
+    [Serializable]
     public enum DevelopmentTarget
     {
         /// <summary>指定無し。</summary>
@@ -32,6 +33,7 @@ namespace LayerCompiler
     /// <summary>
     /// 開発環境。
     /// </summary>
+    [Serializable]
     public enum DevelopmentEnvironment
     {
         /// <summary>指定無し。</summary>
@@ -44,17 +46,4 @@ namespace LayerCompiler
         Clang,
     }
 
-    /// <summary>
-    /// 機能無効化オプション。
-    /// </summary>
-    [Flags]
-    enum WithoutOptions
-    {
-        /// <summary>無し。</summary>
-        None = 0x0000,
-        /// <summary>デフォルト。</summary>
-        Default = 0x0000,
-        /// <summary>全て。</summary>
-        All = 0xffff,
-    }
 }
