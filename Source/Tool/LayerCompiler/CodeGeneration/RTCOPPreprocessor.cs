@@ -77,7 +77,7 @@ namespace LayerCompiler.CodeGeneration
         private RTCOPSourceFile Run_Private(RTCOPSourceFile inputFile, List<PreprocessDirective> macros)
         {
             // ファイルから全てのディレクティブ、行を取得
-            var allObjs = PreprocessParser.IfSection.Or(PreprocessParser.DirectiveOrLine).TokenWithSkipCommentForPreprocessParser().Many().Parse(inputFile.Text);
+            var allObjs = PreprocessParser.IfSection.Or(PreprocessParser.DirectiveOrLineForIfSection).TokenWithSkipCommentForPreprocessParser().Many().Parse(inputFile.Text);
             var importingFiles = new List<RTCOPSourceFile>();
 
             // 実際のプリプロセス処理を行う
@@ -252,6 +252,7 @@ namespace LayerCompiler.CodeGeneration
                             // パラメータ置き換え
                             var macroTokens = new List<Token>(TokenParser.RTCOPToken.TokenWithSkipComment().Many().Parse(macro.Param2.Last()));
                             var macroTokens2 = new List<Token>();
+                            Token pre = new Token("");
                             for (int j = 0; j < macroTokens.Count; ++j)
                             {
                                 var mt = macroTokens[j];
@@ -271,7 +272,6 @@ namespace LayerCompiler.CodeGeneration
                                 }
                                 else if (mt.ToString() == "##")
                                 {
-                                    var pre = macroTokens[j - 1];
                                     var mt2 = macroTokens[j + 1];
                                     // 最後を連結した形に置き換える
                                     string text = pre.ToString() + mt2.ToString();
@@ -297,6 +297,7 @@ namespace LayerCompiler.CodeGeneration
                                 {
                                     macroTokens2.Add(mt);
                                 }
+                                pre = macroTokens2[macroTokens2.Count - 1];
                             }
                             // さらに深く見る
                             var macroTokens3 = expantionFunc(macroTokens2);

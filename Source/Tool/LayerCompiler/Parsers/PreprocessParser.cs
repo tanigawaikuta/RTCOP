@@ -316,13 +316,22 @@ namespace LayerCompiler.Parsers
 
         #region ifセクション
         /// <summary>
+        /// ディレクティブか行(ifセクション用)
+        /// </summary>
+        public static readonly Parser<object> DirectiveOrLineForIfSection =
+                                                    from item in DirectiveOrLine
+                                                    let kind = item is Model.PreprocessDirective ? ((Model.PreprocessDirective)item).Kind : DirectiveKind.None
+                                                    where !((kind == DirectiveKind.If) || (kind == DirectiveKind.Ifdef) || (kind == DirectiveKind.Ifndef) || (kind == DirectiveKind.Elif) || (kind == DirectiveKind.Else) || (kind == DirectiveKind.Endif))
+                                                    select item;
+
+        /// <summary>
         /// ifセクション
         /// </summary>
         public static readonly Parser<IfSection> IfSection =
-                                                    from ifdirective in If.Or(Ifdef).Or(Ifndef).TokenWithSkipCommentForPreprocessParser()
-                                                    from children in IfSection.Or(DirectiveOrLine).TokenWithSkipCommentForPreprocessParser().Many()
+                                                    from ifdirective in Ifdef.Or(Ifndef).Or(If).TokenWithSkipCommentForPreprocessParser()
+                                                    from children in IfSection.Or(DirectiveOrLineForIfSection).TokenWithSkipCommentForPreprocessParser().Many()
                                                     from elifgroups in ElifGroup.TokenWithSkipCommentForPreprocessParser().Many()
-                                                    from elsegroup in ElseGroup.TokenWithSkipCommentForPreprocessParser().XOr(Parse.Return<IEnumerable<object>>(null))
+                                                    from elsegroup in ElseGroup.Or(Parse.Return<IEnumerable<object>>(null)).TokenWithSkipCommentForPreprocessParser()
                                                     from endifdirective in Endif.TokenWithSkipCommentForPreprocessParser()
                                                     let ifgroup = new List<object>() { ifdirective }.Concat(children)
                                                     select new IfSection(ifgroup, elifgroups, elsegroup);
@@ -332,16 +341,18 @@ namespace LayerCompiler.Parsers
         /// </summary>
         private static readonly Parser<IEnumerable<object>> ElifGroup =
                                                     from elifdirective in Elif.TokenWithSkipCommentForPreprocessParser()
-                                                    from children in IfSection.Or(DirectiveOrLine).TokenWithSkipCommentForPreprocessParser().Many()
-                                                    select new List<object>() { elifdirective }.Concat(children);
+                                                    from children in IfSection.Or(DirectiveOrLineForIfSection).TokenWithSkipCommentForPreprocessParser().Many()
+                                                    let elifgroup = new List<object>() { elifdirective }.Concat(children)
+                                                    select elifgroup;
 
         /// <summary>
         /// elseグループ
         /// </summary>
         private static readonly Parser<IEnumerable<object>> ElseGroup =
                                                     from elsedirective in Else.TokenWithSkipCommentForPreprocessParser()
-                                                    from children in IfSection.Or(DirectiveOrLine).TokenWithSkipCommentForPreprocessParser().Many()
-                                                    select new List<object>() { elsedirective }.Concat(children);
+                                                    from children in IfSection.Or(DirectiveOrLineForIfSection).TokenWithSkipCommentForPreprocessParser().Many()
+                                                    let elsegroup = new List<object>() { elsedirective }.Concat(children)
+                                                    select elsegroup;
 
         #endregion
 

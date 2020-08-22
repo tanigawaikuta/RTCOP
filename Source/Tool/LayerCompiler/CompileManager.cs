@@ -14,6 +14,19 @@ namespace LayerCompiler
     /// </summary>
     class CompileManager
     {
+        #region フィールド
+        /// <summary>
+        /// RTCOPコンパイラ
+        /// </summary>
+        private RTCOPCompiler _RTCOPCompiler;
+
+        /// <summary>
+        /// RTCOPプリプロセッサ
+        /// </summary>
+        private RTCOPPreprocessor _RTCOPPreprocessor;
+
+        #endregion
+
         #region プロパティ
         /// <summary>
         /// 入力ファイル
@@ -103,6 +116,9 @@ namespace LayerCompiler
             }
             // コンパイルオプションのチェック
             CheckCompileOptions(args);
+
+            // プリプロセッサ・コンパイラの生成
+            _RTCOPPreprocessor = new RTCOPPreprocessor(Macros, IncludePaths, Encoding);
         }
 
         #endregion
@@ -328,13 +344,21 @@ namespace LayerCompiler
                 throw new Exception("ソースファイルが1つも無いです。");
             }
 
-            // .lcppをコンパイル
+            // ソースファイルの読み込み
+            List<RTCOPObjectFile> objs = new List<RTCOPObjectFile>();
             foreach (string fileName in SourceFiles)
             {
                 if (Path.GetExtension(fileName) == ".lcpp")
                 {
                     // .lcppをコンパイル
-                    //LayerObjectFile result = CompileLCppToObjectFile(fileName);
+                    RTCOPObjectFile result = CompileLCppToObjectFile(fileName);
+                    objs.Add(result);
+                }
+                if (Path.GetExtension(fileName) == ".lobj")
+                {
+                    // .lobjを読み込み
+                    //RTCOPObjectFile result =
+                    //objs.Add(result);
                 }
             }
             // 出力ファイルがC++のソースコードか、オブジェクトファイルかを確認
@@ -371,6 +395,8 @@ namespace LayerCompiler
                 src = new RTCOPSourceFile(fileName, text);
             }
             // プリプロセス
+            var src2 = _RTCOPPreprocessor.Run(src);
+            // コンパイル
             return null;
         }
 

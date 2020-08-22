@@ -787,4 +787,52 @@ namespace LayerCompiler.Parsers.Model
 
     }
 
+    /// <summary>
+    /// イベントハンドラの定義
+    /// </summary>
+    class EventHandlerDefinition : LayerdMethodDefinition
+    {
+        #region プロパティ
+        /// <summary>
+        /// イベント名
+        /// </summary>
+        public string EventName { get; protected set; }
+
+        #endregion
+
+        #region コンストラクタ
+        /// <summary>
+        /// イベントハンドラの定義
+        /// </summary>
+        /// <param name="eventName">イベント名</param>
+        /// <param name="method">メソッド情報</param>
+        public EventHandlerDefinition(string eventName, LayerdMethodDefinition method)
+            : base(method.Name, method.ReturnType, method.Parameters, method.Contents, method.Modifiers, method.ThisModifiers, method.IsNoexcept)
+        {
+            EventName = eventName;
+        }
+
+        #endregion
+
+        #region メソッド
+        /// <summary>
+        /// 文字列を返す
+        /// </summary>
+        /// <returns>文字列</returns>
+        public override string ToString()
+        {
+            // イベントハンドラの記述
+            string result = "[eventhandler(";
+            result += EventName;
+            result += ")]\r\n";
+            // メソッドの定義
+            result += base.ToString();
+            // 結果を返す
+            return result;
+        }
+
+        #endregion
+
+    }
+
 }

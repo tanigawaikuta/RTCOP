@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Sprache;
 using LayerCompiler.Parsers;
 using System.CodeDom;
+using LayerCompiler.CodeGeneration.Model;
+using LayerCompiler.CodeGeneration;
 
 namespace LayerCompiler
 {
@@ -16,43 +18,36 @@ namespace LayerCompiler
         {
             string src =
 @"
-//#define Aho(aa, bb) aa + bb
-baselayer
+#define aaaa 2
+#define bbbb -2
+#define aho(aa) aa##layer
+
+aho(base)
 {
     base class Aho
     {
-        int a[10] = {0};
-        int b = 0;
-        base void m1() const;
-        void* m2(int a, int b = (1 + 1)) { return 0; }
+#if aaaa - bbbb
+        void m1(){}
+#else
+        void m2(){};
+        void m3();
+#endif
     };
-    namespace ABC
-    {
-        base class Baka : public Aho
-        {
-            volatile const int*** const c;
-        };
-    }
-    void Aho::m1() const
-    {
-        int a = 0;
-        ++a;
-        for (int i = 0; i < 10; ++i)
-            a += i;
-        return;
-    }
 }
 ";
-            //var text = PreprocessParser.DirectiveOrLine.TokenWithSkipCommentForPreprocessParser().Many().Parse(src);
+            var text = RTCOPParser.BaseLayerDefinition.TokenWithSkipComment().Many().Parse(src);
+            //var text = PreprocessParser.DirectiveOrLine.TokenWithSkipCommentForPreprocessParser().Many().Parse(src2);
             //var text = RTCOPParser.BaseLayerDefinition.TokenWithSkipComment().Many().Parse(src);
             //var text = TokenParser.Token.TokenWithSkipComment().Many().Parse(src);
             //var text = PreprocessParser.Directive.TokenWithSkipCommentForPreprocessParser().Many().Parse(src);
 
-            var ex = PreprocessParser.IfDirectiveExpression.TokenWithSkipComment().Parse("10 > 3 && false");
-            var result = ex.Evaluate();
-            
             //foreach (var t in text) Console.WriteLine(t);
             //Console.WriteLine(text);
+
+            RTCOPSourceFile f = new RTCOPSourceFile("a.lcpp", src);
+            RTCOPPreprocessor p = new RTCOPPreprocessor(new string[0], new List<string>(), Encoding.UTF8);
+            var f2 = p.Run(f);
+            Console.WriteLine(f2.Text);
         }
     }
 }

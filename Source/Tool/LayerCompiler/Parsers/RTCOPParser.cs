@@ -86,6 +86,19 @@ namespace LayerCompiler.Parsers
                                                     select method.SetIsBase(true);
 
         /// <summary>
+        /// イベントハンドラの定義
+        /// </summary>
+        public static readonly Parser<Model.EventHandlerDefinition> EventHandlerDefinition =
+                                                    from begin in Parse.String("[").Text().TokenWithSkipComment()
+                                                    from keyword in Parse.String("eventhandler").Text().TokenWithSkipComment()
+                                                    from begin2 in Parse.String("(").Text().TokenWithSkipComment()
+                                                    from eventName in TokenParser.RTCOPIdentifierString.TokenWithSkipComment()
+                                                    from end2 in Parse.String(")").Text().TokenWithSkipComment()
+                                                    from end in Parse.String("]").Text().TokenWithSkipComment()
+                                                    from method in MethodDefinition.TokenWithSkipComment()
+                                                    select new Model.EventHandlerDefinition(eventName, method);
+
+        /// <summary>
         /// メソッドの実装
         /// </summary>
         public static readonly Parser<Model.MethodImplementation> MethodImplementation =
@@ -136,6 +149,7 @@ namespace LayerCompiler.Parsers
                                                                    .Or(NormalClassDefinition)
                                                                    .Or(BaseMethodDefinition)
                                                                    .Or(PartialMethodDefinition)
+                                                                   .Or(EventHandlerDefinition)
                                                                    .Or(MethodDefinition)
                                                                    .Or(LayerMemberDeclaration)
                                                                    .Or(AccessModifier)
@@ -238,7 +252,7 @@ namespace LayerCompiler.Parsers
                                                     from objs in NamespaceDefinition
                                                                    .Or<object>(PartialClassDefinition)
                                                                    .Or(BaseClassDefinition)
-                                                                   .Or(ClassDefinition)
+                                                                   .Or(NormalClassDefinition)
                                                                    .Or(MethodImplementation)
                                                                    .Or(IgnoreParser.IgnoreObject)
                                                                    .TokenWithSkipComment().Many()
@@ -257,7 +271,9 @@ namespace LayerCompiler.Parsers
                                                     from beginblock in Parse.String("{").Text().TokenWithSkipComment()
                                                     from objs in NamespaceDefinition
                                                                    .Or<object>(PartialClassDefinition)
-                                                                   .Or(ClassDefinition)
+                                                                   .Or(NormalClassDefinition)
+                                                                   .Or(EventHandlerDefinition)
+                                                                   .Or(MethodDefinition)
                                                                    .Or(MethodImplementation)
                                                                    .Or(IgnoreParser.IgnoreObject)
                                                                    .TokenWithSkipComment().Many()
@@ -274,7 +290,9 @@ namespace LayerCompiler.Parsers
                                                     from beginblock in Parse.String("{").Text().TokenWithSkipComment()
                                                     from objs in NamespaceDefinition
                                                                    .Or<object>(BaseClassDefinition)
-                                                                   .Or(ClassDefinition)
+                                                                   .Or(NormalClassDefinition)
+                                                                   .Or(EventHandlerDefinition)
+                                                                   .Or(MethodDefinition)
                                                                    .Or(MethodImplementation)
                                                                    .Or(IgnoreParser.IgnoreObject)
                                                                    .TokenWithSkipComment().Many()
@@ -327,6 +345,28 @@ namespace LayerCompiler.Parsers
             // ここまで来たらOK
             return true;
         }
+
+        #endregion
+
+
+        #region ファイル読み取り
+        /// <summary>
+        /// RTCOPソースファイルの要素
+        /// </summary>
+        public static readonly Parser<object> RTCOPSourceFileObject =
+                                                    BaseLayerDefinition
+                                                    .Or<object>(LayerDefinition)
+                                                    .Or(NamespaceDefinition)
+                                                    .Or(BaseClassDefinition)
+                                                    .Or(PartialClassDefinition)
+                                                    .Or(NormalClassDefinition)
+                                                    .Or(IgnoreParser.IgnoreObject);
+
+        /// <summary>
+        /// RTCOPソースファイル
+        /// </summary>
+        public static readonly Parser<IEnumerable<object>> RTCOPSourceFile =
+                                                    RTCOPSourceFileObject.TokenWithSkipComment().Many();
 
         #endregion
 

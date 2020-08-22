@@ -13,11 +13,6 @@ namespace LayerCompiler.CodeGeneration.Model
     class RTCOPObjectFile
     {
         #region プロパティ
-        /// <summary>
-        /// ファイルパス
-        /// </summary>
-        public string FilePath { get; protected set; }
-
         #endregion
 
         #region コンストラクタ
@@ -30,4 +25,12 @@ namespace LayerCompiler.CodeGeneration.Model
         #region メソッド
         #endregion
     }
+
+    [Serializable]
+    class Layer
+    {
+        #region プロパティ
+        #endregion
+    }
+
 }
