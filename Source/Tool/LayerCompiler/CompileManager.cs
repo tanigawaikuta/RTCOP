@@ -16,14 +16,19 @@ namespace LayerCompiler
     {
         #region フィールド
         /// <summary>
+        /// RTCOPプリプロセッサ
+        /// </summary>
+        private RTCOPPreprocessor _RTCOPPreprocessor;
+
+        /// <summary>
         /// RTCOPコンパイラ
         /// </summary>
         private RTCOPCompiler _RTCOPCompiler;
 
         /// <summary>
-        /// RTCOPプリプロセッサ
+        /// コードジェネレータ
         /// </summary>
-        private RTCOPPreprocessor _RTCOPPreprocessor;
+        private RTCOPCodeGenerator _RTCOPCodeGenerator;
 
         #endregion
 
@@ -46,7 +51,7 @@ namespace LayerCompiler
         public List<string> IncludePaths { get; protected set; } = new List<string>() { "./" };
 
         /// <summary>
-        /// レイヤクラスのデフォルトの名前空間
+        /// レイヤクラスのデフォルトの名前空間 (現時点では変更不可)
         /// </summary>
         public string Namespace { get; protected set; } = "RTCOP::Generated";
 
@@ -64,11 +69,6 @@ namespace LayerCompiler
         /// 改行文字
         /// </summary>
         public string LineTerminator { get; protected set; } = "\r\n";
-
-        /// <summary>
-        /// コンパイルオンリーフラグ
-        /// </summary>
-        public bool IsCompileOnlyFlag { get; protected set; } = false;
 
         /// <summary>
         /// 開発対象
@@ -119,6 +119,8 @@ namespace LayerCompiler
 
             // プリプロセッサ・コンパイラの生成
             _RTCOPPreprocessor = new RTCOPPreprocessor(Macros, IncludePaths, Encoding);
+            _RTCOPCompiler = new RTCOPCompiler();
+            _RTCOPCodeGenerator = new RTCOPCodeGenerator(Namespace, LineTerminator, Target, Environment);
         }
 
         #endregion
@@ -146,12 +148,6 @@ namespace LayerCompiler
                 string arg = args[i];
                 switch (arg)
                 {
-                    // コンパイルのみ
-                    case "-c":
-                    case "-C":
-                        IsCompileOnlyFlag = true;
-                        offset = 1;
-                        break;
                     // 出力ファイル
                     case "-o":
                     case "-O":
@@ -345,47 +341,50 @@ namespace LayerCompiler
             }
 
             // ソースファイルの読み込み
-            List<RTCOPObjectFile> objs = new List<RTCOPObjectFile>();
+            List<LayerStructureFile> lstrs = new List<LayerStructureFile>();
             foreach (string fileName in SourceFiles)
             {
                 if (Path.GetExtension(fileName) == ".lcpp")
                 {
                     // .lcppをコンパイル
-                    RTCOPObjectFile result = CompileLCppToObjectFile(fileName);
-                    objs.Add(result);
+                    LayerStructureFile result = CompileLCppToObjectFile(fileName);
+                    lstrs.Add(result);
                 }
-                if (Path.GetExtension(fileName) == ".lobj")
+                else
                 {
-                    // .lobjを読み込み
-                    //RTCOPObjectFile result =
-                    //objs.Add(result);
+                    // レイヤ構造ファイルを読み込み
+                    LayerStructureFile result = LayerStructureFile.LoadFile(fileName);
+                    lstrs.Add(result);
                 }
             }
-            // 出力ファイルがC++のソースコードか、オブジェクトファイルかを確認
-            bool outputIsCpp = (OutputFile.EndsWith("/") || OutputFile.EndsWith("\\"));
+            // レイヤ構造ファイルのマージ
+            LayerStructureFile mergedLSFile = _RTCOPCompiler.MergeObjectFiles(lstrs);
+            // 出力ファイルがC++のソースコードか、レイヤ構造ファイルかを確認
+            bool outputIsCpp = OutputFile.EndsWith("/") || OutputFile.EndsWith("\\");
+            if (!outputIsCpp && (Path.GetExtension(OutputFile) == ""))
+            {
+                // 拡張子無しの場合フォルダと判断
+                outputIsCpp = true;
+                OutputFile += "/";
+            }
+            // ソースコード出力
             if (outputIsCpp)
             {
-                // オブジェクトファイルを読み込む
-                foreach (string fileName in SourceFiles)
-                {
-                    if (Path.GetExtension(fileName) == ".lobj")
-                    {
-                        // .lcppをコンパイル
-                        //LayerObjectFile result = CompileLCppToObjectFile(fileName);
-                    }
-                }
+                GenerateCode(mergedLSFile);
             }
+            // レイヤ構造出力
             else
             {
+                LayerStructureFile.SaveFile(OutputFile, mergedLSFile);
             }
         }
 
         /// <summary>
-        /// .lcppからオブジェクトファイルにコンパイル。
+        /// .lcppからレイヤ構造ファイルにコンパイル。
         /// </summary>
         /// <param name="fileName">ファイル名。</param>
         /// <returns>コンパイル結果。</returns>
-        private RTCOPObjectFile CompileLCppToObjectFile(string fileName)
+        private LayerStructureFile CompileLCppToObjectFile(string fileName)
         {
             // ファイルオープン
             RTCOPSourceFile src = null;
@@ -397,7 +396,30 @@ namespace LayerCompiler
             // プリプロセス
             var src2 = _RTCOPPreprocessor.Run(src);
             // コンパイル
-            return null;
+            var result = _RTCOPCompiler.Compile(src2);
+            return result;
+        }
+
+        /// <summary>
+        /// コード生成
+        /// </summary>
+        /// <param name="mergedLSFile">マージ済みのレイヤ構造ファイル</param>
+        private void GenerateCode(LayerStructureFile mergedLSFile)
+        {
+            var result = _RTCOPCodeGenerator.GenerateCode(mergedLSFile, OutputFile);
+            foreach (string filename in result.CodeDictionary.Keys)
+            {
+                string filepath = OutputFile + filename;
+                string dirpath = Path.GetDirectoryName(filepath);
+                if (Directory.Exists(dirpath))
+                {
+                    Directory.CreateDirectory(dirpath);
+                }
+                using (StreamWriter sw = new StreamWriter(filepath, false, Encoding))
+                {
+                    sw.Write(result.CodeDictionary[filename]);
+                }
+            }
         }
 
         #endregion

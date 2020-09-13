@@ -12,7 +12,9 @@
 #include "RTCOP/COPNew.h"
 
 // ベースクラスの宣言
-class Hello;
+namespace baselayer {
+	class Hello;
+}
 
 namespace RTCOP {
 
@@ -22,7 +24,7 @@ template<class Base>
 inline const int GetBaseClassID() { return -1; }
 // HelloのクラスID
 template<>
-inline const int GetBaseClassID<Hello>() { return 0; }
+inline const int GetBaseClassID<baselayer::Hello>() { return 0; }
 
 } // namespace Generated {}
 

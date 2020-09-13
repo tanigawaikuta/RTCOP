@@ -16,6 +16,7 @@ namespace Generated {
 
 class BaseLayer : public Core::Layer
 {
+public:
 	// インスタンスの取得
 	static BaseLayer* GetInstance();
 public:

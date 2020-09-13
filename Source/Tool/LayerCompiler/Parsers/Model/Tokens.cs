@@ -10,6 +10,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// トークン
     /// </summary>
+    [Serializable]
     class Token
     {
         #region プロパティ
@@ -48,6 +49,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 識別子
     /// </summary>
+    [Serializable]
     class Identifier : Token
     {
         #region コンストラクタ
@@ -66,6 +68,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// キーワード
     /// </summary>
+    [Serializable]
     class Keyword : Token
     {
         #region コンストラクタ
@@ -85,6 +88,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 演算子と区切り文字
     /// </summary>
+    [Serializable]
     class OperatorOrPunctuator : Token
     {
         #region コンストラクタ
@@ -103,6 +107,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// リテラル
     /// </summary>
+    [Serializable]
     class Literal : Token
     {
         #region コンストラクタ
@@ -122,6 +127,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 整数リテラル
     /// </summary>
+    [Serializable]
     class IntegerLiteral : Literal
     {
         #region プロパティ
@@ -187,6 +193,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 文字リテラル
     /// </summary>
+    [Serializable]
     class CharacterLiteral : Literal
     {
         #region プロパティ
@@ -243,6 +250,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 浮動小数リテラル
     /// </summary>
+    [Serializable]
     class FloatingLiteral : Literal
     {
         #region プロパティ
@@ -292,6 +300,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 文字列リテラル
     /// </summary>
+    [Serializable]
     class StringLiteral : Literal
     {
         #region プロパティ
@@ -349,6 +358,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 真偽値リテラル
     /// </summary>
+    [Serializable]
     class BooleanLiteral : Literal
     {
         #region プロパティ
@@ -384,6 +394,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// ポインタリテラル
     /// </summary>
+    [Serializable]
     class PointerLiteral : Literal
     {
         #region プロパティ

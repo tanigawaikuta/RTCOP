@@ -10,6 +10,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// コメント
     /// </summary>
+    [Serializable]
     class Comment
     {
         #region プロパティ

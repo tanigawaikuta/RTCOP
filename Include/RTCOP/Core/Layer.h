@@ -51,13 +51,13 @@ private:
 	void SetLinkedNextLayer(Layer* const layer);
 protected:
 	// アクティベート開始時に実行される
-	virtual void OnActivating();
+	virtual void _RTCOP_OnActivating();
 	// アクティベート終了時に実行される
-	virtual void OnActivated();
+	virtual void _RTCOP_OnActivated();
 	// ディアクティベート開始時に実行される
-	virtual void OnDeactivating();
+	virtual void _RTCOP_OnDeactivating();
 	// ディアクティベート終了時に実行される
-	virtual void OnDeactivated();
+	virtual void _RTCOP_OnDeactivated();
 protected:
 	// レイヤードオブジェクトの初期化
 	virtual void* InitializeLayerdObject(void* obj, int classID) = 0;

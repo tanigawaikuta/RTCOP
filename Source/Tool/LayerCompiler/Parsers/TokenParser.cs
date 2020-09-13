@@ -53,19 +53,19 @@ namespace LayerCompiler.Parsers
         /// </summary>
         public static readonly Parser<Model.IntegerLiteral> IntegerLiteral =
                                                     from num in Parse.Regex(@"((0x|0X)[0-9a-fA-F]+)|(0[0-7]*)|([1-9][0-9]*)")
-                                                    from suffix in Parse.Regex(@"((u|U)((ll|LL)|(l|L))?)|((ll|LL)(u|U)?)|((l|L)(u|U)?)").XOr(Parse.Return(""))
-                                                    from usersuffix in IdentifierString.XOr(Parse.Return(""))
+                                                    from suffix in Parse.Regex(@"((u|U)((ll|LL)|(l|L))?)|((ll|LL)(u|U)?)|((l|L)(u|U)?)").Or(Parse.Return(""))
+                                                    from usersuffix in IdentifierString.Or(Parse.Return(""))
                                                     select new Model.IntegerLiteral(num + suffix + usersuffix, num, suffix, usersuffix);
 
         /// <summary>
         /// 文字リテラル
         /// </summary>
         public static readonly Parser<Model.CharacterLiteral> CharacterLiteral =
-                                                    from prefix in Parse.Regex(@"u|U|L").XOr(Parse.Return(""))
+                                                    from prefix in Parse.Regex(@"u|U|L").Or(Parse.Return(""))
                                                     from begin in Parse.Char('\'')
                                                     from character in Parse.Regex(@"([^\r\n\'\\])|(\\(\'|""|\?|\\|a|b|f|n|r|t|v))|(\\[0-7]{1,3})|(\\x[0-9a-fA-F]{1,2})|(\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8}))")
                                                     from end in Parse.Char('\'')
-                                                    from usersuffix in IdentifierString.XOr(Parse.Return(""))
+                                                    from usersuffix in IdentifierString.Or(Parse.Return(""))
                                                     select new Model.CharacterLiteral(prefix + begin + character + end + usersuffix, prefix, character, usersuffix);
 
         /// <summary>
@@ -73,19 +73,19 @@ namespace LayerCompiler.Parsers
         /// </summary>
         public static readonly Parser<Model.FloatingLiteral> FloatingLiteral =
                                                     from value in Parse.Regex(@"(([.][0-9]+)|([0-9]+[.][0-9]*))((e|E)(\+|\-)?([0-9])+)?").Or(Parse.Regex(@"[0-9]+(e|E)(\+|\-)?[0-9]+"))
-                                                    from suffix in Parse.Regex(@"(f|l|F|L)").XOr(Parse.Return(""))
-                                                    from usersuffix in IdentifierString.XOr(Parse.Return(""))
+                                                    from suffix in Parse.Regex(@"(f|l|F|L)").Or(Parse.Return(""))
+                                                    from usersuffix in IdentifierString.Or(Parse.Return(""))
                                                     select new Model.FloatingLiteral(value + suffix + usersuffix, value, suffix, usersuffix);
 
         /// <summary>
         /// 通常の文字列リテラル
         /// </summary>
         public static readonly Parser<Model.StringLiteral> NormalStringLiteral =
-                                                    from prefix in Parse.Regex(@"((u8)|u|U|L)").XOr(Parse.Return(""))
+                                                    from prefix in Parse.Regex(@"((u8)|u|U|L)").Or(Parse.Return(""))
                                                     from begin in Parse.Char('"')
                                                     from str in Parse.Regex(@"(([^\r\n""\\])|(\\(\'|""|\?|\\|a|b|f|n|r|t|v))|(\\[0-7]{1,3})|(\\x[0-9a-fA-F]{1,2})|(\\(u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})))*")
                                                     from end in Parse.Char('"')
-                                                    from usersuffix in IdentifierString.XOr(Parse.Return(""))
+                                                    from usersuffix in IdentifierString.Or(Parse.Return(""))
                                                     select new Model.StringLiteral(prefix + begin + str + end + usersuffix, str, prefix, usersuffix);
 
         /// <summary>
@@ -93,14 +93,14 @@ namespace LayerCompiler.Parsers
         /// 実際のC++よりマッチするケースが多くなってしまっているが、面倒なのでこのままでいく
         /// </summary>
         public static readonly Parser<Model.StringLiteral> RawStringLiteral =
-                                                    from prefix in Parse.Regex(@"((u8)|u|U|L)").XOr(Parse.Return(""))
+                                                    from prefix in Parse.Regex(@"((u8)|u|U|L)").Or(Parse.Return(""))
                                                     from r in Parse.Char('R')
                                                     from begin1 in Parse.Regex(@"("")")
                                                     from begin2 in Parse.Regex(@"[^ \(\)\t\v\f\r\n\\]*")
                                                     from begin3 in Parse.Regex(@"\(")
                                                     from str in Parse.Regex(@"(.|\r\n|\n)*(?=(\)" + begin2 + @"""))")
                                                     from end in Parse.Regex(@"\)" + begin2 + @"""")
-                                                    from usersuffix in IdentifierString.XOr(Parse.Return(""))
+                                                    from usersuffix in IdentifierString.Or(Parse.Return(""))
                                                     select new Model.StringLiteral(prefix + r + begin1 + begin2 + begin3 + str + end + usersuffix, str, prefix, usersuffix);
 
         /// <summary>

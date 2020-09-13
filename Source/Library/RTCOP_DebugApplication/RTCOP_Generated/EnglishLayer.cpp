@@ -42,8 +42,9 @@ EnglishLayer::EnglishLayer(const int id, const char* const name, int numOfBaseCl
 	// 再定義なしのメソッドやデストラクタは0にしておく
 	_Private->_VirtualFunctionTables[0][1] = 0;
 	_Private->_VirtualFunctionTables[0][2] = 0;
-#if defined(LINUX_X86) || defined(LINUX_X64) || defined(LINUX_ARM) || defined(LINUX_ARM64) || defined(WIN32_MINGW) || defined(WIN64_MINGW) || defined(MACOS_X64)
 	_Private->_VirtualFunctionTables[0][3] = 0;
+#if defined(LINUX_X86) || defined(LINUX_X64) || defined(LINUX_ARM) || defined(LINUX_ARM64) || defined(WIN32_MINGW) || defined(WIN64_MINGW) || defined(MACOS_X64)
+	_Private->_VirtualFunctionTables[0][4] = 0;
 #endif
 }
 
@@ -71,32 +72,32 @@ void* EnglishLayer::InitializeLayerdObject(void* obj, int classID)
 		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
 		// ユーザ定義の初期化
-		layerdObject->_InitializePartialClass();
+		layerdObject->_RTCOP_InitializePartialClass();
 	}
 
 	return obj;
 }
 
 // アクティベート開始時に実行される
-void EnglishLayer::OnActivating()
+void EnglishLayer::_RTCOP_OnActivating()
 {
 	printf("%s Activating: %d\n", _Private->_Name, (int)_Private->_LayerState);
 }
 
 // アクティベート終了時に実行される
-void EnglishLayer::OnActivated()
+void EnglishLayer::_RTCOP_OnActivated()
 {
 	printf("%s Activated: %d\n", _Private->_Name, (int)_Private->_LayerState);
 }
 
 // ディアクティベート開始時に実行される
-void EnglishLayer::OnDeactivating()
+void EnglishLayer::_RTCOP_OnDeactivating()
 {
 	printf("%s Deactivating: %d\n", _Private->_Name, (int)_Private->_LayerState);
 }
 
 // ディアクティベート終了時に実行される
-void EnglishLayer::OnDeactivated()
+void EnglishLayer::_RTCOP_OnDeactivated()
 {
 	printf("%s Deactivated: %d\n", _Private->_Name, (int)_Private->_LayerState);
 }
@@ -106,8 +107,8 @@ void EnglishLayer::OnDeactivated()
 //--------------------------------------------------------------
 // コンストラクタ
 // これは、仮想関数テーブル取得用
-EnglishLayer_Hello::EnglishLayer_Hello()
-	: RTCOP::Core::LayerdObject<Hello>()
+EnglishLayer_Hello::EnglishLayer_Hello(int a)
+	: RTCOP::Core::LayerdObject<Hello>(a)
 {
 }
 
@@ -123,7 +124,7 @@ void EnglishLayer_Hello::Print()
 }
 
 // パーシャルクラスの初期化
-void EnglishLayer_Hello::_InitializePartialClass()
+void EnglishLayer_Hello::_RTCOP_InitializePartialClass()
 {
 	// レイヤ記述の内容
 	EnglishLayer_Hello::PartialClassMembers* members = (EnglishLayer_Hello::PartialClassMembers*)_Private->_PartialClassMembers[2];
@@ -131,7 +132,7 @@ void EnglishLayer_Hello::_InitializePartialClass()
 }
 
 // パーシャルクラスの終了処理
-void EnglishLayer_Hello::_FinalizePartialClass()
+void EnglishLayer_Hello::_RTCOP_FinalizePartialClass()
 {
 	// レイヤ記述の内容
 	EnglishLayer_Hello::PartialClassMembers* members = (EnglishLayer_Hello::PartialClassMembers*)_Private->_PartialClassMembers[2];

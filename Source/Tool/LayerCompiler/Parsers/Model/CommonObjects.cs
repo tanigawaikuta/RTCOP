@@ -9,6 +9,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// スーパークラスの定義
     /// </summary>
+    [Serializable]
     class SuperClassDefinition
     {
         #region プロパティ
@@ -20,7 +21,7 @@ namespace LayerCompiler.Parsers.Model
         /// <summary>
         /// アクセス修飾子
         /// </summary>
-        public string Access { get; private set; }
+        public string Access { get; protected set; }
 
         #endregion
 
@@ -56,6 +57,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 変数宣言
     /// </summary>
+    [Serializable]
     class VariableDeclaration
     {
         #region プロパティ
@@ -137,6 +139,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 変数型
     /// </summary>
+    [Serializable]
     class VariableType
     {
         #region プロパティ
@@ -319,6 +322,67 @@ namespace LayerCompiler.Parsers.Model
 
         #region メソッド
         /// <summary>
+        /// 型が一致しているかどうか
+        /// </summary>
+        /// <param name="obj">比較対象</param>
+        /// <returns>一致しているかどうか</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is VariableType)
+            {
+                var vt = (VariableType)obj;
+                // 修飾子で一致しないものが無いかチェック
+                if ((IsConst != vt.IsConst) || (IsVolatile != vt.IsVolatile) || (IsReference != vt.IsReference))
+                {
+                    return false;
+                }
+                // 型情報の一致チェック
+                if (IsUserDefinedType && vt.IsUserDefinedType)
+                {
+                    var udt1 = (UserDefinedType)Type;
+                    var udt2 = (UserDefinedType)vt.Type;
+                    if (udt1.Name != udt2.Name)
+                    {
+                        return false;
+                    }
+                }
+                else if (!IsUserDefinedType && !vt.IsUserDefinedType)
+                {
+                    if (ByteSize != vt.ByteSize)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+                // ポインタチェック
+                if (Pointers.Count == vt.Pointers.Count)
+                {
+                    int n = Pointers.Count;
+                    for (int i = 0; i < n; ++i)
+                    {
+                        if (Pointers[i].IsConst != vt.Pointers[i].IsConst)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// 文字列を返す
         /// </summary>
         /// <returns>文字列</returns>
@@ -344,12 +408,18 @@ namespace LayerCompiler.Parsers.Model
             return result;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         #endregion
     }
 
     /// <summary>
     /// ポインタ
     /// </summary>
+    [Serializable]
     class Pointer
     {
         #region プロパティ
@@ -391,6 +461,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// ユーザ定義型
     /// </summary>
+    [Serializable]
     class UserDefinedType
     {
         #region プロパティ

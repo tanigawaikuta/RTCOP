@@ -9,7 +9,7 @@ int main()
 	RTCOP::Framework::Instance->Initialize();
 
 	// Helloのインスタンス化
-	Hello* hello = copnew<Hello>();
+	baselayer::Hello* hello = copnew<baselayer::Hello>(1);
 	// ベースメソッドの実行
 	hello->Print();
 	hello->Print2('a');
@@ -27,7 +27,7 @@ int main()
 	hello->Print2('d');
 	// Helloのdelete
 	// 元のHelloでデストラクタが定義されていない場合、キャストしないとデストラクタが実行されない…
-	delete ((Core::LayerdObject<Hello>*)hello);
+	delete ((Core::LayerdObject<baselayer::Hello>*)hello);
 
 	// RTCOPの終了処理
 	RTCOP::Framework::Instance->Finalize();

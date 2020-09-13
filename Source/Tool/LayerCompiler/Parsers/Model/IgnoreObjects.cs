@@ -9,6 +9,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 無視するオブジェクト
     /// </summary>
+    [Serializable]
     class IgnoreObject
     {
         #region プロパティ
@@ -48,6 +49,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 無視するオブジェクトのブロック
     /// </summary>
+    [Serializable]
     class IgnoreObjectBlock : IgnoreObject
     {
         #region プロパティ

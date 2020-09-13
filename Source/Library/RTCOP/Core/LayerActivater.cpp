@@ -57,7 +57,7 @@ void LayerActivater::ActivateLayer(int layerid)
 		return;
 	}
 	// アクティベート開始イベント
-	activatingLayer->OnActivating();
+	activatingLayer->_RTCOP_OnActivating();
 
 	// 仮想関数テーブルの書き換え
 	int numOfBaseClasses = _Private->_Manager->GetNumOfBaseClasses();
@@ -91,7 +91,7 @@ void LayerActivater::ActivateLayer(int layerid)
 	// レイヤ状態の変更
 	activatingLayer->SetLayerState(LayerState::Active);
 	// アクティベート終了イベント
-	activatingLayer->OnActivated();
+	activatingLayer->_RTCOP_OnActivated();
 }
 
 // レイヤディアクティベート
@@ -109,7 +109,7 @@ void LayerActivater::DeactivateLayer(int layerid)
 		return;
 	}
 	// ディアクティベート開始イベント
-	deactivatingLayer->OnDeactivating();
+	deactivatingLayer->_RTCOP_OnDeactivating();
 
 	// 仮想関数テーブルの書き換え
 	int numOfBaseClasses = _Private->_Manager->GetNumOfBaseClasses();
@@ -168,7 +168,7 @@ void LayerActivater::DeactivateLayer(int layerid)
 	// レイヤ状態の変更
 	deactivatingLayer->SetLayerState(LayerState::Inactive);
 	// ディアクティベート終了イベント
-	deactivatingLayer->OnDeactivated();
+	deactivatingLayer->_RTCOP_OnDeactivated();
 }
 
 } // namespace Core {}

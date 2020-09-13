@@ -116,8 +116,8 @@ namespace LayerCompiler.Parsers
                                                     from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
                                                     from keyword in Parse.String("define").TokenWithSkipCommentForPreprocessParser()
                                                     from name in IdentifierForDefine.TokenWithSkipCommentForPreprocessParser()
-                                                    from parameters in DefineFuncParameters.XOr(Parse.Return(new string[0])).TokenWithSkipCommentForPreprocessParser()
-                                                    from expression in ExpressionForDefine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
+                                                    from parameters in DefineFuncParameters.Or(Parse.Return(new string[0])).TokenWithSkipCommentForPreprocessParser()
+                                                    from expression in ExpressionForDefine.Or(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
                                                     let param2 = new List<string>(parameters).Concat(new string[] { expression })
                                                     select new Model.PreprocessDirective(Model.DirectiveKind.Define, name, param2);
@@ -222,7 +222,7 @@ namespace LayerCompiler.Parsers
                                                     from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
                                                     from keyword in Parse.String("line").TokenWithSkipCommentForPreprocessParser()
                                                     from num in NumberForLine.TokenWithSkipCommentForPreprocessParser()
-                                                    from filename in FilenameForLine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
+                                                    from filename in FilenameForLine.Or(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
                                                     select new Model.PreprocessDirective(Model.DirectiveKind.Line, num, new string[] { filename });
 
@@ -232,7 +232,7 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.PreprocessDirective> Error =
                                                     from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
                                                     from keyword in Parse.String("error").TokenWithSkipCommentForPreprocessParser()
-                                                    from message in ExpressionForDefine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
+                                                    from message in ExpressionForDefine.Or(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
                                                     select new Model.PreprocessDirective(Model.DirectiveKind.Error, message);
 
@@ -242,7 +242,7 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.PreprocessDirective> Pragma =
                                                     from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
                                                     from keyword in Parse.String("pragma").TokenWithSkipCommentForPreprocessParser()
-                                                    from param in ExpressionForDefine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
+                                                    from param in ExpressionForDefine.Or(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
                                                     select new Model.PreprocessDirective(Model.DirectiveKind.Pragma, param);
 
@@ -252,7 +252,7 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.PreprocessDirective> NonStandard =
                                                     from sharp in Parse.String("#").TokenWithSkipCommentForPreprocessParser()
                                                     from keyword in IdentifierForDefine.TokenWithSkipCommentForPreprocessParser()
-                                                    from param in ExpressionForDefine.XOr(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
+                                                    from param in ExpressionForDefine.Or(Parse.Return("")).TokenWithSkipCommentForPreprocessParser()
                                                     from lineend in Parse.LineTerminator
                                                     select new Model.PreprocessDirective(Model.DirectiveKind.NonStandard, keyword, new string[] { param });
 

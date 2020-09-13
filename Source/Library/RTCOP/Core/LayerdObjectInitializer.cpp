@@ -5,7 +5,6 @@
 //       このクラスでは、レイヤードオブジェクトの仮想関数テーブルの書き換えなどを行う
 //================================================================================
 
-#include <cstdint>
 #include "RTCOP/Core/LayerdObjectInitializer.h"
 #include "Core/LayerdObjectInitializer_Private.h"
 #include "RTCOP/Core/RTCOPManager.h"
@@ -51,8 +50,13 @@ LayerdObjectInitializer::~LayerdObjectInitializer()
 void* LayerdObjectInitializer::InitializeLayerdObject(void* obj, int classid, int size)
 {
 	// レイヤードオブジェクトの共通要素にアクセスするためのキャスト
-	std::uintptr_t address = reinterpret_cast<std::uintptr_t>(obj) + size;
-	std::uintptr_t* ptr = reinterpret_cast<std::uintptr_t*>(address);
+#if defined(WIN32) || defined(WIN32_MINGW) || defined(LINUX_X86) || defined(LINUX_ARM)
+	unsigned int address = reinterpret_cast<unsigned int>(obj) + size;
+	unsigned int* ptr = reinterpret_cast<unsigned int*>(address);
+#else
+	unsigned long long address = reinterpret_cast<unsigned long long>(obj) + size;
+	unsigned long long* ptr = reinterpret_cast<unsigned long long*>(address);
+#endif
 	LayerdObject_Private* common = reinterpret_cast<LayerdObject_Private*>(*ptr);
 
 	// 仮想関数テーブルの参照先を変更

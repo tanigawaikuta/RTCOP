@@ -124,14 +124,20 @@ namespace LayerCompiler.CodeGeneration
                                 foreach (var incpath in IncludePaths)
                                 {
                                     string path = incpath + directive.Param1;
-                                    if (File.Exists(path))
+                                    string fullpath = Path.GetFullPath(path);
+                                    if (File.Exists(fullpath))
                                     {
+                                        if (importingFiles.Exists((file) => file.FilePath == fullpath))
+                                        {
+                                            // 同じパスのファイルは二度読み込まないようにする
+                                            goto EndImport;
+                                        }
                                         // ファイルオープン
                                         RTCOPSourceFile src = null;
-                                        using (StreamReader sr = new StreamReader(path, Encoding))
+                                        using (StreamReader sr = new StreamReader(fullpath, Encoding))
                                         {
                                             string text = sr.ReadToEnd();
-                                            src = new RTCOPSourceFile(path, text);
+                                            src = new RTCOPSourceFile(fullpath, text);
                                         }
                                         importingFile = Run_Private(src, macros);
                                         break;
@@ -142,7 +148,17 @@ namespace LayerCompiler.CodeGeneration
                                     throw new Exception("ファイル: " + directive.Param1 + "が見つかりません");
                                 }
                                 importingFiles.Add(importingFile);
-                                newObjs.Add(directive);
+                                if (directive.Kind == DirectiveKind.ImportBaseClassHeader)
+                                {
+                                    // includeに変換して追加
+                                    PreprocessDirective incdirective = new PreprocessDirective(DirectiveKind.Include, directive.Param1);
+                                    newObjs.Add(incdirective);
+                                }
+                                else
+                                {
+                                    newObjs.Add(directive);
+                                }
+                                EndImport:
                                 break;
                             default:
                                 newObjs.Add(directive);
@@ -252,7 +268,7 @@ namespace LayerCompiler.CodeGeneration
                             // パラメータ置き換え
                             var macroTokens = new List<Token>(TokenParser.RTCOPToken.TokenWithSkipComment().Many().Parse(macro.Param2.Last()));
                             var macroTokens2 = new List<Token>();
-                            Token pre = new Token("");
+                            Token pre = null;
                             for (int j = 0; j < macroTokens.Count; ++j)
                             {
                                 var mt = macroTokens[j];
@@ -273,16 +289,37 @@ namespace LayerCompiler.CodeGeneration
                                 else if (mt.ToString() == "##")
                                 {
                                     var mt2 = macroTokens[j + 1];
-                                    // 最後を連結した形に置き換える
-                                    string text = pre.ToString() + mt2.ToString();
-                                    var mt3 = TokenParser.RTCOPToken.TokenWithSkipComment().Parse(text);
-                                    macroTokens2[macroTokens2.Count - 1] = mt3;
+                                    if (mt2 is Identifier)
+                                    {
+                                        int index = macro.Param2.FindIndex(0, (macro.Param2.Count - 1), (ms) => mt2.ToString() == ms);
+                                        if (index != -1)
+                                        {
+                                            var objs = expantionFunc(parameters[index]);
+                                            string text = pre.ToString() + objs[0].ToString();
+                                            objs[0] = TokenParser.RTCOPToken.TokenWithSkipComment().Parse(text);
+                                            macroTokens2.RemoveAt(macroTokens2.Count - 1);
+                                            macroTokens2.AddRange(objs);
+                                        }
+                                        else
+                                        {
+                                            string text = pre.ToString() + mt2.ToString();
+                                            var mt3 = TokenParser.RTCOPToken.TokenWithSkipComment().Parse(text);
+                                            macroTokens2.RemoveAt(macroTokens2.Count - 1);
+                                            macroTokens2.Add(mt3);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        string text = pre.ToString() + mt2.ToString();
+                                        var mt3 = TokenParser.RTCOPToken.TokenWithSkipComment().Parse(text);
+                                        macroTokens2.RemoveAt(macroTokens2.Count - 1);
+                                        macroTokens2.Add(mt3);
+                                    }
                                     ++j;
                                 }
                                 else if (mt is Identifier)
                                 {
                                     int index = macro.Param2.FindIndex(0, (macro.Param2.Count - 1), (ms) => mt.ToString() == ms);
-                                    var macro2 = macros.Find((mcr) => mcr.Param1 == mt.ToString());
                                     if (index != -1)
                                     {
                                         var objs = expantionFunc(parameters[index]);

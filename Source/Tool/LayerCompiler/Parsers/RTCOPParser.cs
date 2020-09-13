@@ -24,7 +24,7 @@ namespace LayerCompiler.Parsers
                                                                     .Or<object>(IgnoreParser.IgnoreObject)
                                                                     .TokenWithSkipComment().Many()
                                                     from endblock in Parse.String("}").Text().TokenWithSkipComment()
-                                                    from semicolon in Parse.String(";").XOr(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from semicolon in Parse.String(";").Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     select new Model.IgnoreObjectBlock(
                                                                     new Model.IgnoreObject(new Model.OperatorOrPunctuator("{")),
                                                                     new Model.IgnoreObject(new Model.OperatorOrPunctuator("}")), contents);
@@ -39,6 +39,51 @@ namespace LayerCompiler.Parsers
                                                     select " = 0 ;";
 
         /// <summary>
+        /// コンストラクタの定義
+        /// </summary>
+        public static readonly Parser<Model.ConstructorDefinition> ConstructorDefinition =
+                                                    from modifiers in Parse.String("inline")
+                                                                    .Or(Parse.String("explicit"))
+                                                                    .Text().TokenWithSkipComment().Many()
+                                                    from identifier in TokenParser.RTCOPIdentifierString.TokenWithSkipComment()
+                                                    from beginparentheses in Parse.String("(").Text().TokenWithSkipComment()
+                                                    from parameters in CommonParser.ParameterDeclarations
+                                                                    .Or(Parse.String("void").Return(new Model.VariableDeclaration[] { }))
+                                                                    .Or(Parse.Return(new Model.VariableDeclaration[] { }))
+                                                                    .TokenWithSkipComment()
+                                                    from endparentheses in Parse.String(")").Text().TokenWithSkipComment()
+                                                    from noexceptkeyword in Parse.String("noexcept").Or(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from contents in Parse.String(";").Text()
+                                                                    .Or<object>(LayerdMethodBlock)
+                                                                    .TokenWithSkipComment()
+                                                    let result = new Model.ConstructorDefinition(identifier, parameters, contents, modifiers, (noexceptkeyword != ""))
+                                                    select result;
+
+        /// <summary>
+        /// デストラクタの定義
+        /// </summary>
+        public static readonly Parser<Model.DestructorDefinition> DestructorDefinition =
+                                                    from modifiers in Parse.String("inline")
+                                                                    .Or(Parse.String("virtual"))
+                                                                    .Text().TokenWithSkipComment().Many()
+                                                    from tilde in Parse.String("~").Text().TokenWithSkipComment()
+                                                    from identifier in TokenParser.RTCOPIdentifierString.TokenWithSkipComment()
+                                                    from beginparentheses in Parse.String("(").Text().TokenWithSkipComment()
+                                                    from parameters in Parse.String("void").Return(new Model.VariableDeclaration[] { })
+                                                                    .Or(Parse.Return(new Model.VariableDeclaration[] { }))
+                                                                    .TokenWithSkipComment()
+                                                    from endparentheses in Parse.String(")").Text().TokenWithSkipComment()
+                                                    from noexceptkeyword in Parse.String("noexcept").Or(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from overridekeyword in Parse.String("override").Or(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from contents in PureVirtualFunction
+                                                                    .Or(Parse.String(";").Text())
+                                                                    .Or<object>(LayerdMethodBlock)
+                                                                    .TokenWithSkipComment()
+                                                    let result = new Model.DestructorDefinition(identifier, contents, modifiers, (noexceptkeyword != ""), (overridekeyword != ""))
+                                                    where !(!result.IsVirtual && result.IsPureVirtual)
+                                                    select result;
+
+        /// <summary>
         /// メソッドの定義
         /// </summary>
         public static readonly Parser<Model.LayerdMethodDefinition> MethodDefinition =
@@ -51,19 +96,19 @@ namespace LayerCompiler.Parsers
                                                     from beginparentheses in Parse.String("(").Text().TokenWithSkipComment()
                                                     from parameters in CommonParser.ParameterDeclarations
                                                                     .Or(Parse.String("void").Return(new Model.VariableDeclaration[] { }))
-                                                                    .XOr(Parse.Return(new Model.VariableDeclaration[] { }))
+                                                                    .Or(Parse.Return(new Model.VariableDeclaration[] { }))
                                                                     .TokenWithSkipComment()
                                                     from endparentheses in Parse.String(")").Text().TokenWithSkipComment()
                                                     from thismodifiers in Parse.String("const")
                                                                     .Or(Parse.String("volatile"))
                                                                     .Text().TokenWithSkipComment().Many()
-                                                    from noexceptkeyword in Parse.String("noexcept").XOr(Parse.Return("")).Text().TokenWithSkipComment()
-                                                    from overridekeyword in Parse.String("override").XOr(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from noexceptkeyword in Parse.String("noexcept").Or(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from overridekeyword in Parse.String("override").Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     from contents in PureVirtualFunction
                                                                     .Or(Parse.String(";").Text())
                                                                     .Or<object>(LayerdMethodBlock)
                                                                     .TokenWithSkipComment()
-                                                    let result = new Model.LayerdMethodDefinition(identifier, returnType, parameters, contents, modifiers, thismodifiers, (noexceptkeyword != ""), null)
+                                                    let result = new Model.LayerdMethodDefinition(identifier, returnType, parameters, contents, modifiers, thismodifiers, (noexceptkeyword != ""), (overridekeyword != ""), null)
                                                     where !(!result.IsVirtual && result.IsPureVirtual)
                                                     select result;
 
@@ -107,13 +152,13 @@ namespace LayerCompiler.Parsers
                                                     from beginparentheses in Parse.String("(").Text().TokenWithSkipComment()
                                                     from parameters in CommonParser.ParameterDeclarations
                                                                     .Or(Parse.String("void").Return(new Model.VariableDeclaration[] { }))
-                                                                    .XOr(Parse.Return(new Model.VariableDeclaration[] { }))
+                                                                    .Or(Parse.Return(new Model.VariableDeclaration[] { }))
                                                                     .TokenWithSkipComment()
                                                     from endparentheses in Parse.String(")").Text().TokenWithSkipComment()
                                                     from thismodifiers in Parse.String("const")
                                                                     .Or(Parse.String("volatile"))
                                                                     .Text().TokenWithSkipComment().Many()
-                                                    from noexceptkeyword in Parse.String("noexcept").XOr(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from noexceptkeyword in Parse.String("noexcept").Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     from contents in LayerdMethodBlock.TokenWithSkipComment()
                                                     select new Model.MethodImplementation(identifier, returnType, parameters, contents, thismodifiers, (noexceptkeyword != ""));
 
@@ -134,6 +179,7 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.VariableDeclaration> LayerMemberDeclaration =
                                                     from variable in CommonParser.VariableDeclaration.TokenWithSkipComment()
                                                     from semicolon in Parse.String(";").Text().TokenWithSkipComment()
+                                                    where !(variable.Name == "")
                                                     select variable;
 
         /// <summary>
@@ -142,11 +188,13 @@ namespace LayerCompiler.Parsers
         public static readonly Parser<Model.LayerdClassDefinition> ClassDefinition =
                                                     from classkey in Parse.String("class").Or(Parse.String("struct")).Text().TokenWithSkipComment()
                                                     from identifier in TokenParser.RTCOPIdentifierString.TokenWithSkipComment()
-                                                    from supers in CommonParser.SuperClassDefinition.XOr(Parse.Return(new Model.SuperClassDefinition[] { })).TokenWithSkipComment()
+                                                    from supers in CommonParser.SuperClassDefinition.Or(Parse.Return(new Model.SuperClassDefinition[] { })).TokenWithSkipComment()
                                                     from beginblock in Parse.String("{").Text().TokenWithSkipComment()
                                                     from members in BaseClassDefinition
                                                                    .Or<object>(PartialClassDefinition)
                                                                    .Or(NormalClassDefinition)
+                                                                   .Or(DestructorDefinition)
+                                                                   .Or(ConstructorDefinition)
                                                                    .Or(BaseMethodDefinition)
                                                                    .Or(PartialMethodDefinition)
                                                                    .Or(EventHandlerDefinition)
@@ -156,8 +204,14 @@ namespace LayerCompiler.Parsers
                                                                    .Or(IgnoreParser.IgnoreObject)
                                                                    .TokenWithSkipComment().Many()
                                                     from endblock in Parse.String("}").Text().TokenWithSkipComment()
-                                                    from semicolon in Parse.String(";").XOr(Parse.Return("")).Text().TokenWithSkipComment()
-                                                    select new Model.LayerdClassDefinition(identifier, classkey, supers, members, true);
+                                                    from semicolon in Parse.String(";").Or(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    let result = new Model.LayerdClassDefinition(identifier, classkey, supers, members, true)
+                                                    let destructors = result.Contents.FindAll((obj) => obj is Model.DestructorDefinition)
+                                                    let constructors = result.Contents.FindAll((obj) => obj is Model.ConstructorDefinition)
+                                                    where !(destructors.Count >= 2)
+                                                    where !destructors.Exists((obj) => ((Model.DestructorDefinition)obj).Name != identifier)
+                                                    where !constructors.Exists((obj) => ((Model.ConstructorDefinition)obj).Name != identifier)
+                                                    select result;
 
         /// <summary>
         /// パーシャルクラスの定義
@@ -167,6 +221,7 @@ namespace LayerCompiler.Parsers
                                                     from classdef in ClassDefinition.TokenWithSkipComment()
                                                     let result = classdef.SetIsBase(false)
                                                     where result.SuperClasses.Count == 0
+                                                    where !result.Contents.Exists((obj) => obj is Model.DestructorDefinition)
                                                     where CheckClassDefinition(result)
                                                     select result;
 
@@ -245,9 +300,9 @@ namespace LayerCompiler.Parsers
         /// 名前空間定義
         /// </summary>
         public static readonly Parser<Model.NamespaceDefinition> NamespaceDefinition =
-                                                    from inline in Parse.String("inline").XOr(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from inline in Parse.String("inline").Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     from keyword in Parse.String("namespace").Text().TokenWithSkipComment()
-                                                    from identifier in TokenParser.RTCOPIdentifierString.XOr(Parse.Return("")).TokenWithSkipComment()
+                                                    from identifier in TokenParser.RTCOPIdentifierString.Or(Parse.Return("")).TokenWithSkipComment()
                                                     from beginblock in Parse.String("{").Text().TokenWithSkipComment()
                                                     from objs in NamespaceDefinition
                                                                    .Or<object>(PartialClassDefinition)

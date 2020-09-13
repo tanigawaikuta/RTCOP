@@ -36,6 +36,7 @@ namespace LayerCompiler.Parsers
                                                     from access in Parse.String("public")
                                                                      .Or(Parse.String("protected"))
                                                                      .Or(Parse.String("private"))
+                                                                     .Or(Parse.Return(""))
                                                                      .Text().TokenWithSkipComment()
                                                     from name in NestedName.TokenWithSkipComment()
                                                     select new Model.SuperClassDefinition(name, access);
@@ -62,11 +63,11 @@ namespace LayerCompiler.Parsers
         /// ユーザ定義型
         /// </summary>
         public static readonly Parser<Model.UserDefinedType> UserDefinedType =
-                                                    from enumkey in Parse.String("enum").XOr(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from enumkey in Parse.String("enum").Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     from classkey in Parse.String("class")
                                                                     .Or(Parse.String("struct"))
                                                                     .Or(Parse.String("union"))
-                                                                    .XOr(Parse.Return(""))
+                                                                    .Or(Parse.Return(""))
                                                                     .Text().TokenWithSkipComment()
                                                     from name in NestedName.TokenWithSkipComment()
                                                     where !((enumkey == "enum") && (classkey == "union"))
@@ -77,7 +78,7 @@ namespace LayerCompiler.Parsers
         /// </summary>
         public static readonly Parser<Model.Pointer> Pointer =
                                                     from op in Parse.String("*").Text().TokenWithSkipComment()
-                                                    from constkeyword in Parse.String("const").XOr(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from constkeyword in Parse.String("const").Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     select new Model.Pointer(constkeyword != "");
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace LayerCompiler.Parsers
                                                                     .Or(Parse.String("float").Text())
                                                                     .Or(Parse.String("double").Text())
                                                                     .Or(Parse.String("void").Text())
-                                                                    .XOr(Parse.Return("").Text())
+                                                                    .Or(Parse.Return("").Text())
                                                                     .TokenWithSkipComment()
                                                     from postmodifiers in Parse.String("signed")
                                                                     .Or(Parse.String("unsigned"))
@@ -111,8 +112,9 @@ namespace LayerCompiler.Parsers
                                                                     .Or(Parse.String("volatile"))
                                                                     .Text().TokenWithSkipComment().Many()
                                                     from pointers in Pointer.TokenWithSkipComment().Many()
-                                                    from reference in Parse.String("&&").Or(Parse.String("&")).XOr(Parse.Return("")).Text().TokenWithSkipComment()
-                                                    from referenceConst in Parse.String("const").XOr(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from reference in Parse.String("&&").Or(Parse.String("&")).Or(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    from referenceConst in Parse.String("const").Or(Parse.Return("")).Text().TokenWithSkipComment()
+                                                    where !(((type is string) && ((string)type == "")) && (premodifiers.Count() == 0))
                                                     select new Model.VariableType(type, premodifiers, postmodifiers, pointers, reference, referenceConst);
 
         /// <summary>
@@ -148,7 +150,7 @@ namespace LayerCompiler.Parsers
         /// </summary>
         private static readonly Parser<long> VariableDeclarationArray =
                                                     from begin in Parse.String("[").Text().TokenWithSkipComment()
-                                                    from num in TokenParser.IntegerLiteral.XOr(Parse.Return<object>(null)).TokenWithSkipComment()
+                                                    from num in TokenParser.IntegerLiteral.Or(Parse.Return<object>(null)).TokenWithSkipComment()
                                                     from end in Parse.String("]").Text().TokenWithSkipComment()
                                                     let result = (num == null ? -1 : ((Model.IntegerLiteral)num).Value)
                                                     select result;
@@ -158,9 +160,9 @@ namespace LayerCompiler.Parsers
         /// </summary>
         public static readonly Parser<Model.VariableDeclaration> VariableDeclaration =
                                                     from type in VariableType.TokenWithSkipComment()
-                                                    from name in TokenParser.RTCOPIdentifierString.XOr(Parse.Return("")).TokenWithSkipComment()
+                                                    from name in TokenParser.RTCOPIdentifierString.Or(Parse.Return("")).TokenWithSkipComment()
                                                     from arrays in VariableDeclarationArray.TokenWithSkipComment().Many()
-                                                    from dexpression in VariableDeclarationExpression.XOr(Parse.Return(new Model.IgnoreObject[]{ })).TokenWithSkipComment()
+                                                    from dexpression in VariableDeclarationExpression.Or(Parse.Return(new Model.IgnoreObject[]{ })).TokenWithSkipComment()
                                                     where !((type.Type.ToString() == "void") && (!type.IsPointer))
                                                     select new Model.VariableDeclaration(name, type, arrays, dexpression);
 

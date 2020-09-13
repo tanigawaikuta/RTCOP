@@ -32,14 +32,14 @@ protected:
 	virtual void* InitializeLayerdObject(void* obj, int classID) override;
 protected:
 	// イベント発生時に実行されるメソッド
-	virtual void OnActivating() override;		// アクティベート開始時に実行される
-	virtual void OnActivated() override;		// アクティベート終了時に実行される
-	virtual void OnDeactivating() override;		// ディアクティベート開始時に実行される
-	virtual void OnDeactivated() override;		// ディアクティベート終了時に実行される
+	virtual void _RTCOP_OnActivating() override;		// アクティベート開始時に実行される
+	virtual void _RTCOP_OnActivated() override;			// アクティベート終了時に実行される
+	virtual void _RTCOP_OnDeactivating() override;		// ディアクティベート開始時に実行される
+	virtual void _RTCOP_OnDeactivated() override;		// ディアクティベート終了時に実行される
 };
 
 // EnglishレイヤのHello
-class EnglishLayer_Hello : public RTCOP::Core::LayerdObject<Hello>
+class EnglishLayer_Hello : public RTCOP::Core::LayerdObject<baselayer::Hello>
 {
 public:
 	// パーシャルクラスのメンバ変数
@@ -49,11 +49,11 @@ public:
 		int _EnglishMember;
 	};
 public:
-	EnglishLayer_Hello();
+	EnglishLayer_Hello(int a);
 	virtual void Print() override;
 private:
-	void _InitializePartialClass();
-	void _FinalizePartialClass();
+	void _RTCOP_InitializePartialClass();
+	void _RTCOP_FinalizePartialClass();
 public:
 	friend EnglishLayer;
 };

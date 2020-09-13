@@ -1,0 +1,2401 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LayerCompiler</name>
+    </assembly>
+    <members>
+        <member name="T:LayerCompiler.CodeGeneration.Model.GeneratedCodes">
+            <summary>
+            生成されたコード
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.GeneratedCodes.CodeDictionary">
+            <summary>
+            生成されたコードの辞書、キーがファイル名、値がファイルの内容となっている
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.GeneratedCodes.#ctor">
+            <summary>
+            生成されたコード
+            </summary>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.Model.LayerStructureFile">
+            <summary>
+            レイヤ構造ファイル(.lstr)
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructureFile.BaseLayerStructure">
+            <summary>
+            ベースレイヤ構造の情報
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructureFile.LayerStructures">
+            <summary>
+            レイヤ構造の情報
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructureFile.BaseClassHeaderItems">
+            <summary>
+            ベースクラスヘッダの要素
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructureFile.ImportedBaseClassHeaderInfomation">
+            <summary>
+            読み込まれたベースクラスヘッダの情報
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.LayerStructureFile.#ctor">
+            <summary>
+            レイヤ構造ファイル
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.LayerStructureFile.SaveFile(System.String,LayerCompiler.CodeGeneration.Model.LayerStructureFile)">
+            <summary>
+            レイヤ構造ファイルの保存
+            </summary>
+            <param name="path">ファイルパス</param>
+            <param name="file">レイヤ構造ファイル</param>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.LayerStructureFile.LoadFile(System.String)">
+            <summary>
+            レイヤ構造ファイルの読み込み
+            </summary>
+            <param name="path">ファイルパス</param>
+            <returns>レイヤ構造ファイル</returns>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.Model.LayerStructure">
+            <summary>
+            レイヤ構造
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.CodeGeneration.Model.LayerStructure._FindedPartialClasses">
+            <summary>
+            作業用、いつかソースコード整理したい…
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructure.LayerName">
+            <summary>
+            レイヤ名
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructure.HeaderFileItems">
+            <summary>
+            ヘッダファイルの要素
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructure.SourceFileItems">
+            <summary>
+            ソースファイルの要素
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerStructure.ImportedLhInfomation">
+            <summary>
+            読み込まれた.lhファイルの情報
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.LayerStructure.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            レイヤ構造
+            </summary>
+            <param name="layerName">レイヤ名</param>
+            <param name="headerItems">ヘッダファイルの要素</param>
+            <param name="sourceItems">ソースファイルの要素</param>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.LayerStructure.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.Model.ImportedFileInfomation">
+            <summary>
+            読み込みファイルの情報
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.ImportedFileInfomation.FilePath">
+            <summary>
+            ファイルパス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.ImportedFileInfomation.StartIndex">
+            <summary>
+            読み込み初めのインデックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.ImportedFileInfomation.NumOfItems">
+            <summary>
+            読み込んだ要素数
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.ImportedFileInfomation.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.Model.RTCOPSourceFile">
+            <summary>
+            RTCOPのソースファイル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.RTCOPSourceFile.FilePath">
+            <summary>
+            ファイルパス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.RTCOPSourceFile.Text">
+            <summary>
+            ファイルの中身
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.RTCOPSourceFile.ImportedFiles">
+            <summary>
+            読み込まれたファイル
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.RTCOPSourceFile.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{LayerCompiler.CodeGeneration.Model.RTCOPSourceFile})">
+            <summary>
+            RTCOPのソースファイル
+            </summary>
+            <param name="filePath">ファイルパス</param>
+            <param name="text">ファイルのテキスト</param>
+            <param name="importedFiles">読み込まれたファイル</param>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.RTCOPCodeGenerator">
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.Namespace">
+            <summary>
+            レイヤクラスのデフォルトの名前空間
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.LineTerminator">
+            <summary>
+            改行文字
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.Target">
+            <summary>
+            開発対象
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.Environment">
+            <summary>
+            開発環境
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.#ctor(System.String,System.String,LayerCompiler.DevelopmentTarget,LayerCompiler.DevelopmentEnvironment)">
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <param name="nspace">レイヤクラスのデフォルトの名前空間</param>
+            <param name="lineTerminator">改行文字</param>
+            <param name="target">開発対象</param>
+            <param name="environment">開発環境</param>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateCode(LayerCompiler.CodeGeneration.Model.LayerStructureFile,System.String)">
+            <summary>
+            コード生成
+            </summary>
+            <param name="mergedLSFile">マージ済みのレイヤ構造ファイル</param>
+            <param name="includeFilePath">インクルードファイルパス</param>
+            <returns>生成後のソースコード</returns>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateRTCOPAppInitializer(LayerCompiler.CodeGeneration.Model.GeneratedCodes,System.Int32,System.Int32,System.Int32[],System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.String)">
+            <summary>
+            RTCOPAppInitializerの生成
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateAPIHeaders(LayerCompiler.CodeGeneration.Model.GeneratedCodes,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            API.h、COPNewForApp.h、ActivationForApp.hの生成
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateBaseLayer(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            ベースレイヤ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForBaseLayer(System.Collections.Generic.IEnumerable{System.Object},System.Int32)">
+            <summary>
+            要素の集合を文字列に変換
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateLayers(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.String)">
+            <summary>
+            各種レイヤ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForLayers(System.Collections.Generic.IEnumerable{System.Object},LayerCompiler.CodeGeneration.Model.LayerStructure,System.Int32,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.Int32,System.String,System.Boolean)">
+            <summary>
+            要素の集合を文字列に変換
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCode(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX64VisualStudio(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 64bit Visual Studio)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX86VisualStudio(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 32bit Visual Studio)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX64MinGW(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 64bit minGW)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX86MinGW(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 32bit minGW)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxX64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux 64bit)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxX86(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux 32bit)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxARM(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux ARM)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxARM64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux ARM64)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForMacOSX64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(macOS)
+            </summary>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.RTCOPCompiler">
+            <summary>
+            RTCOPファイルのコンパイラ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCompiler.#ctor">
+            <summary>
+            RTCOPファイルのコンパイラ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCompiler.Compile(LayerCompiler.CodeGeneration.Model.RTCOPSourceFile)">
+            <summary>
+            コンパイル
+            </summary>
+            <param name="sourceFile">ソースファイル</param>
+            <returns>レイヤ構造ファイル</returns>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCompiler.MergeObjectFiles(System.Collections.Generic.IEnumerable{LayerCompiler.CodeGeneration.Model.LayerStructureFile})">
+            <summary>
+            レイヤ構造ファイルのマージ
+            </summary>
+            <param name="structureFiles">マージしたいレイヤ構造ファイル</param>
+            <returns>マージされたレイヤ構造ファイル</returns>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.RTCOPPreprocessor">
+            <summary>
+            RTCOPファイルのプリプロセッサ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPPreprocessor.DefinedMacros">
+            <summary>
+            レイヤコンパイラに与えるマクロ定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPPreprocessor.IncludePaths">
+            <summary>
+            ヘッダファイルのディレクトリパス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPPreprocessor.Encoding">
+            <summary>
+            入出力ファイルの文字コード
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPPreprocessor.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.List{System.String},System.Text.Encoding)">
+            <summary>
+            RTCOPファイルのプリプロセッサ
+            </summary>
+            <param name="macros">レイヤコンパイラに与えるマクロ定義</param>
+            <param name="includePaths">ヘッダファイルのディレクトリパス</param>
+            <param name="encoding">入出力ファイルの文字コード</param>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPPreprocessor.Run(LayerCompiler.CodeGeneration.Model.RTCOPSourceFile)">
+            <summary>
+            プリプロセス実行
+            </summary>
+            <param name="inputFile">入力ファイル</param>
+            <returns>実行後のファイル</returns>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPPreprocessor.Run_Private(LayerCompiler.CodeGeneration.Model.RTCOPSourceFile,System.Collections.Generic.List{LayerCompiler.Parsers.Model.PreprocessDirective})">
+            <summary>
+            プリプロセス実行
+            </summary>
+            <param name="inputFile">入力ファイル</param>
+            <param name="macros">ファイル内で定義されたマクロ</param>
+            <returns>実行後のファイル</returns>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPPreprocessor.ExpandMacro(System.Collections.Generic.List{LayerCompiler.Parsers.Model.Token},System.Collections.Generic.List{LayerCompiler.Parsers.Model.PreprocessDirective},System.Boolean)">
+            <summary>
+            行内のマクロを展開する
+            </summary>
+            <param name="tokens">トークンの集合</param>
+            <param name="macros">defineマクロ</param>
+            <param name="isIfDirective">ifディレクティブ内かどうか</param>
+            <returns>展開後の行</returns>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPPreprocessor.EvaluateIfDirectiveExpression(LayerCompiler.Parsers.Model.PreprocessDirective,System.Collections.Generic.List{LayerCompiler.Parsers.Model.PreprocessDirective})">
+            <summary>
+            ifディレクティブの評価
+            </summary>
+            <param name="directive">ディレクティブ</param>
+            <param name="macros">defineマクロ</param>
+            <returns>条件を満たしているかどうか</returns>
+        </member>
+        <member name="T:LayerCompiler.CompileManager">
+            <summary>
+            コンパイルマネージャ。
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.CompileManager._RTCOPPreprocessor">
+            <summary>
+            RTCOPプリプロセッサ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.CompileManager._RTCOPCompiler">
+            <summary>
+            RTCOPコンパイラ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.CompileManager._RTCOPCodeGenerator">
+            <summary>
+            コードジェネレータ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.SourceFiles">
+            <summary>
+            入力ファイル
+            .lobjファイルか.lcppファイルを指定
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.OutputFile">
+            <summary>
+            出力ファイル。.lobjファイルかディレクトリパスを指定する
+            ディレクトリパスの場合、その場所にC++ソースコードを出力する
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.IncludePaths">
+            <summary>
+            ヘッダファイルのディレクトリパス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.Namespace">
+            <summary>
+            レイヤクラスのデフォルトの名前空間 (現時点では変更不可)
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.Macros">
+            <summary>
+            レイヤコンパイラに与えるマクロ定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.Encoding">
+            <summary>
+            入出力ファイルの文字コード
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.LineTerminator">
+            <summary>
+            改行文字
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.Target">
+            <summary>
+            開発対象
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.Environment">
+            <summary>
+            開発環境
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CompileManager.#ctor(System.String[])">
+            <summary>
+            コンパイルマネージャ。
+            </summary>
+            <param name="args">コマンドライン引数。</param>
+        </member>
+        <member name="M:LayerCompiler.CompileManager.CheckCompileOptions(System.String[])">
+            <summary>
+            コンパイルオプションのチェック。
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:LayerCompiler.CompileManager.Compile">
+            <summary>
+            コンパイル実行。
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CompileManager.CompileLCppToObjectFile(System.String)">
+            <summary>
+            .lcppからレイヤ構造ファイルにコンパイル。
+            </summary>
+            <param name="fileName">ファイル名。</param>
+            <returns>コンパイル結果。</returns>
+        </member>
+        <member name="M:LayerCompiler.CompileManager.GenerateCode(LayerCompiler.CodeGeneration.Model.LayerStructureFile)">
+            <summary>
+            コード生成
+            </summary>
+            <param name="mergedLSFile">マージ済みのレイヤ構造ファイル</param>
+        </member>
+        <member name="T:LayerCompiler.DevelopmentTarget">
+            <summary>
+            開発対象。
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.None">
+            <summary>指定無し。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.WindowsX86">
+            <summary>Windows x86。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.WindowsX64">
+            <summary>Windows x64。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.LinuxX86">
+            <summary>Linux x86。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.LinuxX64">
+            <summary>Linux x64。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.LinuxARM">
+            <summary>Linux ARM。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.LinuxARM64">
+            <summary>Linux ARM64。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentTarget.macOSX64">
+            <summary>macOS x64。</summary>
+        </member>
+        <member name="T:LayerCompiler.DevelopmentEnvironment">
+            <summary>
+            開発環境。
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentEnvironment.None">
+            <summary>指定無し。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentEnvironment.VisualStudio">
+            <summary>Visual Studio。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentEnvironment.GCC">
+            <summary>GCC。</summary>
+        </member>
+        <member name="F:LayerCompiler.DevelopmentEnvironment.Clang">
+            <summary>Clang。</summary>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.Comment">
+            <summary>
+            コメント
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.Comment.Text">
+            <summary>
+            テキスト
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Comment.#ctor(System.String)">
+            <summary>
+            コメント
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Comment.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.SuperClassDefinition">
+            <summary>
+            スーパークラスの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.SuperClassDefinition.ClassName">
+            <summary>
+            クラス名
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.SuperClassDefinition.Access">
+            <summary>
+            アクセス修飾子
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.SuperClassDefinition.#ctor(System.String,System.String)">
+            <summary>
+            スーパークラスの定義
+            </summary>
+            <param name="name">クラス名</param>
+            <param name="access">アクセス修飾子</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.SuperClassDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.VariableDeclaration">
+            <summary>
+            変数宣言
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableDeclaration.Type">
+            <summary>
+            型
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableDeclaration.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableDeclaration.ArraySizes">
+            <summary>
+            配列サイズ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableDeclaration.DefaultExpression">
+            <summary>
+            式
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.VariableDeclaration.#ctor(System.String,LayerCompiler.Parsers.Model.VariableType,System.Collections.Generic.IEnumerable{System.Int64},System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.IgnoreObject})">
+            <summary>
+            変数宣言
+            </summary>
+            <param name="name">名前</param>
+            <param name="type">型</param>
+            <param name="arraySizes">配列サイズ</param>
+            <param name="dexpression">式</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.VariableDeclaration.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.VariableType">
+            <summary>
+            変数型
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.Type">
+            <summary>
+            型情報
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.IsUserDefinedType">
+            <summary>
+            ユーザ定義型であるか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.Modifiers">
+            <summary>
+            修飾子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.Pointers">
+            <summary>
+            ポインタ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.Reference">
+            <summary>
+            参照
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.IsConst">
+            <summary>
+            constであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.IsUnsigned">
+            <summary>
+            unsignedであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.IsVolatile">
+            <summary>
+            volatileであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.IsPointer">
+            <summary>
+            ポインタであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.IsReference">
+            <summary>
+            参照かどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.VariableType.ByteSize">
+            <summary>
+            型のバイトサイズ(非ポインタのユーザ定義型を0、ポインタを-1、long doubleを-2、wchar_tを-3とする)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.VariableType.#ctor(System.Object,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.Pointer},System.String,System.String)">
+            <summary>
+            変数型
+            </summary>
+            <param name="type">型情報</param>
+            <param name="preModifiers">型の前で記述された修飾子</param>
+            <param name="postModifiers">型の後で記述された修飾子</param>
+            <param name="pointers">ポインタ</param>
+            <param name="reference">参照テキスト</param>
+            <param name="referenceConst">参照の後ろのconst</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.VariableType.Equals(System.Object)">
+            <summary>
+            型が一致しているかどうか
+            </summary>
+            <param name="obj">比較対象</param>
+            <returns>一致しているかどうか</returns>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.VariableType.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.Pointer">
+            <summary>
+            ポインタ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.Pointer.IsConst">
+            <summary>
+            constであるかどうか
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Pointer.#ctor(System.Boolean)">
+            <summary>
+            ポインタ
+            </summary>
+            <param name="isConst">constであるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Pointer.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.UserDefinedType">
+            <summary>
+            ユーザ定義型
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.UserDefinedType.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.UserDefinedType.EnumKey">
+            <summary>
+            enumkey
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.UserDefinedType.ClassKey">
+            <summary>
+            classkey
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.UserDefinedType.#ctor(System.String,System.String,System.String)">
+            <summary>
+            ユーザ定義型
+            </summary>
+            <param name="name">型名</param>
+            <param name="enumkey">enumkey</param>
+            <param name="classkey">classkey</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.UserDefinedType.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.IgnoreObject">
+            <summary>
+            無視するオブジェクト
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IgnoreObject.Content">
+            <summary>
+            無視する内容
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IgnoreObject.#ctor(System.Object)">
+            <summary>
+            無視するオブジェクト
+            </summary>
+            <param name="content">無視する内容</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IgnoreObject.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.IgnoreObjectBlock">
+            <summary>
+            無視するオブジェクトのブロック
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IgnoreObjectBlock.Contents">
+            <summary>
+            無視する内容
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IgnoreObjectBlock.#ctor(System.Object,System.Object,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            無視するオブジェクトのブロック
+            </summary>
+            <param name="begin">ブロックの初め</param>
+            <param name="end">ブロックの終わり</param>
+            <param name="contents">無視する内容</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IgnoreObjectBlock.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.PreprocessDirective">
+            <summary>
+            プリプロセッサへの指令
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.PreprocessDirective.Kind">
+            <summary>
+            種類
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.PreprocessDirective.Param1">
+            <summary>
+            パラメータ1 マクロの名前など
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.PreprocessDirective.Param2">
+            <summary>
+            パラメータ2 マクロの値など
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.PreprocessDirective.#ctor(LayerCompiler.Parsers.Model.DirectiveKind,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            プリプロセッサへの指令
+            </summary>
+            <param name="kind">種類</param>
+            <param name="param1">パラメータ1 マクロの名前など</param>
+            <param name="param2">パラメータ2 マクロの値など</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.PreprocessDirective.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.DirectiveKind">
+            <summary>
+            プリプロセッサへの指令の種類
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.None">
+            <summary>#のみ</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Ifdef">
+            <summary>#ifdef</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Ifndef">
+            <summary>#ifndef</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.If">
+            <summary>#if</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Elif">
+            <summary>#elif</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Else">
+            <summary>#else</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Endif">
+            <summary>#endif</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Define">
+            <summary>#define</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Undef">
+            <summary>#undef</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Include">
+            <summary>#include</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Line">
+            <summary>#line</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Error">
+            <summary>#error</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.Pragma">
+            <summary>#pragma</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.NonStandard">
+            <summary>非標準</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.ImportLayerHeader">
+            <summary>#import_lh</summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.Model.DirectiveKind.ImportBaseClassHeader">
+            <summary>#import_baseclass</summary>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.NonDirectiveLine">
+            <summary>
+            非ディレクティブ行
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.NonDirectiveLine.Contents">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.NonDirectiveLine.#ctor(System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.Token})">
+            <summary>
+            非ディレクティブ行
+            </summary>
+            <param name="contents">内容</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.NonDirectiveLine.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.IfSection">
+            <summary>
+            ifセクション
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IfSection.Groups">
+            <summary>
+            ifセクション内のグループのリスト
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfSection.#ctor(System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.Collections.Generic.IEnumerable{System.Object}},System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            ifセクション
+            </summary>
+            <param name="ifgroup">ifグループ</param>
+            <param name="elifgroups">elifグループ</param>
+            <param name="elsegroup">elseグループ</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfSection.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.IfDirectiveExpression">
+            <summary>
+            ifディレクティブの式
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IfDirectiveExpression.Operators">
+            <summary>
+            演算子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IfDirectiveExpression.UnaryOperators">
+            <summary>
+            単項演算子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IfDirectiveExpression.SubExpressions">
+            <summary>
+            子の式
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.IfDirectiveExpression},System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            ifディレクティブの式
+            </summary>
+            <param name="operators">演算子</param>
+            <param name="expressions">子の式</param>
+            <param name="unaryOperators">単項演算子</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.#ctor(LayerCompiler.Parsers.Model.IfDirectiveExpression,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            ifディレクティブの式
+            </summary>
+            <param name="expression">式</param>
+            <param name="unaryOperators">単項演算子</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Evaluate">
+            <summary>
+            式の評価
+            </summary>
+            <returns>評価結果</returns>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Plus(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            加算
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Minus(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            減算
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Mult(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            乗算
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Div(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            除算
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Mod(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            剰余
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.LShift(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            左シフト
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.RShift(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            右シフト
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Less(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            小なり
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Greater(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            大なり
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.LessEq(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            小なりイコール
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.GreaterEq(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            大なりイコール
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Equal(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            一致
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.NotEqual(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            一致しない
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.And(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            and
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.XOr(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            xor
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Or(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            or
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.AndAnd(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            論理積
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.OrOr(LayerCompiler.Parsers.Model.Literal,LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            論理和
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.UnaryMinus(LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            単項演算子のマイナス
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IfDirectiveExpression.Not(LayerCompiler.Parsers.Model.Literal)">
+            <summary>
+            否定
+            </summary>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.IfDirectiveExpression.OperatorAndRightExpression">
+            <summary>
+            演算子と左の式
+            </summary>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.Leaf_IfDirectiveExpression">
+            <summary>
+            ifディレクティブの式の末端
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.Leaf_IfDirectiveExpression.Literal">
+            <summary>
+            リテラル
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Leaf_IfDirectiveExpression.#ctor(LayerCompiler.Parsers.Model.Literal,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            ifディレクティブの式の末端
+            </summary>
+            <param name="literal">リテラル</param>
+            <param name="unaryOperators">単項演算子</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Leaf_IfDirectiveExpression.Evaluate">
+            <summary>
+            式の評価
+            </summary>
+            <returns>評価結果</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.LayerDefinition">
+            <summary>
+            レイヤ定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerDefinition.Name">
+            <summary>
+            レイヤ名
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerDefinition.Contents">
+            <summary>
+            中身
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerDefinition.IsBase">
+            <summary>
+            ベースレイヤであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerDefinition.Namespaces">
+            <summary>
+            レイヤ内の名前空間
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerDefinition.LayerdClassDefinitions">
+            <summary>
+            レイヤ内のレイヤードなクラス定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerDefinition.MethodImplementations">
+            <summary>
+            メソッド実装
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerDefinition.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            レイヤ定義
+            </summary>
+            <param name="name">レイヤ名</param>
+            <param name="objects">レイヤ定義の中身</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.NamespaceDefinition">
+            <summary>
+            名前空間の定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.NamespaceDefinition.Name">
+            <summary>
+            名前空間の名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.NamespaceDefinition.IsInline">
+            <summary>
+            インライン名前空間であるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.NamespaceDefinition.Contents">
+            <summary>
+            中身
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.NamespaceDefinition.Namespaces">
+            <summary>
+            ネストされている名前空間
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.NamespaceDefinition.LayerdClassDefinitions">
+            <summary>
+            レイヤードなクラス定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.NamespaceDefinition.MethodImplementations">
+            <summary>
+            メソッド実装
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.NamespaceDefinition.#ctor(System.String,System.Collections.Generic.IEnumerable{System.Object},System.Boolean)">
+            <summary>
+            レイヤ定義
+            </summary>
+            <param name="name">レイヤ名</param>
+            <param name="objects">レイヤ定義の中身</param>
+            <param name="isInline">インタライン名前空間であるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.NamespaceDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.LayerdClassDefinition">
+            <summary>
+            レイヤードクラスの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.ClassKey">
+            <summary>
+            class か struct
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.IsBase">
+            <summary>
+            ベースクラスであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.SuperClasses">
+            <summary>
+            スーパークラス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.Contents">
+            <summary>
+            中身
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.LayerdClassDefinitions">
+            <summary>
+            レイヤードなクラス定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.ConstructorDefinitions">
+            <summary>
+            コンストラクタの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.DestructorDefinitions">
+            <summary>
+            デストラクタの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.MethodDefinitions">
+            <summary>
+            メソッドの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.EventHandlerDefinitions">
+            <summary>
+            イベントハンドラの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdClassDefinition.LayerMemberDeclaration">
+            <summary>
+            メンバ変数の宣言
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerdClassDefinition.#ctor(System.String,System.String,System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.SuperClassDefinition},System.Collections.Generic.IEnumerable{System.Object},System.Nullable{System.Boolean})">
+            <summary>
+            レイヤードクラスの定義
+            </summary>
+            <param name="name">クラス名</param>
+            <param name="key">class か struct</param>
+            <param name="supers">スーパークラス</param>
+            <param name="objects">レイヤ定義の中身</param>
+            <param name="isBase">ベースクラスであるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerdClassDefinition.SetIsBase(System.Nullable{System.Boolean})">
+            <summary>
+            IsBaseのセット
+            </summary>
+            <param name="isBase">IsBase</param>
+            <returns>thisポインタ</returns>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerdClassDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.AccessModifier">
+            <summary>
+            アクセス修飾子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.AccessModifier.Kind">
+            <summary>
+            種類
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.AccessModifier.#ctor(System.String)">
+            <summary>
+            アクセス修飾子
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.AccessModifier.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.AccessModifier.AccessKind">
+            <summary>
+            アクセス修飾子の種類
+            </summary>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.MethodImplementation">
+            <summary>
+            メソッド実装
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.FullName">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.MethodName">
+            <summary>
+            名前のメソッド名の部分
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.ClassName">
+            <summary>
+            名前のクラス名の部分
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.ReturnType">
+            <summary>
+            戻り値の型
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.Parameters">
+            <summary>
+            パラメータ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.Contents">
+            <summary>
+            コンテンツ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.ThisModifiers">
+            <summary>
+            thisポインタの修飾子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.MethodImplementation.IsNoexcept">
+            <summary>
+            noexceptであるかどうか
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.MethodImplementation.#ctor(System.String,LayerCompiler.Parsers.Model.VariableType,System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.VariableDeclaration},LayerCompiler.Parsers.Model.IgnoreObjectBlock,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            メソッド実装
+            </summary>
+            <param name="name">メソッド名</param>
+            <param name="returnType">戻り値の型</param>
+            <param name="parameters">パラメータ</param>
+            <param name="contents">コンテンツ</param>
+            <param name="thisModifiers">修飾子</param>
+            <param name="isNoexcept">noexceptであるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.MethodImplementation.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.ConstructorDefinition">
+            <summary>
+            コンストラクタの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.ConstructorDefinition.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.ConstructorDefinition.Parameters">
+            <summary>
+            パラメータ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.ConstructorDefinition.Contents">
+            <summary>
+            コンテンツ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.ConstructorDefinition.Modifiers">
+            <summary>
+            修飾子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.ConstructorDefinition.IsNoexcept">
+            <summary>
+            noexceptであるかどうか
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.ConstructorDefinition.#ctor(System.String,System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.VariableDeclaration},System.Object,System.Collections.Generic.IEnumerable{System.String},System.Boolean)">
+            <summary>
+            レイヤードメソッドの定義
+            </summary>
+            <param name="name">メソッド名</param>
+            <param name="parameters">パラメータ</param>
+            <param name="contents">コンテンツ</param>
+            <param name="modifiers">修飾子</param>
+            <param name="isNoexcept">noexceptであるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.ConstructorDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.DestructorDefinition">
+            <summary>
+            デストラクタの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.DestructorDefinition.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.DestructorDefinition.Contents">
+            <summary>
+            コンテンツ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.DestructorDefinition.Modifiers">
+            <summary>
+            修飾子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.DestructorDefinition.IsNoexcept">
+            <summary>
+            noexceptであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.DestructorDefinition.IsOverride">
+            <summary>
+            overrideであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.DestructorDefinition.IsVirtual">
+            <summary>
+            仮想関数であるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.DestructorDefinition.IsPureVirtual">
+            <summary>
+            純粋仮想関数であるか
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.DestructorDefinition.#ctor(System.String,System.Object,System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.Boolean)">
+            <summary>
+            デストラクタの定義
+            </summary>
+            <param name="name">メソッド名</param>
+            <param name="contents">コンテンツ</param>
+            <param name="modifiers">修飾子</param>
+            <param name="isNoexcept">noexceptであるかどうか</param>
+            <param name="isOverride">overrideであるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.DestructorDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.LayerdMethodDefinition">
+            <summary>
+            レイヤードメソッドの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.ReturnType">
+            <summary>
+            戻り値の型
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.Parameters">
+            <summary>
+            パラメータ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.Contents">
+            <summary>
+            コンテンツ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.Modifiers">
+            <summary>
+            修飾子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.ThisModifiers">
+            <summary>
+            thisポインタの修飾子
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.IsNoexcept">
+            <summary>
+            noexceptであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.IsOverride">
+            <summary>
+            overrideであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.IsVirtual">
+            <summary>
+            仮想関数であるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.IsPureVirtual">
+            <summary>
+            純粋仮想関数であるか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.IsBase">
+            <summary>
+            ベースメソッドであるかどうか
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.LayerdMethodDefinition.IsConst">
+            <summary>
+            constであるかどうか
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerdMethodDefinition.#ctor(System.String,LayerCompiler.Parsers.Model.VariableType,System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.VariableDeclaration},System.Object,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.Boolean,System.Nullable{System.Boolean})">
+            <summary>
+            レイヤードメソッドの定義
+            </summary>
+            <param name="name">メソッド名</param>
+            <param name="returnType">戻り値の型</param>
+            <param name="parameters">パラメータ</param>
+            <param name="contents">コンテンツ</param>
+            <param name="modifiers">修飾子</param>
+            <param name="thisModifiers">修飾子</param>
+            <param name="isNoexcept">noexceptであるかどうか</param>
+            <param name="isOverride">overrideであるかどうか</param>
+            <param name="isBase">ベースメソッドであるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerdMethodDefinition.SetIsBase(System.Nullable{System.Boolean})">
+            <summary>
+            IsBaseのセット
+            </summary>
+            <param name="isBase">IsBase</param>
+            <returns>thisポインタ</returns>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerdMethodDefinition.Equals(System.Object)">
+            <summary>
+            メソッド定義が内容的に同じであるか
+            </summary>
+            <param name="obj">比較対象</param>
+            <returns>内容的に同じであるかどうか</returns>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.LayerdMethodDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.EventHandlerDefinition">
+            <summary>
+            イベントハンドラの定義
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.EventHandlerDefinition.EventName">
+            <summary>
+            イベント名
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.EventHandlerDefinition.#ctor(System.String,LayerCompiler.Parsers.Model.LayerdMethodDefinition)">
+            <summary>
+            イベントハンドラの定義
+            </summary>
+            <param name="eventName">イベント名</param>
+            <param name="method">メソッド情報</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.EventHandlerDefinition.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.Token">
+            <summary>
+            トークン
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.Token.Text">
+            <summary>
+            テキスト
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Token.#ctor(System.String)">
+            <summary>
+            トークン
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Token.ToString">
+            <summary>
+            文字列を返す
+            </summary>
+            <returns>文字列</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.Identifier">
+            <summary>
+            識別子
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Identifier.#ctor(System.String)">
+            <summary>
+            識別子
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.Keyword">
+            <summary>
+            キーワード
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Keyword.#ctor(System.String)">
+            <summary>
+            キーワード
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.OperatorOrPunctuator">
+            <summary>
+            演算子と区切り文字
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.OperatorOrPunctuator.#ctor(System.String)">
+            <summary>
+            演算子と区切り文字
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.Literal">
+            <summary>
+            リテラル
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.Literal.#ctor(System.String)">
+            <summary>
+            リテラル
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.IntegerLiteral">
+            <summary>
+            整数リテラル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IntegerLiteral.Suffix">
+            <summary>
+            サフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IntegerLiteral.UserSuffix">
+            <summary>
+            ユーザサフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.IntegerLiteral.Value">
+            <summary>
+            値
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.IntegerLiteral.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            整数リテラル
+            </summary>
+            <param name="text">テキスト</param>
+            <param name="value">数値</param>
+            <param name="suffix">サフィックス</param>
+            <param name="usersuffix">ユーザサフィックス</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.CharacterLiteral">
+            <summary>
+            文字リテラル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.CharacterLiteral.Prefix">
+            <summary>
+            プレフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.CharacterLiteral.UserSuffix">
+            <summary>
+            ユーザサフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.CharacterLiteral.Value">
+            <summary>
+            文字コード
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.CharacterLiteral.Character">
+            <summary>
+            文字
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.CharacterLiteral.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            文字リテラル
+            </summary>
+            <param name="text">テキスト</param>
+            <param name="prefix">プレフィックス</param>
+            <param name="character">文字</param>
+            <param name="usersuffix">ユーザサフィックス</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.FloatingLiteral">
+            <summary>
+            浮動小数リテラル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.FloatingLiteral.Suffix">
+            <summary>
+            サフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.FloatingLiteral.UserSuffix">
+            <summary>
+            ユーザサフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.FloatingLiteral.Value">
+            <summary>
+            値
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.FloatingLiteral.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            浮動小数リテラル
+            </summary>
+            <param name="text">テキスト</param>
+            <param name="value">数値</param>
+            <param name="suffix">サフィックス</param>
+            <param name="usersuffix">ユーザサフィックス</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.StringLiteral">
+            <summary>
+            文字列リテラル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.StringLiteral.Prefix">
+            <summary>
+            プレフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.StringLiteral.UserSuffix">
+            <summary>
+            ユーザサフィックス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.StringLiteral.String">
+            <summary>
+            文字列
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.StringLiteral.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            文字列リテラル
+            </summary>
+            <param name="text">テキスト</param>
+            <param name="value">数値</param>
+            <param name="prefix">プレフィックス</param>
+            <param name="usersuffix">ユーザサフィックス</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.BooleanLiteral">
+            <summary>
+            真偽値リテラル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.BooleanLiteral.Value">
+            <summary>
+            値
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.BooleanLiteral.#ctor(System.String)">
+            <summary>
+            真偽リテラル
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.Model.PointerLiteral">
+            <summary>
+            ポインタリテラル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Parsers.Model.PointerLiteral.Value">
+            <summary>
+            値
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.PointerLiteral.#ctor(System.String)">
+            <summary>
+            ポインタリテラル
+            </summary>
+            <param name="text">テキスト</param>
+        </member>
+        <member name="T:LayerCompiler.Parsers.CommentParser">
+            <summary>
+            コメントのパーサ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommentParser.SingleLineComment">
+            <summary>
+            一行コメント
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommentParser.DelimitedComment">
+            <summary>
+            複数行コメント
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommentParser.Comment">
+            <summary>
+            一行コメントか複数行コメント
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.CommentParser.TokenWithSkipComment``1(Sprache.Parser{``0})">
+            <summary>
+            標準のTokenメソッドにコメントスキップ機能を追加したメソッド
+            </summary>
+            <typeparam name="T">パース後の結果の型</typeparam>
+            <param name="parser">パーサ</param>
+            <returns>パース後の結果</returns>
+        </member>
+        <member name="M:LayerCompiler.Parsers.CommentParser.TokenWithSkipCommentForPreprocessParser``1(Sprache.Parser{``0})">
+            <summary>
+            標準のTokenメソッドにコメントスキップ機能を追加したメソッド (プリプロセスパーサ用)
+            </summary>
+            <typeparam name="T">パース後の結果の型</typeparam>
+            <param name="parser">パーサ</param>
+            <returns>パース後の結果</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.CommonParser">
+            <summary>
+            各パーサで共有されるパーサ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.NestedName">
+            <summary>
+            ネストされた名前
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.NestedNameAfter">
+            <summary>
+            ネストされた名前の後ろの部分
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.SuperClassName">
+            <summary>
+            スーパークラス名の指定
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.SuperClassDefinitionAfter">
+            <summary>
+            スーパークラスの定義の後ろの部分
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.SuperClassDefinition">
+            <summary>
+            スーパークラスの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.UserDefinedType">
+            <summary>
+            ユーザ定義型
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.Pointer">
+            <summary>
+            ポインタ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.VariableType">
+            <summary>
+            変数の型
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.VariableDeclarationExpressionParentheses">
+            <summary>
+            変数宣言の式の括弧
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.VariableDeclarationExpression">
+            <summary>
+            変数宣言の式
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.VariableDeclarationArray">
+            <summary>
+            変数宣言の配列
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.VariableDeclaration">
+            <summary>
+            変数宣言
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.ParameterDeclarations">
+            <summary>
+            パラメータ宣言(複数)
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.CommonParser.ParameterDeclarationsAfter">
+            <summary>
+            パラメータ宣言(複数)の後ろの部分
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.CommonParser.CheckParameterDefaultExpression(System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.VariableDeclaration})">
+            <summary>
+            パラメータの入力が正しいか調べる
+            </summary>
+            <param name="paras">パラメータのリスト</param>
+            <returns>パラメータの入力が正しいかどうか</returns>
+        </member>
+        <member name="T:LayerCompiler.Parsers.IgnoreParser">
+            <summary>
+            RTCOPに関係ない無視するもののパーサ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.IgnoreParser.Token">
+            <summary>
+            無視するトークン
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.IgnoreParser.Block">
+            <summary>
+            無視するブロック
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.IgnoreParser.TokenForExpression">
+            <summary>
+            無視するトークン(式用)
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.IgnoreParser.BlockForExpression">
+            <summary>
+            無視するブロック(式用)
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.IgnoreParser.Directive">
+            <summary>
+            無視するディレクティブ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.IgnoreParser.IgnoreObject">
+            <summary>
+            無視するトークン、ブロック、ディレクティブ
+            </summary>
+        </member>
+        <member name="T:LayerCompiler.Parsers.PreprocessParser">
+            <summary>
+            プリプロセッサのパーサ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.IdentifierForDefine">
+            <summary>
+            define用の識別子、\で改行できる
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.ExpressionForDefine">
+            <summary>
+            define用の式\で改行できる
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Ifdef">
+            <summary>
+            読み取り: #ifdef Aho
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Ifndef">
+            <summary>
+            読み取り: #ifndef Aho
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.If">
+            <summary>
+            読み取り: #if
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Elif">
+            <summary>
+            読み取り: #elif
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Else">
+            <summary>
+            読み取り: #else
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Endif">
+            <summary>
+            読み取り: #endif
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.DefineFuncParameters_After">
+            <summary>
+            defineのパラメータ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.DefineFuncParameters">
+            <summary>
+            defineのパラメータ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Define">
+            <summary>
+            読み取り: #define Aho
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.UnDef">
+            <summary>
+            読み取り: #undef Aho
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.FilenameForInclude">
+            <summary>
+            include用のファイル名\で改行できる
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Include">
+            <summary>
+            読み取り: #include "Hello.h"
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.ImportLayerHeader">
+            <summary>
+            読み取り: #import_lh "Hello.lh"
+            RTCOP用のディレクティブ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.ImportBaseClassHeader">
+            <summary>
+            読み取り: #import_baseclass "Hello.h"
+            RTCOP用のディレクティブ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.NumberForLine">
+            <summary>
+            line用の番号\で改行できる
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.FilenameForLine">
+            <summary>
+            line用のファイル名\で改行できる
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Line">
+            <summary>
+            読み取り: #line
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Error">
+            <summary>
+            読み取り: #error
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Pragma">
+            <summary>
+            読み取り: #pragma
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.NonStandard">
+            <summary>
+            読み取り: 非標準
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.None">
+            <summary>
+            読み取り: #
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.Directive">
+            <summary>
+            何らかのディレクティブ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.RTCOPDirective">
+            <summary>
+            RTCOPのディレクティブ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.NonDirectiveLine">
+            <summary>
+            非ディレクティブ行
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.DirectiveOrLine">
+            <summary>
+            ディレクティブか行
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.DirectiveOrLineForIfSection">
+            <summary>
+            ディレクティブか行(ifセクション用)
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.IfSection">
+            <summary>
+            ifセクション
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.ElifGroup">
+            <summary>
+            elifグループ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.ElseGroup">
+            <summary>
+            elseグループ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.PreprocessParser.IfDirectiveExpression">
+            <summary>
+            ifディレクティブの式
+            </summary>
+        </member>
+        <member name="T:LayerCompiler.Parsers.RTCOPParser">
+            <summary>
+            RTCOPのパーサ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.LayerdMethodBlock">
+            <summary>
+            レイヤードなメソッドのブロック
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.PureVirtualFunction">
+            <summary>
+            純粋仮想関数
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.ConstructorDefinition">
+            <summary>
+            コンストラクタの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.DestructorDefinition">
+            <summary>
+            デストラクタの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.MethodDefinition">
+            <summary>
+            メソッドの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.PartialMethodDefinition">
+            <summary>
+            パーシャルメソッドの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.BaseMethodDefinition">
+            <summary>
+            ベースメソッドの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.EventHandlerDefinition">
+            <summary>
+            イベントハンドラの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.MethodImplementation">
+            <summary>
+            メソッドの実装
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.AccessModifier">
+            <summary>
+            アクセス修飾子
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.LayerMemberDeclaration">
+            <summary>
+            レイヤ固有メンバ
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.ClassDefinition">
+            <summary>
+            クラス定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.PartialClassDefinition">
+            <summary>
+            パーシャルクラスの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.BaseClassDefinition">
+            <summary>
+            ベースクラスの定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.NormalClassDefinition">
+            <summary>
+            通常クラスの定義
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.RTCOPParser.CheckClassDefinition(LayerCompiler.Parsers.Model.LayerdClassDefinition)">
+            <summary>
+            クラス定義が正しいかチェックする
+            </summary>
+            <param name="layerdClass">レイヤードなクラス</param>
+            <returns>クラス定義が正しいかどうか</returns>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.NamespaceDefinition">
+            <summary>
+            名前空間定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.LayerDefinition">
+            <summary>
+            レイヤ定義
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.BaseLayerDefinition">
+            <summary>
+            ベースレイヤ定義
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.RTCOPParser.CheckLayerNamespace(LayerCompiler.Parsers.Model.LayerDefinition)">
+            <summary>
+            レイヤ内の名前空間が正しいか調べる
+            </summary>
+            <param name="layer">レイヤ</param>
+            <returns>レイヤ内の名前空間が正しいかどうか</returns>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.RTCOPSourceFileObject">
+            <summary>
+            RTCOPソースファイルの要素
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.RTCOPParser.RTCOPSourceFile">
+            <summary>
+            RTCOPソースファイル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.IdentifierString">
+            <summary>
+            C++の識別子となる文字列
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.Identifier">
+            <summary>
+            C++の識別子の読み取り
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.RTCOPIdentifierString">
+            <summary>
+            RTCOPの識別子となる文字列
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.RTCOPIdentifier">
+            <summary>
+            RTCOPの識別子の読み取り
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.IntegerLiteral">
+            <summary>
+            整数リテラル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.CharacterLiteral">
+            <summary>
+            文字リテラル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.FloatingLiteral">
+            <summary>
+            浮動小数リテラル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.NormalStringLiteral">
+            <summary>
+            通常の文字列リテラル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.RawStringLiteral">
+            <summary>
+            文字列リテラル (生文字列)
+            実際のC++よりマッチするケースが多くなってしまっているが、面倒なのでこのままでいく
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.StringLiteral">
+            <summary>
+            文字列リテラル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.BooleanLiteral">
+            <summary>
+            真偽値
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.PointerLiteral">
+            <summary>
+            ポインタリテラル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.Literal">
+            <summary>
+            リテラル
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.OperatorOrPunctuatorStrings">
+            <summary>
+            演算子・区切り文字となる文字列
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.IsOperatorOrPunctuator">
+            <summary>
+            演算子・区切り文字であるかチェック
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.OperatorOrPunctuator">
+            <summary>
+            演算子・区切り文字
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.KeywordStrings">
+            <summary>
+            C++11のキーワードとなる文字列
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.IsKeyword">
+            <summary>
+            C++11のキーワードであるかチェック
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.Keyword">
+            <summary>
+            C++11のキーワード
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.RTCOPKeywordStrings">
+            <summary>
+            RTCOPのキーワードとなる文字列
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.IsRTCOPKeyword">
+            <summary>
+            RTCOPのキーワードであるかチェック
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.RTCOPKeyword">
+            <summary>
+            RTCOPのキーワード
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.Unknown">
+            <summary>
+            不明なトークン
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.Token">
+            <summary>
+            トークン
+            </summary>
+        </member>
+        <member name="F:LayerCompiler.Parsers.TokenParser.RTCOPToken">
+            <summary>
+            RTCOPのトークン
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Program.Main(System.String[])">
+            <summary>
+            エントリポイント。
+            </summary>
+            <param name="args">コマンドライン引数。</param>
+        </member>
+        <member name="T:LayerCompiler.Properties.Resources">
+            <summary>
+              ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Properties.Resources.ResourceManager">
+            <summary>
+              このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Properties.Resources.Culture">
+            <summary>
+              すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
+              現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Properties.Resources.Layer_Private_Header">
+            <summary>
+            Layer_Private.h
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.Properties.Resources.LayerdObject_Private_Header">
+            <summary>
+            LayerdObject_Private.h
+            </summary>
+        </member>
+    </members>
+</doc>

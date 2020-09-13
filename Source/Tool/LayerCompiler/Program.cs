@@ -17,13 +17,13 @@ namespace LayerCompiler
         static int Main(string[] args)
         {
             // 実験用
-            Jikken.Test();
+            //Jikken.Test();
 
             // コンパイル
             try
             {
-                //CompileManager compileManager = new CompileManager(args);
-                //compileManager.Compile();
+                CompileManager compileManager = new CompileManager(args);
+                compileManager.Compile();
             }
             catch (Exception ex)
             {

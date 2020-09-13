@@ -10,6 +10,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// プリプロセッサへの指令
     /// </summary>
+    [Serializable]
     class PreprocessDirective
     {
         #region プロパティ
@@ -156,6 +157,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// プリプロセッサへの指令の種類
     /// </summary>
+    [Serializable]
     enum DirectiveKind
     {
         /// <summary>#のみ</summary>
@@ -195,6 +197,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 非ディレクティブ行
     /// </summary>
+    [Serializable]
     class NonDirectiveLine
     {
         #region プロパティ
@@ -234,6 +237,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// ifセクション
     /// </summary>
+    [Serializable]
     class IfSection
     {
         #region プロパティ
@@ -286,6 +290,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// ifディレクティブの式
     /// </summary>
+    [Serializable]
     class IfDirectiveExpression
     {
         #region プロパティ
@@ -1459,6 +1464,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// ifディレクティブの式の末端
     /// </summary>
+    [Serializable]
     class Leaf_IfDirectiveExpression : IfDirectiveExpression
     {
         #region プロパティ

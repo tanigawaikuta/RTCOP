@@ -20,15 +20,17 @@ namespace LayerCompiler
 @"
 #define aaaa 2
 #define bbbb -2
-#define aho(aa) aa##layer
+#define aho(aa, bb) aa##bb
 
-aho(base)
+#include <stdio.h>
+int a = 0;
+
+aho(base, layer)
 {
-    base class Aho
+    base class Aho : paka
     {
 #if aaaa - bbbb
         void m1(){}
-#else
         void m2(){};
         void m3();
 #endif
@@ -48,6 +50,11 @@ aho(base)
             RTCOPPreprocessor p = new RTCOPPreprocessor(new string[0], new List<string>(), Encoding.UTF8);
             var f2 = p.Run(f);
             Console.WriteLine(f2.Text);
+
+            RTCOPCompiler c = new RTCOPCompiler();
+            var of = c.Compile(f2);
+            LayerStructureFile.SaveFile(@"C:\Users\Ikuta\Desktop\aaa.lobj", of);
+            var of2 = LayerStructureFile.LoadFile(@"C:\Users\Ikuta\Desktop\aaa.lobj");
         }
     }
 }

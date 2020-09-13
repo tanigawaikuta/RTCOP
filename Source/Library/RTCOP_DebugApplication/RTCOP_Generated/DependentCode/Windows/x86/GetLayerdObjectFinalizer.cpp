@@ -21,7 +21,7 @@ volatile void* GetLayerdObjectFinalizer(JapaneseLayer_Hello* obj)
 	void* vfp = 0;
 	__asm
 	{
-		mov eax, JapaneseLayer_Hello::_FinalizePartialClass
+		mov eax, JapaneseLayer_Hello::_RTCOP_FinalizePartialClass
 		mov vfp, eax
 	}
 	return vfp;
@@ -33,7 +33,7 @@ volatile void* GetLayerdObjectFinalizer(EnglishLayer_Hello* obj)
 	void* vfp = 0;
 	__asm
 	{
-		mov eax, EnglishLayer_Hello::_FinalizePartialClass
+		mov eax, EnglishLayer_Hello::_RTCOP_FinalizePartialClass
 		mov vfp, eax
 	}
 	return vfp;

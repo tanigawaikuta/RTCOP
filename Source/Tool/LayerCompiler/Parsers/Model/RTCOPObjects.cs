@@ -9,6 +9,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// レイヤ定義
     /// </summary>
+    [Serializable]
     class LayerDefinition
     {
         #region プロパティ
@@ -142,6 +143,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// 名前空間の定義
     /// </summary>
+    [Serializable]
     class NamespaceDefinition
     {
         #region プロパティ
@@ -270,6 +272,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// レイヤードクラスの定義
     /// </summary>
+    [Serializable]
     class LayerdClassDefinition
     {
         #region プロパティ
@@ -310,6 +313,28 @@ namespace LayerCompiler.Parsers.Model
         }
 
         /// <summary>
+        /// コンストラクタの定義
+        /// </summary>
+        public IEnumerable<ConstructorDefinition> ConstructorDefinitions
+        {
+            get
+            {
+                return Contents.FindAll((obj) => obj is ConstructorDefinition).Cast<ConstructorDefinition>();
+            }
+        }
+
+        /// <summary>
+        /// デストラクタの定義
+        /// </summary>
+        public DestructorDefinition DestructorDefinitions
+        {
+            get
+            {
+                return (DestructorDefinition)Contents.Find((obj) => obj is DestructorDefinition);
+            }
+        }
+
+        /// <summary>
         /// メソッドの定義
         /// </summary>
         public IEnumerable<LayerdMethodDefinition> MethodDefinitions
@@ -317,6 +342,17 @@ namespace LayerCompiler.Parsers.Model
             get
             {
                 return Contents.FindAll((obj) => obj is LayerdMethodDefinition).Cast<LayerdMethodDefinition>();
+            }
+        }
+
+        /// <summary>
+        /// イベントハンドラの定義
+        /// </summary>
+        public IEnumerable<EventHandlerDefinition> EventHandlerDefinitions
+        {
+            get
+            {
+                return Contents.FindAll((obj) => obj is EventHandlerDefinition).Cast<EventHandlerDefinition>();
             }
         }
 
@@ -423,7 +459,7 @@ namespace LayerCompiler.Parsers.Model
                     result += (content + "\r\n");
                 }
             }
-            result += "\r\n}";
+            result += "\r\n};";
 
             return result;
         }
@@ -435,6 +471,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// アクセス修飾子
     /// </summary>
+    [Serializable]
     class AccessModifier
     {
         #region プロパティ
@@ -497,6 +534,7 @@ namespace LayerCompiler.Parsers.Model
         /// <summary>
         /// アクセス修飾子の種類
         /// </summary>
+        [Serializable]
         public enum AccessKind
         {
             None,
@@ -512,6 +550,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// メソッド実装
     /// </summary>
+    [Serializable]
     class MethodImplementation
     {
         #region プロパティ
@@ -628,8 +667,199 @@ namespace LayerCompiler.Parsers.Model
     }
 
     /// <summary>
+    /// コンストラクタの定義
+    /// </summary>
+    [Serializable]
+    class ConstructorDefinition
+    {
+        #region プロパティ
+        /// <summary>
+        /// 名前
+        /// </summary>
+        public string Name { get; protected set; }
+
+        /// <summary>
+        /// パラメータ
+        /// </summary>
+        public List<VariableDeclaration> Parameters { get; private set; }
+
+        /// <summary>
+        /// コンテンツ
+        /// </summary>
+        public object Contents { get; internal set; }
+
+        /// <summary>
+        /// 修飾子
+        /// </summary>
+        public List<string> Modifiers { get; private set; }
+
+        /// <summary>
+        /// noexceptであるかどうか
+        /// </summary>
+        public bool IsNoexcept { get; protected set; }
+
+        #endregion
+
+        #region コンストラクタ
+        /// <summary>
+        /// レイヤードメソッドの定義
+        /// </summary>
+        /// <param name="name">メソッド名</param>
+        /// <param name="parameters">パラメータ</param>
+        /// <param name="contents">コンテンツ</param>
+        /// <param name="modifiers">修飾子</param>
+        /// <param name="isNoexcept">noexceptであるかどうか</param>
+        public ConstructorDefinition(string name, IEnumerable<VariableDeclaration> parameters, object contents, IEnumerable<string> modifiers, bool isNoexcept)
+        {
+            Name = name;
+            Parameters = new List<VariableDeclaration>(parameters);
+            Contents = contents;
+            Modifiers = new List<string>(modifiers);
+            IsNoexcept = isNoexcept;
+        }
+
+        #endregion
+
+        #region メソッド
+        /// <summary>
+        /// 文字列を返す
+        /// </summary>
+        /// <returns>文字列</returns>
+        public override string ToString()
+        {
+            string result = "";
+            // 修飾子
+            foreach (string modifier in Modifiers)
+            {
+                result += (modifier + " ");
+            }
+            // メソッド名
+            result += (Name + " (");
+            // パラメータ
+            result += string.Join(", ", Parameters);
+            result += ")";
+            // noexcept
+            if (IsNoexcept) result += " noexcept";
+            // コンテンツ
+            if (Contents is IgnoreObjectBlock)
+                result += "\r\n";
+            result += Contents.ToString();
+
+            return result;
+        }
+
+        #endregion
+
+    }
+
+    /// <summary>
+    /// デストラクタの定義
+    /// </summary>
+    [Serializable]
+    class DestructorDefinition
+    {
+        #region プロパティ
+        /// <summary>
+        /// 名前
+        /// </summary>
+        public string Name { get; protected set; }
+
+        /// <summary>
+        /// コンテンツ
+        /// </summary>
+        public object Contents { get; protected set; }
+
+        /// <summary>
+        /// 修飾子
+        /// </summary>
+        public List<string> Modifiers { get; private set; }
+
+        /// <summary>
+        /// noexceptであるかどうか
+        /// </summary>
+        public bool IsNoexcept { get; protected set; }
+
+        /// <summary>
+        /// overrideであるかどうか
+        /// </summary>
+        public bool IsOverride { get; protected set; }
+
+        /// <summary>
+        /// 仮想関数であるかどうか
+        /// </summary>
+        public bool IsVirtual
+        {
+            get { return Modifiers.Contains("virtual"); }
+        }
+
+        /// <summary>
+        /// 純粋仮想関数であるか
+        /// </summary>
+        public bool IsPureVirtual
+        {
+            get
+            {
+                return (Contents.ToString() == " = 0 ;");
+            }
+        }
+
+        #endregion
+
+        #region コンストラクタ
+        /// <summary>
+        /// デストラクタの定義
+        /// </summary>
+        /// <param name="name">メソッド名</param>
+        /// <param name="contents">コンテンツ</param>
+        /// <param name="modifiers">修飾子</param>
+        /// <param name="isNoexcept">noexceptであるかどうか</param>
+        /// <param name="isOverride">overrideであるかどうか</param>
+        public DestructorDefinition(string name, object contents, IEnumerable<string> modifiers, bool isNoexcept, bool isOverride)
+        {
+            Name = name;
+            Contents = contents;
+            Modifiers = new List<string>(modifiers);
+            IsNoexcept = isNoexcept;
+            IsOverride = isOverride;
+        }
+
+        #endregion
+
+        #region メソッド
+        /// <summary>
+        /// 文字列を返す
+        /// </summary>
+        /// <returns>文字列</returns>
+        public override string ToString()
+        {
+            string result = "";
+            // 修飾子
+            foreach (string modifier in Modifiers)
+            {
+                result += (modifier + " ");
+            }
+            // メソッド名
+            result += ("~" + Name + " ()");
+            // noexcept
+            if (IsNoexcept) result += " noexcept";
+            // override
+            if (IsOverride) result += " override";
+            // コンテンツ
+            if (Contents is IgnoreObjectBlock)
+                result += "\r\n";
+            result += Contents.ToString();
+
+            return result;
+        }
+
+        #endregion
+
+    }
+
+    /// <summary>
     /// レイヤードメソッドの定義
     /// </summary>
+    [Serializable]
     class LayerdMethodDefinition
     {
         #region プロパティ
@@ -667,6 +897,11 @@ namespace LayerCompiler.Parsers.Model
         /// noexceptであるかどうか
         /// </summary>
         public bool IsNoexcept { get; protected set; }
+
+        /// <summary>
+        /// overrideであるかどうか
+        /// </summary>
+        public bool IsOverride { get; protected set; }
 
         /// <summary>
         /// 仮想関数であるかどうか
@@ -716,8 +951,9 @@ namespace LayerCompiler.Parsers.Model
         /// <param name="modifiers">修飾子</param>
         /// <param name="thisModifiers">修飾子</param>
         /// <param name="isNoexcept">noexceptであるかどうか</param>
+        /// <param name="isOverride">overrideであるかどうか</param>
         /// <param name="isBase">ベースメソッドであるかどうか</param>
-        public LayerdMethodDefinition(string name, VariableType returnType, IEnumerable<VariableDeclaration> parameters, object contents, IEnumerable<string> modifiers, IEnumerable<string> thisModifiers, bool isNoexcept, bool? isBase = null)
+        public LayerdMethodDefinition(string name, VariableType returnType, IEnumerable<VariableDeclaration> parameters, object contents, IEnumerable<string> modifiers, IEnumerable<string> thisModifiers, bool isNoexcept, bool isOverride, bool? isBase = null)
         {
             Name = name;
             ReturnType = returnType;
@@ -726,6 +962,7 @@ namespace LayerCompiler.Parsers.Model
             Modifiers = new List<string>(modifiers);
             ThisModifiers = new List<string>(thisModifiers);
             IsNoexcept = isNoexcept;
+            IsOverride = isOverride;
             IsBase = isBase;
         }
 
@@ -741,6 +978,39 @@ namespace LayerCompiler.Parsers.Model
         {
             IsBase = isBase;
             return this;
+        }
+
+        /// <summary>
+        /// メソッド定義が内容的に同じであるか
+        /// </summary>
+        /// <param name="obj">比較対象</param>
+        /// <returns>内容的に同じであるかどうか</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is LayerdMethodDefinition)
+            {
+                var lmd = (LayerdMethodDefinition)obj;
+                if ((lmd.Name == Name) && (lmd.Parameters.Count == Parameters.Count))
+                {
+                    int n = lmd.Parameters.Count;
+                    for (int i = 0; i < n; ++i)
+                    {
+                        if (!lmd.Parameters[i].Type.Equals(Parameters[i].Type))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -775,12 +1045,19 @@ namespace LayerCompiler.Parsers.Model
             }
             // noexcept
             if (IsNoexcept) result += " noexcept";
+            // override
+            if (IsOverride) result += " override";
             // コンテンツ
             if (Contents is IgnoreObjectBlock)
                 result += "\r\n";
             result += Contents.ToString();
 
             return result;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         #endregion
@@ -790,6 +1067,7 @@ namespace LayerCompiler.Parsers.Model
     /// <summary>
     /// イベントハンドラの定義
     /// </summary>
+    [Serializable]
     class EventHandlerDefinition : LayerdMethodDefinition
     {
         #region プロパティ
@@ -807,7 +1085,7 @@ namespace LayerCompiler.Parsers.Model
         /// <param name="eventName">イベント名</param>
         /// <param name="method">メソッド情報</param>
         public EventHandlerDefinition(string eventName, LayerdMethodDefinition method)
-            : base(method.Name, method.ReturnType, method.Parameters, method.Contents, method.Modifiers, method.ThisModifiers, method.IsNoexcept)
+            : base(method.Name, method.ReturnType, method.Parameters, method.Contents, method.Modifiers, method.ThisModifiers, method.IsNoexcept, method.IsOverride)
         {
             EventName = eventName;
         }

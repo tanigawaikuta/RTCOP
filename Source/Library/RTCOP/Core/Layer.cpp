@@ -140,22 +140,22 @@ void Layer::SetLinkedNextLayer(Layer* const layer)
 // イベント発生時に実行されるメソッド
 //------------------------------------------------------
 // アクティベート開始時に実行される
-void Layer::OnActivating()
+void Layer::_RTCOP_OnActivating()
 {
 }
 
 // アクティベート終了時に実行される
-void Layer::OnActivated()
+void Layer::_RTCOP_OnActivated()
 {
 }
 
 // ディアクティベート開始時に実行される
-void Layer::OnDeactivating()
+void Layer::_RTCOP_OnDeactivating()
 {
 }
 
 // ディアクティベート終了時に実行される
-void Layer::OnDeactivated()
+void Layer::_RTCOP_OnDeactivated()
 {
 }
 

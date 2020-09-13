@@ -1,5 +1,7 @@
 /Test/TestSpace/
 /Object/
+/Sample/*/bin/
+/Sample/*/obj/
 .vs/
 .DS_Store
 *~

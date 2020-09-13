@@ -1,0 +1,37 @@
+// Hello.lh
+
+// ベースレイヤ
+baselayer {
+// ベースクラス
+base class Hello
+{
+public:
+	Hello();
+	base void Print();
+};
+
+}
+
+// 英語レイヤ
+layer English
+{
+// 英語レイヤのパーシャルクラス
+partial class Hello
+{
+public:
+	partial void Print();
+};
+
+}
+
+// 日本語レイヤ
+layer Japanese
+{
+// 日本語レイヤのパーシャルクラス
+partial class Hello
+{
+public:
+	partial void Print();
+};
+
+}

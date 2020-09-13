@@ -69,11 +69,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\RTCOPObjectFile.cs">
-      <Link>Source\CodeGeneration\Model\RTCOPObjectFile.cs</Link>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\GeneratedCodes.cs">
+      <Link>Source\CodeGeneration\Model\GeneratedCodes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\LayerStructureFile.cs">
+      <Link>Source\CodeGeneration\Model\LayerStructureFile.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\RTCOPSourceFile.cs">
       <Link>Source\CodeGeneration\Model\RTCOPSourceFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCodeGenerator.cs">
+      <Link>Source\CodeGeneration\RTCOPCodeGenerator.cs</Link>
     </Compile>
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCompiler.cs">
       <Link>Source\CodeGeneration\RTCOPCompiler.cs</Link>
