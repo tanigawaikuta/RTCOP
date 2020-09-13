@@ -186,7 +186,12 @@
             開発環境
             </summary>
         </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.#ctor(System.String,System.String,LayerCompiler.DevelopmentTarget,LayerCompiler.DevelopmentEnvironment)">
+        <member name="P:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.IncludePaths">
+            <summary>
+            ヘッダファイルのディレクトリパス
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.#ctor(System.String,System.String,LayerCompiler.DevelopmentTarget,LayerCompiler.DevelopmentEnvironment,System.Collections.Generic.List{System.String})">
             <summary>
             RTCOPのコードジェネレータ
             </summary>
@@ -194,6 +199,7 @@
             <param name="lineTerminator">改行文字</param>
             <param name="target">開発対象</param>
             <param name="environment">開発環境</param>
+            <param name="includePaths">ヘッダファイルのディレクトリパス</param>
         </member>
         <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateCode(LayerCompiler.CodeGeneration.Model.LayerStructureFile,System.String)">
             <summary>

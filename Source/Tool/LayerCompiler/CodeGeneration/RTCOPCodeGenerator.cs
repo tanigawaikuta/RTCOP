@@ -37,6 +37,11 @@ namespace LayerCompiler.CodeGeneration
         /// </summary>
         public DevelopmentEnvironment Environment { get; protected set; }
 
+        /// <summary>
+        /// ヘッダファイルのディレクトリパス
+        /// </summary>
+        public List<string> IncludePaths { get; private set; }
+
         #endregion
 
         #region コンストラクタ
@@ -47,12 +52,14 @@ namespace LayerCompiler.CodeGeneration
         /// <param name="lineTerminator">改行文字</param>
         /// <param name="target">開発対象</param>
         /// <param name="environment">開発環境</param>
-        public RTCOPCodeGenerator(string nspace, string lineTerminator, DevelopmentTarget target, DevelopmentEnvironment environment)
+        /// <param name="includePaths">ヘッダファイルのディレクトリパス</param>
+        public RTCOPCodeGenerator(string nspace, string lineTerminator, DevelopmentTarget target, DevelopmentEnvironment environment, List<string> includePaths)
         {
             Namespace = nspace;
             LineTerminator = lineTerminator;
             Target = target;
             Environment = environment;
+            IncludePaths = includePaths;
         }
 
         #endregion
@@ -528,14 +535,24 @@ namespace LayerCompiler.CodeGeneration
             List<string> layerNamesH = new List<string>();
             foreach (var impFile in headerImportFilesArray)
             {
-                string fullPath = Path.GetFullPath(impFile.Param1);
+                string filePath = "";
+                foreach (var incpath in IncludePaths)
+                {
+                    string path = incpath + impFile.Param1;
+                    string fullPath = Path.GetFullPath(path);
+                    if (File.Exists(fullPath))
+                    {
+                        filePath = fullPath;
+                        break;
+                    }
+                }
                 foreach (var ls in layerStructures)
                 {
                     if (layerNamesH.Contains(ls.LayerName))
                     {
                         continue;
                     }
-                    if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == fullPath))
+                    if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                     {
                         stringBuilderForHeader.Append(@"#include """);
                         stringBuilderForHeader.Append(includeFilePath);
@@ -605,14 +622,24 @@ namespace LayerCompiler.CodeGeneration
             List<string> layerNamesS = new List<string>();
             foreach (var impFile in srcImportFilesArray)
             {
-                string fullPath = Path.GetFullPath(impFile.Param1);
+                string filePath = "";
+                foreach (var incpath in IncludePaths)
+                {
+                    string path = incpath + impFile.Param1;
+                    string fullPath = Path.GetFullPath(path);
+                    if (File.Exists(fullPath))
+                    {
+                        filePath = fullPath;
+                        break;
+                    }
+                }
                 foreach (var ls in layerStructures)
                 {
                     if (layerNamesS.Contains(ls.LayerName))
                     {
                         continue;
                     }
-                    if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == fullPath))
+                    if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                     {
                         stringBuilderForSource.Append(@"#include """);
                         stringBuilderForSource.Append(includeFilePath);
@@ -925,14 +952,24 @@ namespace LayerCompiler.CodeGeneration
                 layerNamesH.Add("baselayer");
                 foreach (var impFile in headerImportFilesArray)
                 {
-                    string fullPath = Path.GetFullPath(impFile.Param1);
+                    string filePath = "";
+                    foreach (var incpath in IncludePaths)
+                    {
+                        string path = incpath + impFile.Param1;
+                        string fullPath = Path.GetFullPath(path);
+                        if (File.Exists(fullPath))
+                        {
+                            filePath = fullPath;
+                            break;
+                        }
+                    }
                     foreach (var ls in layerStructures)
                     {
                         if (layerNamesH.Contains(ls.LayerName))
                         {
                             continue;
                         }
-                        if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == fullPath))
+                        if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                         {
                             stringBuilderForHeader.Append(@"#include """);
                             stringBuilderForHeader.Append(includeFilePath);
@@ -1015,8 +1052,18 @@ namespace LayerCompiler.CodeGeneration
                 List<string> layerNamesS = new List<string>() { layerStructure.LayerName };
                 foreach (var impFile in srcImportFilesArray)
                 {
-                    string fullPath = Path.GetFullPath(impFile.Param1);
-                    if (!layerNamesS.Contains("baselayer") && baseLayerStructure.ImportedLhInfomation.Exists((obj) => obj.FilePath == fullPath))
+                    string filePath = "";
+                    foreach (var incpath in IncludePaths)
+                    {
+                        string path = incpath + impFile.Param1;
+                        string fullPath = Path.GetFullPath(path);
+                        if (File.Exists(fullPath))
+                        {
+                            filePath = fullPath;
+                            break;
+                        }
+                    }
+                    if (!layerNamesS.Contains("baselayer") && baseLayerStructure.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                     {
                         stringBuilderForSource.Append(@"#include """);
                         stringBuilderForSource.Append(includeFilePath);
@@ -1029,7 +1076,7 @@ namespace LayerCompiler.CodeGeneration
                         {
                             continue;
                         }
-                        if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == fullPath))
+                        if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                         {
                             stringBuilderForSource.Append(@"#include """);
                             stringBuilderForSource.Append(includeFilePath);
@@ -1078,6 +1125,7 @@ namespace LayerCompiler.CodeGeneration
                     stringBuilderForSource.Append(@" = sizeof(volatile void*) * numOfBaseMethods[");
                     stringBuilderForSource.Append(classCount);
                     stringBuilderForSource.AppendLine(@"];");
+                    stringBuilderForSource.Append("\t");
                     stringBuilderForSource.Append(@"volatile void** virtualFunctionTable");
                     stringBuilderForSource.Append(classCount);
                     stringBuilderForSource.Append("\t");
@@ -1800,9 +1848,15 @@ namespace LayerCompiler.CodeGeneration
                     stringBuilder.Append(" ");
                     indentFlag = false;
                 }
+                else if (item is PreprocessDirective)
+                {
+                    if (indentFlag) addIndent(indent);
+                    stringBuilder.AppendLine(item.ToString());
+                    indentFlag = true;
+                }
                 else
                 {
-                    addIndent(indent);
+                    if (indentFlag) addIndent(indent);
                     stringBuilder.AppendLine(item.ToString());
                     indentFlag = true;
                 }

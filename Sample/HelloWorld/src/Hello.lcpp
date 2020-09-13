@@ -20,23 +20,23 @@ void Hello::Print()
 // 英語レイヤ
 layer English
 {
-// パーシャルメソッド
-void Hello::Print()
-{
-	printf("Hello World\n");
-	proceed();
-}
+	// パーシャルメソッド
+	void Hello::Print()
+	{
+		printf("Hello World\n");
+		proceed();
+	}
 
 }
 
 // 日本語レイヤ
 layer Japanese
 {
-// パーシャルメソッド
-void Hello::Print()
-{
-	printf("こんにちは世界\n");
-	proceed();
-}
+	// パーシャルメソッド
+	void Hello::Print()
+	{
+		printf("こんにちは世界\n");
+		proceed();
+	}
 
 }

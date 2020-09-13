@@ -7,7 +7,10 @@
 #include <iostream>
 #include <cstring>
 
+#include "stdio.h"
 
+#include "./src/Generated/BaseLayer.h"
+#include "./src/Generated/Japanese.h"
 #include "./src/Generated/English.h"
 
 namespace RTCOP {
@@ -22,7 +25,7 @@ English::English(const int id, const char* const name, int numOfBaseClasses, int
 	:RTCOP::Core::Layer(id, name, numOfBaseClasses, numOfBaseMethods)
 {
 	int size0 = sizeof(volatile void*) * numOfBaseMethods[0];
-volatile void** virtualFunctionTable0	 = DependentCode::baselayer::Hello::GetVirtualFunctionTable(this);
+	volatile void** virtualFunctionTable0	 = DependentCode::baselayer::Hello::GetVirtualFunctionTable(this);
 	std::memcpy(_Private->_VirtualFunctionTables[0], virtualFunctionTable0, size0);
 	_Private->_VirtualFunctionTables[0][1] = 0;
 }
@@ -66,7 +69,6 @@ void English::_RTCOP_OnDeactivated()
 } // namespace Generated {}
 } // namespace RTCOP {}
 
-#include "stdio.h"
 namespace English
 {
 void Hello::Print ()

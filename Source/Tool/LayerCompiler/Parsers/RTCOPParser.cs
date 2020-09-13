@@ -415,6 +415,8 @@ namespace LayerCompiler.Parsers
                                                     .Or(BaseClassDefinition)
                                                     .Or(PartialClassDefinition)
                                                     .Or(NormalClassDefinition)
+                                                    .Or(PreprocessParser.ImportLayerHeader)
+                                                    .Or(PreprocessParser.Include)
                                                     .Or(IgnoreParser.IgnoreObject);
 
         /// <summary>

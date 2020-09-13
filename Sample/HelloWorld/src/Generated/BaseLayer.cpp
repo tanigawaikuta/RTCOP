@@ -7,8 +7,11 @@
 #include "RTCOP/Core/PartialClassMembers.h"
 #include <cstring>
 
+#include "stdio.h"
 
 #include "./src/Generated/BaseLayer.h"
+#include "./src/Generated/English.h"
+#include "./src/Generated/Japanese.h"
 
 namespace RTCOP {
 namespace Generated {
@@ -38,7 +41,6 @@ void* BaseLayer::InitializeLayerdObject(void* obj, int classID)
 } // namespace Generated {}
 } // namespace RTCOP {}
 
-#include "stdio.h"
 namespace baselayer
 {
 Hello :: Hello ( ) {

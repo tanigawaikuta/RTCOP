@@ -17,6 +17,11 @@ namespace LayerCompiler.CodeGeneration
     /// </summary>
     class RTCOPPreprocessor
     {
+        #region フィールド
+        private List<string> _ImportedFileNames = new List<string>();
+
+        #endregion
+
         #region プロパティ
         /// <summary>
         /// レイヤコンパイラに与えるマクロ定義
@@ -64,6 +69,7 @@ namespace LayerCompiler.CodeGeneration
         public RTCOPSourceFile Run(RTCOPSourceFile inputFile)
         {
             var macros = new List<PreprocessDirective>(DefinedMacros);
+            _ImportedFileNames.Clear();
             return Run_Private(inputFile, macros);
         }
 
@@ -127,10 +133,14 @@ namespace LayerCompiler.CodeGeneration
                                     string fullpath = Path.GetFullPath(path);
                                     if (File.Exists(fullpath))
                                     {
-                                        if (importingFiles.Exists((file) => file.FilePath == fullpath))
+                                        if (_ImportedFileNames.Contains(fullpath))
                                         {
                                             // 同じパスのファイルは二度読み込まないようにする
                                             goto EndImport;
+                                        }
+                                        else
+                                        {
+                                            _ImportedFileNames.Add(fullpath);
                                         }
                                         // ファイルオープン
                                         RTCOPSourceFile src = null;

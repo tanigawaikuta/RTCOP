@@ -15,23 +15,23 @@ public:
 // 英語レイヤ
 layer English
 {
-// 英語レイヤのパーシャルクラス
-partial class Hello
-{
-public:
-	partial void Print();
-};
+	// パーシャルクラス
+	partial class Hello
+	{
+	public:
+		partial void Print();
+	};
 
 }
 
 // 日本語レイヤ
 layer Japanese
 {
-// 日本語レイヤのパーシャルクラス
-partial class Hello
-{
-public:
-	partial void Print();
-};
+	// パーシャルクラス
+	partial class Hello
+	{
+	public:
+		partial void Print();
+	};
 
 }

@@ -120,7 +120,7 @@ namespace LayerCompiler
             // プリプロセッサ・コンパイラの生成
             _RTCOPPreprocessor = new RTCOPPreprocessor(Macros, IncludePaths, Encoding);
             _RTCOPCompiler = new RTCOPCompiler();
-            _RTCOPCodeGenerator = new RTCOPCodeGenerator(Namespace, LineTerminator, Target, Environment);
+            _RTCOPCodeGenerator = new RTCOPCodeGenerator(Namespace, LineTerminator, Target, Environment, IncludePaths);
         }
 
         #endregion
@@ -411,7 +411,7 @@ namespace LayerCompiler
             {
                 string filepath = OutputFile + filename;
                 string dirpath = Path.GetDirectoryName(filepath);
-                if (Directory.Exists(dirpath))
+                if (!Directory.Exists(dirpath))
                 {
                     Directory.CreateDirectory(dirpath);
                 }
