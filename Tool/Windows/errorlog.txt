@@ -1,23 +1,19 @@
 ====例外クラスの型====
-System.Exception
+System.ArgumentOutOfRangeException
 ====例外メッセージ====
-ソースファイルが1つも無いです。
+インデックスが範囲を超えています。負でない値で、コレクションのサイズよりも小さくなければなりません。
+パラメーター名:index
 ====スタックトレース====
-   場所 LayerCompiler.CompileManager.Compile()
-   場所 LayerCompiler.Program.Main(String[] args)
-
-sX86VisualStudio(GeneratedCodes result, LayerStructure baseLayerStructure, List`1 layerStructures, List`1 baseClassNameList, List`1 baseMethodLists, String includeFilePath)
+   場所 System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   場所 System.Collections.Generic.List`1.get_Item(Int32 index)
+   場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX64VisualStudio(GeneratedCodes result, LayerStructure baseLayerStructure, List`1 layerStructures, List`1 baseClassNameList, List`1 baseMethodLists, String includeFilePath)
    場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCode(GeneratedCodes result, LayerStructure baseLayerStructure, List`1 layerStructures, List`1 baseClassNameList, List`1 baseMethodLists, String includeFilePath)
    場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateCode(LayerStructureFile mergedLSFile, String includeFilePath)
    場所 LayerCompiler.CompileManager.GenerateCode(LayerStructureFile mergedLSFile)
    場所 LayerCompiler.CompileManager.Compile()
    場所 LayerCompiler.Program.Main(String[] args)
 
-coding encoding, Int32 bufferSize, Boolean checkHost)
-   場所 System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding)
-   場所 LayerCompiler.CompileManager.GenerateCode(LayerStructureFile mergedLSFile)
-   場所 LayerCompiler.CompileManager.Compile()
-   場所 LayerCompiler.Program.Main(String[] args)
+ng[] args)
 
   場所 LayerCompiler.Program.Main(String[] args)
 

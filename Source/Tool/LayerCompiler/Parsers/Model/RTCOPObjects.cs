@@ -636,6 +636,16 @@ namespace LayerCompiler.Parsers.Model
 
         #region メソッド
         /// <summary>
+        /// メソッド実装に対応するメソッド定義を返す
+        /// </summary>
+        /// <returns>メソッド定義</returns>
+        public LayerdMethodDefinition ToLayerdMethodDefinition()
+        {
+            var result = new LayerdMethodDefinition(MethodName, ReturnType, Parameters, Contents, new string[] { }, ThisModifiers, IsNoexcept, false);
+            return result;
+        }
+
+        /// <summary>
         /// 文字列を返す
         /// </summary>
         /// <returns>文字列</returns>

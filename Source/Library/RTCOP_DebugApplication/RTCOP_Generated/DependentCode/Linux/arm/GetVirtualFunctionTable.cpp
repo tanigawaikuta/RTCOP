@@ -16,7 +16,7 @@
 #ifdef LINUX_ARM
 
 // 仮想関数テーブル
-asm volatile(".rtcop_vft1: .word _ZTVN5RTCOP4Core12LayerdObjectI5HelloEE+8");
+asm volatile(".rtcop_vft1: .word _ZTVN5RTCOP4Core12LayerdObjectIN9baselayer5HelloEEE+8");
 asm volatile(".rtcop_vft2: .word _ZTVN5RTCOP9Generated19JapaneseLayer_HelloE+8");
 asm volatile(".rtcop_vft3: .word _ZTVN5RTCOP9Generated18EnglishLayer_HelloE+8");
 

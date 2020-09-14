@@ -25,7 +25,7 @@ Layer_Private::Layer_Private(const int id, const char* const name, int numOfBase
 	for (int i = 0; i < numOfBaseClasses; ++i)
 	{
 		int num = numOfBaseMethods[i];
-		vftables[i] = new volatile void*[num];		// 時間短縮のため初期化不要
+		vftables[i] = new volatile void*[num] { 0 };
 		vftablesForProceeding[i] = new volatile void*[num] { 0 };
 	}
 	// メンバ変数に設定

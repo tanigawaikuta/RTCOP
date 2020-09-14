@@ -12,8 +12,8 @@
 #ifdef MACOS_X64
 
 // Finalizer
-asm(".rtcop_vfaddr1: .quad __ZN5RTCOP9Generated19JapaneseLayer_Hello21_FinalizePartialClassEv");
-asm(".rtcop_vfaddr2: .quad __ZN5RTCOP9Generated18EnglishLayer_Hello21_FinalizePartialClassEv");
+asm(".rtcop_vfaddr1: .quad __ZN5RTCOP9Generated19JapaneseLayer_Hello27_RTCOP_FinalizePartialClassEv");
+asm(".rtcop_vfaddr2: .quad __ZN5RTCOP9Generated18EnglishLayer_Hello27_RTCOP_FinalizePartialClassEv");
 
 namespace RTCOP {
 namespace Generated {

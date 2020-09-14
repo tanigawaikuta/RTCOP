@@ -27,7 +27,7 @@ volatile void** GetVirtualFunctionTable(BaseLayer* layer)
 	// 仮想関数テーブルの取得
 	// 元のHelloは_ZTV5Hello
 	volatile void** vft = 0;
-	asm volatile("movl $__ZTVN5RTCOP4Core12LayerdObjectI5HelloEE+8, %0" : "=r"(vft) : : "memory");
+	asm volatile("movl $__ZTVN5RTCOP4Core12LayerdObjectIN9baselayer5HelloEEE+8, %0" : "=r"(vft) : : "memory");
 
 	return vft;
 }

@@ -16,7 +16,7 @@
 #ifdef MACOS_X64
 
 // 仮想関数テーブル
-asm(".rtcop_vft1: .quad __ZTVN5RTCOP4Core12LayerdObjectI5HelloEE+16");
+asm(".rtcop_vft1: .quad __ZTVN5RTCOP4Core12LayerdObjectIN9baselayer5HelloEEE+16");
 asm(".rtcop_vft2: .quad __ZTVN5RTCOP9Generated19JapaneseLayer_HelloE+16");
 asm(".rtcop_vft3: .quad __ZTVN5RTCOP9Generated18EnglishLayer_HelloE+16");
 

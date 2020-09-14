@@ -33,7 +33,7 @@ Core::RTCOPManager* RTCOPAppInitializer::InitializeRTCOPManager()
 	// レイヤ、クラス、メソッドの数を設定
 	int numOfLayers = 3;
 	int numOfClasses = 1;
-	int* numOfMethods = new int[numOfClasses]{ 3 };
+	int* numOfMethods = new int[numOfClasses]{ 4 };
 #if defined(LINUX_X86) || defined(LINUX_X64) || defined(LINUX_ARM) || defined(LINUX_ARM64) || defined(WIN32_MINGW) || defined(WIN64_MINGW) || defined(MACOS_X64)
 	for (int i = 0; i < numOfClasses; ++i)
 		++numOfMethods[i];

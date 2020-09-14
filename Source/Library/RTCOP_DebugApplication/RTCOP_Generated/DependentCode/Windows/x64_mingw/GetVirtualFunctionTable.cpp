@@ -16,7 +16,7 @@
 #ifdef WIN64_MINGW
 
 // 仮想関数テーブル
-asm volatile(".rtcop_vft1: .quad _ZTVN5RTCOP4Core12LayerdObjectI5HelloEE+16");
+asm volatile(".rtcop_vft1: .quad _ZTVN5RTCOP4Core12LayerdObjectIN9baselayer5HelloEEE+16");
 asm volatile(".rtcop_vft2: .quad _ZTVN5RTCOP9Generated19JapaneseLayer_HelloE+16");
 asm volatile(".rtcop_vft3: .quad _ZTVN5RTCOP9Generated18EnglishLayer_HelloE+16");
 

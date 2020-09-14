@@ -19,7 +19,7 @@ namespace DependentCode {
 volatile void* GetLayerdObjectFinalizer(JapaneseLayer_Hello* obj)
 {
 	volatile void* vfp = 0;
-	asm volatile("movl $_ZN5RTCOP9Generated19JapaneseLayer_Hello21_FinalizePartialClassEv, %0" : "=r"(vfp) : : "memory");
+	asm volatile("movl $_ZN5RTCOP9Generated19JapaneseLayer_Hello27_RTCOP_FinalizePartialClassEv, %0" : "=r"(vfp) : : "memory");
 
 	return vfp;
 }
@@ -28,7 +28,7 @@ volatile void* GetLayerdObjectFinalizer(JapaneseLayer_Hello* obj)
 volatile void* GetLayerdObjectFinalizer(EnglishLayer_Hello* obj)
 {
 	volatile void* vfp = 0;
-	asm volatile("movl $_ZN5RTCOP9Generated18EnglishLayer_Hello21_FinalizePartialClassEv, %0" : "=r"(vfp) : : "memory");
+	asm volatile("movl $_ZN5RTCOP9Generated18EnglishLayer_Hello27_RTCOP_FinalizePartialClassEv, %0" : "=r"(vfp) : : "memory");
 
 	return vfp;
 }

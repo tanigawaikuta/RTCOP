@@ -78,6 +78,38 @@
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\RTCOPSourceFile.cs">
       <Link>Source\CodeGeneration\Model\RTCOPSourceFile.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_APIHeaders.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_APIHeaders.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_BaseLayer.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_BaseLayer.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_DependentCode.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_DependentCode.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_DependentCodeForLinux.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_DependentCodeForLinux.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_DependentCodeForMac.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_DependentCodeForMac.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_DependentCodeForWindows.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_DependentCodeForWindows.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_Layers.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_Layers.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCG_RTCOPAppInitializer.cs">
+      <Link>Source\CodeGeneration\RTCOPCG_RTCOPAppInitializer.cs</Link>
+      <DependentUpon>RTCOPCodeGenerator.cs</DependentUpon>
+    </Compile>
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\RTCOPCodeGenerator.cs">
       <Link>Source\CodeGeneration\RTCOPCodeGenerator.cs</Link>
     </Compile>

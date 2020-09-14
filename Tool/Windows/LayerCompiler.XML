@@ -234,7 +234,7 @@
             各種レイヤ
             </summary>
         </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForLayers(System.Collections.Generic.IEnumerable{System.Object},LayerCompiler.CodeGeneration.Model.LayerStructure,System.Int32,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.Int32,System.String,System.Boolean)">
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForLayers(System.Collections.Generic.IEnumerable{System.Object},LayerCompiler.CodeGeneration.Model.LayerStructure,System.Int32,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.Int32,System.String,System.Boolean)">
             <summary>
             要素の集合を文字列に変換
             </summary>
@@ -1356,6 +1356,12 @@
             <param name="contents">コンテンツ</param>
             <param name="thisModifiers">修飾子</param>
             <param name="isNoexcept">noexceptであるかどうか</param>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.MethodImplementation.ToLayerdMethodDefinition">
+            <summary>
+            メソッド実装に対応するメソッド定義を返す
+            </summary>
+            <returns>メソッド定義</returns>
         </member>
         <member name="M:LayerCompiler.Parsers.Model.MethodImplementation.ToString">
             <summary>
