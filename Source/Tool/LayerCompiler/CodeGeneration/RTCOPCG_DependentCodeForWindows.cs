@@ -947,6 +947,7 @@ namespace LayerCompiler.CodeGeneration
             stringBuilderForSource.AppendLine(@"} // namespace Generated {}");
             stringBuilderForSource.AppendLine(@"} // namespace RTCOP {}");
             result.CodeDictionary[@"DependentCode.cpp"] = stringBuilderForSource.ToString();
+            result.CodeDictionary[@"DependentCodeAsm.asm"] = "";
         }
 
 
