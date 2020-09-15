@@ -14,14 +14,12 @@ enum class LayerID : int
 
 inline void activate(Generated::LayerID layerid)
 {
-	
-Activate((int)layerid);
+	Activate((int)layerid);
 }
 
 inline void deactivate(Generated::LayerID layerid)
 {
-	
-Deactivate((int)layerid);
+	Deactivate((int)layerid);
 }
 
 } // namespace RTCOP {}

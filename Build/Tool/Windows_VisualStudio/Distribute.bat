@@ -4,7 +4,7 @@ chcp 65001
 cd /d %~dp0
 
 set ROOT_DIR=..\..\..
-set TOOL_DIR=%ROOT_DIR%\Tool\Windows
+set TOOL_DIR=%ROOT_DIR%\Tool
 set TEST_DIR=%ROOT_DIR%\Test\TestSpace\Windows\Tool
 
 echo ファイルコピー:

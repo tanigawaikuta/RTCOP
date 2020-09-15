@@ -14,13 +14,13 @@ int main()
 	// ベースメソッドの実行
 	hello->Print();
 
-	// JapaneseLayerをアクティベート
-	activate(RTCOP::Generated::LayerID::Japanese);
-	hello->Print();
-	
 	// EnglishLayerをアクティベート
-	deactivate(RTCOP::Generated::LayerID::Japanese);
 	activate(RTCOP::Generated::LayerID::English);
+	hello->Print();
+
+	// JapaneseLayerをアクティベート
+	deactivate(RTCOP::Generated::LayerID::English);
+	activate(RTCOP::Generated::LayerID::Japanese);
 	hello->Print();
 
 	// Helloのdelete

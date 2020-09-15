@@ -60,6 +60,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="src\Generated\DependentCodeAsm.asm" />
+    <MASM Include="src\Generated\DependentCodeAsm.asm">
+      <Filter>Generated</Filter>
+    </MASM>
   </ItemGroup>
 </Project>

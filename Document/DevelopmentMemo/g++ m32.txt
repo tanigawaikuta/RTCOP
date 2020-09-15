@@ -1,3 +1,0 @@
-apt-get install ia32-libs
-apt-get install g++-multilib
-

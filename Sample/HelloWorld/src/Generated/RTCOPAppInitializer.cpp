@@ -1,10 +1,10 @@
-#include "./src/Generated/RTCOPAppInitializer.h"
+#include "./Generated/RTCOPAppInitializer.h"
 #include "RTCOP/Core/RTCOPManager.h"
 #include "RTCOP/Core/LayerdObjectInitializer.h"
 #include "RTCOP/Core/LayerActivater.h"
-#include "./src/Generated/BaseLayer.h"
-#include "./src/Generated/English.h"
-#include "./src/Generated/Japanese.h"
+#include "./Generated/BaseLayer.h"
+#include "./Generated/English.h"
+#include "./Generated/Japanese.h"
 
 namespace RTCOP {
 namespace Generated {

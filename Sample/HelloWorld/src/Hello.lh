@@ -1,14 +1,15 @@
 // Hello.lh
 
 // ベースレイヤ
-baselayer {
-// ベースクラス
-base class Hello
+baselayer
 {
-public:
-	Hello();
-	base void Print();
-};
+	// ベースクラス
+	base class Hello
+	{
+	public:
+		Hello();
+		base void Print();
+	};
 
 }
 

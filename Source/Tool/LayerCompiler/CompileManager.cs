@@ -51,6 +51,11 @@ namespace LayerCompiler
         public List<string> IncludePaths { get; protected set; } = new List<string>() { "./" };
 
         /// <summary>
+        /// ソースファイルのルートパス
+        /// </summary>
+        public string SourceRootPath { get; protected set; } = "./";
+
+        /// <summary>
         /// レイヤクラスのデフォルトの名前空間 (現時点では変更不可)
         /// </summary>
         public string Namespace { get; protected set; } = "RTCOP::Generated";
@@ -241,13 +246,13 @@ namespace LayerCompiler
                                 case "linux_arm":
                                 case "armlinux":
                                 case "arm_linux":
-                                    Target = DevelopmentTarget.LinuxX86;
+                                    Target = DevelopmentTarget.LinuxARM;
                                     break;
                                 case "linuxarm64":
                                 case "linux_arm64":
                                 case "arm64linux":
                                 case "arm64_linux":
-                                    Target = DevelopmentTarget.LinuxX64;
+                                    Target = DevelopmentTarget.LinuxARM64;
                                     break;
                                 case "mac":
                                 case "macos":
@@ -302,6 +307,16 @@ namespace LayerCompiler
                                 default:
                                     break;
                             }
+                        }
+                        offset = 2;
+                        break;
+                    // ソースのルートフォルダ
+                    case "-r":
+                    case "-R":
+                        if ((i + 1) < args.Length)
+                        {
+                            string arg2 = args[i + 1];
+                            SourceRootPath = getPath(arg2);
                         }
                         offset = 2;
                         break;
@@ -406,7 +421,21 @@ namespace LayerCompiler
         /// <param name="mergedLSFile">マージ済みのレイヤ構造ファイル</param>
         private void GenerateCode(LayerStructureFile mergedLSFile)
         {
-            var result = _RTCOPCodeGenerator.GenerateCode(mergedLSFile, OutputFile);
+            // ソースコードディレクトリのルートパスを取得
+            string includeFilePath = OutputFile;
+            if (SourceRootPath != "/")
+            {
+                string generateCodePath = Path.GetFullPath(OutputFile);
+                string sourceRootPath = Path.GetFullPath(SourceRootPath);
+                if (generateCodePath.StartsWith(sourceRootPath))
+                {
+                    includeFilePath = generateCodePath.Substring(sourceRootPath.Length);
+                    includeFilePath = includeFilePath.Replace('\\', '/');
+                    includeFilePath = "./" + includeFilePath;
+                }
+            }
+            // コードジェネレート
+            var result = _RTCOPCodeGenerator.GenerateCode(mergedLSFile, includeFilePath);
             foreach (string filename in result.CodeDictionary.Keys)
             {
                 string filepath = OutputFile + filename;

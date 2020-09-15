@@ -858,9 +858,9 @@ namespace LayerCompiler.CodeGeneration
                             for (int i = 1; i < n; ++i)
                             {
                                 stringBuilder.Append(", ");
-                                stringBuilder.Append(mi.Parameters[0].Type);
+                                stringBuilder.Append(mi.Parameters[i].Type);
                                 stringBuilder.Append(" ");
-                                stringBuilder.Append(mi.Parameters[0].Name);
+                                stringBuilder.Append(mi.Parameters[i].Name);
                             }
                         }
                         stringBuilder.Append(@") { RTCOP::Generated::DependentCode::");

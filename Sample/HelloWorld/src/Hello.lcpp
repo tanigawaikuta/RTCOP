@@ -3,17 +3,18 @@
 #include <stdio.h>
 
 // ベースレイヤ
-baselayer{
-// コンストラクタ
-Hello::Hello()
+baselayer
 {
-}
+	// コンストラクタ
+	Hello::Hello()
+	{
+	}
 
-// ベースメソッド
-void Hello::Print()
-{
-	printf("BaseClass\n");
-}
+	// ベースメソッド
+	void Hello::Print()
+	{
+		printf("BaseClass\n");
+	}
 
 }
 
@@ -24,7 +25,6 @@ layer English
 	void Hello::Print()
 	{
 		printf("Hello World\n");
-		proceed();
 	}
 
 }
@@ -36,7 +36,6 @@ layer Japanese
 	void Hello::Print()
 	{
 		printf("こんにちは世界\n");
-		proceed();
 	}
 
 }

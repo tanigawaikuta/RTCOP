@@ -21,6 +21,8 @@ namespace LayerCompiler.CodeGeneration
         /// </summary>
         private void GenerateDependentCodeForMacOSX64(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists, string includeFilePath)
         {
+            // まったく同じ
+            GenerateDependentCodeForWindowsX64MinGW(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
         }
 
     }

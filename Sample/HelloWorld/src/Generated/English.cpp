@@ -1,17 +1,17 @@
-#include "./src/Generated/API.h"
-#include "./src/Generated/Layer_Private.h"
-#include "./src/Generated/LayerdObject_Private.h"
+#include "./Generated/API.h"
+#include "./Generated/Layer_Private.h"
+#include "./Generated/LayerdObject_Private.h"
 #include "RTCOP/Framework.h"
 #include "RTCOP/Core/RTCOPManager.h"
-#include "./src/Generated/DependentCode.h"
+#include "./Generated/DependentCode.h"
 #include <iostream>
 #include <cstring>
 
 #include "stdio.h"
 
-#include "./src/Generated/BaseLayer.h"
-#include "./src/Generated/Japanese.h"
-#include "./src/Generated/English.h"
+#include "./Generated/BaseLayer.h"
+#include "./Generated/Japanese.h"
+#include "./Generated/English.h"
 
 namespace RTCOP {
 namespace Generated {
@@ -76,7 +76,6 @@ void Hello::Print ()
 	Hello::PartialClassMembers* layer_members = (Hello::PartialClassMembers*)_Private->_PartialClassMembers[1];
 	auto proceed = [this, layer_members]() { RTCOP::Generated::DependentCode::baselayer::Hello::ExecuteProceed_Print(this, layer_members->_VirtualFunctionTableForProceeding[0]); };
 	printf ( "Hello World\n" ) ;
-	proceed ( ) ;
 
 }
 

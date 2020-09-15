@@ -165,6 +165,110 @@
             <summary>
             RTCOPのコードジェネレータ
             </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+            <summary>
+            RTCOPのコードジェネレータ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateAPIHeaders(LayerCompiler.CodeGeneration.Model.GeneratedCodes,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            API.h、COPNewForApp.h、ActivationForApp.hの生成
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateBaseLayer(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            ベースレイヤ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForBaseLayer(System.Collections.Generic.IEnumerable{System.Object},System.Int32)">
+            <summary>
+            要素の集合を文字列に変換
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCode(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxX64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux 64bit)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxX86(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux 32bit)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxARM(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux ARM)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxARM64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Linux ARM64)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForMacOSX64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(macOS)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX64VisualStudio(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 64bit Visual Studio)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX86VisualStudio(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 32bit Visual Studio)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX64MinGW(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 64bit minGW)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX86MinGW(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
+            <summary>
+            環境依存コード(Windows 32bit minGW)
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateLayers(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.String)">
+            <summary>
+            各種レイヤ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForLayers(System.Collections.Generic.IEnumerable{System.Object},LayerCompiler.CodeGeneration.Model.LayerStructure,System.Int32,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.Int32,System.String,System.Boolean)">
+            <summary>
+            要素の集合を文字列に変換
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateRTCOPAppInitializer(LayerCompiler.CodeGeneration.Model.GeneratedCodes,System.Int32,System.Int32,System.Int32[],System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.String)">
+            <summary>
+            RTCOPAppInitializerの生成
+            </summary>
         </member>
         <member name="P:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.Namespace">
             <summary>
@@ -208,86 +312,6 @@
             <param name="mergedLSFile">マージ済みのレイヤ構造ファイル</param>
             <param name="includeFilePath">インクルードファイルパス</param>
             <returns>生成後のソースコード</returns>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateRTCOPAppInitializer(LayerCompiler.CodeGeneration.Model.GeneratedCodes,System.Int32,System.Int32,System.Int32[],System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.String)">
-            <summary>
-            RTCOPAppInitializerの生成
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateAPIHeaders(LayerCompiler.CodeGeneration.Model.GeneratedCodes,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.String)">
-            <summary>
-            API.h、COPNewForApp.h、ActivationForApp.hの生成
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateBaseLayer(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.String)">
-            <summary>
-            ベースレイヤ
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForBaseLayer(System.Collections.Generic.IEnumerable{System.Object},System.Int32)">
-            <summary>
-            要素の集合を文字列に変換
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateLayers(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.String)">
-            <summary>
-            各種レイヤ
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.ItemsToStringForLayers(System.Collections.Generic.IEnumerable{System.Object},LayerCompiler.CodeGeneration.Model.LayerStructure,System.Int32,System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.ConstructorDefinition}},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.Int32,System.String,System.Boolean)">
-            <summary>
-            要素の集合を文字列に変換
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCode(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX64VisualStudio(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Windows 64bit Visual Studio)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX86VisualStudio(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Windows 32bit Visual Studio)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX64MinGW(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Windows 64bit minGW)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForWindowsX86MinGW(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Windows 32bit minGW)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxX64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Linux 64bit)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxX86(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Linux 32bit)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxARM(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Linux ARM)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForLinuxARM64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(Linux ARM64)
-            </summary>
-        </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateDependentCodeForMacOSX64(LayerCompiler.CodeGeneration.Model.GeneratedCodes,LayerCompiler.CodeGeneration.Model.LayerStructure,System.Collections.Generic.List{LayerCompiler.CodeGeneration.Model.LayerStructure},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.Collections.Generic.List{LayerCompiler.Parsers.Model.LayerdMethodDefinition}},System.String)">
-            <summary>
-            環境依存コード(macOS)
-            </summary>
         </member>
         <member name="T:LayerCompiler.CodeGeneration.RTCOPCompiler">
             <summary>
@@ -408,6 +432,11 @@
         <member name="P:LayerCompiler.CompileManager.IncludePaths">
             <summary>
             ヘッダファイルのディレクトリパス
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.SourceRootPath">
+            <summary>
+            ソースファイルのルートパス
             </summary>
         </member>
         <member name="P:LayerCompiler.CompileManager.Namespace">

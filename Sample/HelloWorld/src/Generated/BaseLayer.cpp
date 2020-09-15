@@ -1,7 +1,7 @@
-#include "./src/Generated/API.h"
-#include "./src/Generated/Layer_Private.h"
-#include "./src/Generated/LayerdObject_Private.h"
-#include "./src/Generated/DependentCode.h"
+#include "./Generated/API.h"
+#include "./Generated/Layer_Private.h"
+#include "./Generated/LayerdObject_Private.h"
+#include "./Generated/DependentCode.h"
 #include "RTCOP/Framework.h"
 #include "RTCOP/Core/RTCOPManager.h"
 #include "RTCOP/Core/PartialClassMembers.h"
@@ -9,9 +9,9 @@
 
 #include "stdio.h"
 
-#include "./src/Generated/BaseLayer.h"
-#include "./src/Generated/English.h"
-#include "./src/Generated/Japanese.h"
+#include "./Generated/BaseLayer.h"
+#include "./Generated/English.h"
+#include "./Generated/Japanese.h"
 
 namespace RTCOP {
 namespace Generated {

@@ -6,7 +6,7 @@
 #include "RTCOP/Core/PartialClassMembers.h"
 
 
-#include "./src/Generated/BaseLayer.h"
+#include "./Generated/BaseLayer.h"
 
 namespace RTCOP {
 namespace Generated {
