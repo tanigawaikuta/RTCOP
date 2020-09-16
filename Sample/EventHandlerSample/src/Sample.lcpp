@@ -1,0 +1,61 @@
+// Sample.lcpp
+#import_lh "Sample.lh"
+#include <stdio.h>
+
+// ベースレイヤ
+baselayer
+{
+	// コンストラクタ
+	Sample::Sample()
+	{
+		printf("baselayer::Sampleコンストラクタの実行\n");
+	}
+
+	// デストラクタ
+	Sample::~Sample()
+	{
+		printf("baselayer::Sampleデストラクタの実行\n");
+	}
+
+}
+
+// レイヤ1
+layer Layer1
+{
+	// Sampleのcopnewの際に実行されるイベントハンドラ
+	void Sample::Initialize()
+	{
+		printf("Layer1::Sample::Initializeの実行\n");
+	}
+
+	// Sampleのdeleteの際に実行されるイベントハンドラ
+	void Sample::Finalize()
+	{
+		printf("Layer1::Sample::Finalizeの実行\n");
+	}
+
+	// アクティベート開始時に実行されるイベントハンドラ
+	void OnActivating()
+	{
+		printf("Layer1::OnActivatingの実行\n");
+	}
+
+	// アクティベート終了時に実行されるイベントハンドラ
+	void OnActivated()
+	{
+		printf("Layer1::OnActivatedの実行\n");
+	}
+
+	// ディアクティベート開始時に実行されるイベントハンドラ
+	void OnDeactivating()
+	{
+		printf("Layer1::OnDeactivatingの実行\n");
+	}
+
+	// ディアクティベート終了時に実行されるイベントハンドラ
+	void OnDeactivated()
+	{
+		printf("Layer1::OnDeactivatedの実行\n");
+	}
+
+}

@@ -18,23 +18,16 @@ namespace LayerCompiler
         {
             string src =
 @"
-#define aaaa 2
-#define bbbb -2
-#define aho(aa, bb) aa##bb
-
-#include <stdio.h>
-int a = 0;
-
-aho(base, layer)
+baselayer
 {
-    base class Aho : paka
-    {
-#if aaaa - bbbb
-        void m1(){}
-        void m2(){};
-        void m3();
-#endif
-    };
+	// ベースクラス
+	base class Sample
+	{
+	public:
+		Sample();
+		virtual ~Sample();
+	};
+
 }
 ";
             var text = RTCOPParser.BaseLayerDefinition.TokenWithSkipComment().Many().Parse(src);

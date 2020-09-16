@@ -1,0 +1,18 @@
+// Layer1.lcpp
+#import_lh "Layer1.lh"
+#include <stdio.h>
+
+// ベースレイヤ
+layer Layer1
+{
+	//=============================
+	// Aクラスの実装
+	//=============================
+	void A::m1()
+	{
+		printf("Layer1::A::m1()\n");
+		// proceedの実行
+		proceed();
+	}
+
+}

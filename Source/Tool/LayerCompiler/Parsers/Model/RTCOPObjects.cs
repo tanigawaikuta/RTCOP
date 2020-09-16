@@ -67,6 +67,14 @@ namespace LayerCompiler.Parsers.Model
             }
         }
 
+        public IEnumerable<EventHandlerDefinition> EventHandlerDefinitions
+        {
+            get
+            {
+                return Contents.FindAll((obj) => obj is EventHandlerDefinition).Cast<EventHandlerDefinition>();
+            }
+        }
+
         #endregion
 
         #region コンストラクタ
@@ -995,25 +1003,17 @@ namespace LayerCompiler.Parsers.Model
         /// </summary>
         /// <param name="obj">比較対象</param>
         /// <returns>内容的に同じであるかどうか</returns>
-        public override bool Equals(object obj)
+        public bool CompareMethod(LayerdMethodDefinition obj)
         {
-            if (obj is LayerdMethodDefinition)
+            if ((obj.Name == Name) && (obj.Parameters.Count == Parameters.Count))
             {
-                var lmd = (LayerdMethodDefinition)obj;
-                if ((lmd.Name == Name) && (lmd.Parameters.Count == Parameters.Count))
+                int n = obj.Parameters.Count;
+                for (int i = 0; i < n; ++i)
                 {
-                    int n = lmd.Parameters.Count;
-                    for (int i = 0; i < n; ++i)
+                    if (!obj.Parameters[i].Type.CompareType(Parameters[i].Type))
                     {
-                        if (!lmd.Parameters[i].Type.Equals(Parameters[i].Type))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                }
-                else
-                {
-                    return false;
                 }
             }
             else
@@ -1063,11 +1063,6 @@ namespace LayerCompiler.Parsers.Model
             result += Contents.ToString();
 
             return result;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
 
         #endregion

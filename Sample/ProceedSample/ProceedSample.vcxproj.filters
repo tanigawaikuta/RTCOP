@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Generated\BaseLayer.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generated\DependentCode.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generated\RTCOPAppInitializer.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generated\Layer1.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generated\Layer2.cpp">
+      <Filter>Generated</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\BaseLayer.lcpp" />
+    <None Include="src\BaseLayer.lh" />
+    <None Include="src\Layer1.lcpp" />
+    <None Include="src\Layer1.lh" />
+    <None Include="src\Layer2.lcpp" />
+    <None Include="src\Layer2.lh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Generated">
+      <UniqueIdentifier>{9423151b-4557-4dbb-9973-8a1eeff51bb1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Generated\ActivationForApp.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\API.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\BaseLayer.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\COPNewForApp.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\DependentCode.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\RTCOPAppInitializer.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\Layer_Private.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\LayerdObject_Private.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\Layer1.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generated\Layer2.h">
+      <Filter>Generated</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="src\Generated\DependentCodeAsm.asm">
+      <Filter>Generated</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>

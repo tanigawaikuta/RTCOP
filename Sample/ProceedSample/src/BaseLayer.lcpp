@@ -1,0 +1,46 @@
+// BaseLayer.lcpp
+#import_lh "BaseLayer.lh"
+#include "./Generated/API.h"
+#include <stdio.h>
+
+using namespace RTCOP;
+
+// ベースレイヤ
+baselayer
+{
+	//=============================
+	// Aクラスの実装
+	//=============================
+	A::A()
+	{
+		b = copnew<baselayer::B>();
+	}
+
+	A::~A()
+	{
+		delete b;
+	}
+
+	void A::m1()
+	{
+		printf("baselayer::A::m1()\n");
+		// Bクラスのメソッドを呼び出す
+		b->m2();
+	}
+
+	//=============================
+	// Bクラスの実装
+	//=============================
+	B::B()
+	{
+	}
+
+	B::~B()
+	{
+	}
+
+	void B::m2()
+	{
+		printf("baselayer::B::m2()\n");
+	}
+}

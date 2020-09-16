@@ -1,0 +1,18 @@
+// Layer2.lcpp
+#import_lh "Layer2.lh"
+#include <stdio.h>
+
+// ベースレイヤ
+layer Layer2
+{
+	//=============================
+	// Bクラスの実装
+	//=============================
+	void B::m2()
+	{
+		printf("Layer2::B::m2()\n");
+		// proceedの実行
+		proceed();
+	}
+
+}

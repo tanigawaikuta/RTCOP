@@ -159,12 +159,13 @@ namespace LayerCompiler.Parsers
         /// 変数宣言
         /// </summary>
         public static readonly Parser<Model.VariableDeclaration> VariableDeclaration =
+                                                    from strage in Parse.String("static").Or(Parse.String("extern")).Or(Parse.String("register")).Or(Parse.String("thread_local")).Or(Parse.String("mutable")).Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     from type in VariableType.TokenWithSkipComment()
                                                     from name in TokenParser.RTCOPIdentifierString.Or(Parse.Return("")).TokenWithSkipComment()
                                                     from arrays in VariableDeclarationArray.TokenWithSkipComment().Many()
                                                     from dexpression in VariableDeclarationExpression.Or(Parse.Return(new Model.IgnoreObject[]{ })).TokenWithSkipComment()
                                                     where !((type.Type.ToString() == "void") && (!type.IsPointer))
-                                                    select new Model.VariableDeclaration(name, type, arrays, dexpression);
+                                                    select new Model.VariableDeclaration(name, type, arrays, dexpression, strage);
 
         /// <summary>
         /// パラメータ宣言(複数)

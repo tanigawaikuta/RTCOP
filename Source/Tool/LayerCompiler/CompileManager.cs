@@ -401,12 +401,22 @@ namespace LayerCompiler
         /// <returns>コンパイル結果。</returns>
         private LayerStructureFile CompileLCppToObjectFile(string fileName)
         {
+            // ファイルチェック
+            string fileName2 = fileName;
+            if (!File.Exists(fileName2))
+            {
+                fileName2 = SourceRootPath + fileName;
+                if (!File.Exists(fileName2))
+                {
+                    throw new FileNotFoundException("存在しないファイルが指定されました", fileName);
+                }
+            }
             // ファイルオープン
             RTCOPSourceFile src = null;
-            using (StreamReader sr = new StreamReader(fileName, Encoding))
+            using (StreamReader sr = new StreamReader(fileName2, Encoding))
             {
                 string text = sr.ReadToEnd();
-                src = new RTCOPSourceFile(fileName, text);
+                src = new RTCOPSourceFile(fileName2, text);
             }
             // プリプロセス
             var src2 = _RTCOPPreprocessor.Run(src);

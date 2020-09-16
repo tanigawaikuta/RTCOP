@@ -1,0 +1,21 @@
+====例外クラスの型====
+System.NullReferenceException
+====例外メッセージ====
+オブジェクト参照がオブジェクト インスタンスに設定されていません。
+====スタックトレース====
+   場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.<>c__DisplayClass37_1.<GenerateCode>b__3(LayerdMethodDefinition obj)
+   場所 System.Collections.Generic.List`1.FindIndex(Int32 startIndex, Int32 count, Predicate`1 match)
+   場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.<>c__DisplayClass37_0.<GenerateCode>b__0(IEnumerable`1 items, String nspace, Int32 classId)
+   場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.<>c__DisplayClass37_0.<GenerateCode>b__0(IEnumerable`1 items, String nspace, Int32 classId)
+   場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.<>c__DisplayClass37_0.<GenerateCode>b__0(IEnumerable`1 items, String nspace, Int32 classId)
+   場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateCode(LayerStructureFile mergedLSFile, String includeFilePath)
+   場所 LayerCompiler.CompileManager.GenerateCode(LayerStructureFile mergedLSFile)
+   場所 LayerCompiler.CompileManager.Compile()
+   場所 LayerCompiler.Program.Main(String[] args)
+
+tring includeFilePath)
+   場所 LayerCompiler.CodeGeneration.RTCOPCodeGenerator.GenerateCode(LayerStructureFile mergedLSFile, String includeFilePath)
+   場所 LayerCompiler.CompileManager.GenerateCode(LayerStructureFile mergedLSFile)
+   場所 LayerCompiler.CompileManager.Compile()
+   場所 LayerCompiler.Program.Main(String[] args)
+

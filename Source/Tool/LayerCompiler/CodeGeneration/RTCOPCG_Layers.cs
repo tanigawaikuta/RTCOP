@@ -387,7 +387,7 @@ namespace LayerCompiler.CodeGeneration
                                 }
                                 continue;
                             }
-                            var partialMethod = findedPartialClass.MethodDefinitions.SingleOrDefault((obj) => obj.Equals(baseMethod));
+                            var partialMethod = findedPartialClass.MethodDefinitions.SingleOrDefault((obj) => obj.CompareMethod(baseMethod));
                             if (partialMethod == null)
                             {
                                 stringBuilderForSource.Append("\t");
@@ -478,28 +478,87 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine(@"}");
                 stringBuilderForSource.AppendLine();
                 // 未実装のイベントハンドラ
+                var layerDefinitionsH = from layerDefinition in layerStructure.HeaderFileItems
+                                        where layerDefinition is LayerDefinition
+                                        select layerDefinition as LayerDefinition;
+                var layerDefinitionsS = from layerDefinition in layerStructure.SourceFileItems
+                                        where layerDefinition is LayerDefinition
+                                        select layerDefinition as LayerDefinition;
+                List<LayerDefinition> layerDefinitions = new List<LayerDefinition>(layerDefinitionsH);
+                layerDefinitions.AddRange(layerDefinitionsS);
+                var eventhandlers = from layerDefinition in layerDefinitions
+                                    from eventhandler in layerDefinition.EventHandlerDefinitions
+                                    select eventhandler;
+                var activatings = from handler in eventhandlers
+                                  where handler.EventName == "activating"
+                                  select handler;
                 stringBuilderForSource.Append(@"void ");
                 stringBuilderForSource.Append(layerStructure.LayerName);
                 stringBuilderForSource.AppendLine(@"::_RTCOP_OnActivating()");
                 stringBuilderForSource.AppendLine(@"{");
+                foreach (var activating in activatings)
+                {
+                    stringBuilderForSource.Append("\t");
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(layerStructure.LayerName);
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(activating.Name);
+                    stringBuilderForSource.AppendLine("();");
+                }
                 stringBuilderForSource.AppendLine(@"}");
                 stringBuilderForSource.AppendLine();
+                var activateds = from handler in eventhandlers
+                                 where handler.EventName == "activated"
+                                 select handler;
                 stringBuilderForSource.Append(@"void ");
                 stringBuilderForSource.Append(layerStructure.LayerName);
                 stringBuilderForSource.AppendLine(@"::_RTCOP_OnActivated()");
                 stringBuilderForSource.AppendLine(@"{");
+                foreach (var activated in activateds)
+                {
+                    stringBuilderForSource.Append("\t");
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(layerStructure.LayerName);
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(activated.Name);
+                    stringBuilderForSource.AppendLine("();");
+                }
                 stringBuilderForSource.AppendLine(@"}");
                 stringBuilderForSource.AppendLine();
+                var deactivatings = from handler in eventhandlers
+                                    where handler.EventName == "deactivating"
+                                    select handler;
                 stringBuilderForSource.Append(@"void ");
                 stringBuilderForSource.Append(layerStructure.LayerName);
                 stringBuilderForSource.AppendLine(@"::_RTCOP_OnDeactivating()");
                 stringBuilderForSource.AppendLine(@"{");
+                foreach (var deactivating in deactivatings)
+                {
+                    stringBuilderForSource.Append("\t");
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(layerStructure.LayerName);
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(deactivating.Name);
+                    stringBuilderForSource.AppendLine("();");
+                }
                 stringBuilderForSource.AppendLine(@"}");
                 stringBuilderForSource.AppendLine();
+                var deactivateds = from handler in eventhandlers
+                                    where handler.EventName == "deactivated"
+                                    select handler;
                 stringBuilderForSource.Append(@"void ");
                 stringBuilderForSource.Append(layerStructure.LayerName);
                 stringBuilderForSource.AppendLine(@"::_RTCOP_OnDeactivated()");
                 stringBuilderForSource.AppendLine(@"{");
+                foreach (var deactivated in deactivateds)
+                {
+                    stringBuilderForSource.Append("\t");
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(layerStructure.LayerName);
+                    stringBuilderForSource.Append(@"::");
+                    stringBuilderForSource.Append(deactivated.Name);
+                    stringBuilderForSource.AppendLine("();");
+                }
                 stringBuilderForSource.AppendLine(@"}");
                 stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine(@"} // namespace Generated {}");
@@ -570,7 +629,7 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilderForSource.AppendLine(@"::_RTCOP_InitializePartialClass()");
                         stringBuilderForSource.AppendLine(@"{");
                         var initializers = from eventHandler in findedPartialClass.EventHandlerDefinitions
-                                           where eventHandler.EventName == "Initialize"
+                                           where eventHandler.EventName == "initialize"
                                            select eventHandler;
                         foreach (var initializer in initializers)
                         {
@@ -585,7 +644,7 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilderForSource.AppendLine(@"::_RTCOP_FinalizePartialClass()");
                         stringBuilderForSource.AppendLine(@"{");
                         var finalizers = from eventHandler in findedPartialClass.EventHandlerDefinitions
-                                         where eventHandler.EventName == "Finalize"
+                                         where eventHandler.EventName == "finalize"
                                          select eventHandler;
                         foreach (var finalizer in finalizers)
                         {
@@ -712,10 +771,13 @@ namespace LayerCompiler.CodeGeneration
                         var members = lcd.LayerMemberDeclaration.ToArray();
                         foreach (var member in members)
                         {
-                            addIndent(indent + 2);
-                            stringBuilder.Append(member.ToString());
-                            stringBuilder.AppendLine(@";");
-                            lcd.Contents.Remove(member);
+                            if (member.StorageClass != "static")
+                            {
+                                addIndent(indent + 2);
+                                stringBuilder.Append(member.ToString());
+                                stringBuilder.AppendLine(@";");
+                                lcd.Contents.Remove(member);
+                            }
                         }
                         addIndent(indent + 1);
                         stringBuilder.AppendLine(@"};");
@@ -847,23 +909,6 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilder.Append(@"::PartialClassMembers*)_Private->_PartialClassMembers[");
                         stringBuilder.Append(layerId);
                         stringBuilder.AppendLine(@"];");
-                        addIndent(indent + 1);
-                        stringBuilder.Append(@"auto proceed = [this, layer_members](");
-                        int n = mi.Parameters.Count;
-                        if (n > 0)
-                        {
-                            stringBuilder.Append(mi.Parameters[0].Type);
-                            stringBuilder.Append(" ");
-                            stringBuilder.Append(mi.Parameters[0].Name);
-                            for (int i = 1; i < n; ++i)
-                            {
-                                stringBuilder.Append(", ");
-                                stringBuilder.Append(mi.Parameters[i].Type);
-                                stringBuilder.Append(" ");
-                                stringBuilder.Append(mi.Parameters[i].Name);
-                            }
-                        }
-                        stringBuilder.Append(@") { RTCOP::Generated::DependentCode::");
                         string newns = "";
                         if (ns == "")
                         {
@@ -878,21 +923,49 @@ namespace LayerCompiler.CodeGeneration
                         if (classId == -1)
                         {
                             classId = baseClassNameList.IndexOf("baselayer::" + newns);
-                            stringBuilder.Append(@"baselayer::");
                         }
-                        stringBuilder.Append(mi.ClassName);
-                        stringBuilder.Append(@"::ExecuteProceed_");
-                        stringBuilder.Append(mi.MethodName);
-                        int methodId = baseMethodLists[classId].FindIndex((obj) => obj.Equals(mi.ToLayerdMethodDefinition()));
-                        stringBuilder.Append(@"(this, layer_members->_VirtualFunctionTableForProceeding[");
-                        stringBuilder.Append(methodId);
-                        stringBuilder.Append(@"]");
-                        foreach (var param in mi.Parameters)
+                        int methodId = baseMethodLists[classId].FindIndex((obj) => obj != null && obj.CompareMethod(mi.ToLayerdMethodDefinition()));
+                        if (methodId != -1)
                         {
-                            stringBuilder.Append(@", ");
-                            stringBuilder.Append(param.Name);
+                            addIndent(indent + 1);
+                            stringBuilder.Append(@"auto proceed = [this, layer_members](");
+                            int n = mi.Parameters.Count;
+                            if (n > 0)
+                            {
+                                stringBuilder.Append(mi.Parameters[0].Type);
+                                stringBuilder.Append(" ");
+                                stringBuilder.Append(mi.Parameters[0].Name);
+                                for (int i = 1; i < n; ++i)
+                                {
+                                    stringBuilder.Append(", ");
+                                    stringBuilder.Append(mi.Parameters[i].Type);
+                                    stringBuilder.Append(" ");
+                                    stringBuilder.Append(mi.Parameters[i].Name);
+                                }
+                            }
+                            stringBuilder.Append(@") { ");
+                            if (!((mi.ReturnType.Type.ToString() == "void") && (mi.ReturnType.Pointers.Count == 0)))
+                            {
+                                stringBuilder.Append(@"return ");
+                            }
+                            stringBuilder.Append(@"RTCOP::Generated::DependentCode::");
+                            if (baseClassNameList[classId].StartsWith("baselayer::"))
+                            {
+                                stringBuilder.Append(@"baselayer::");
+                            }
+                            stringBuilder.Append(mi.ClassName);
+                            stringBuilder.Append(@"::ExecuteProceed_");
+                            stringBuilder.Append(mi.MethodName);
+                            stringBuilder.Append(@"(this, layer_members->_VirtualFunctionTableForProceeding[");
+                            stringBuilder.Append(methodId);
+                            stringBuilder.Append(@"]");
+                            foreach (var param in mi.Parameters)
+                            {
+                                stringBuilder.Append(@", ");
+                                stringBuilder.Append(param.Name);
+                            }
+                            stringBuilder.AppendLine(@"); };");
                         }
-                        stringBuilder.AppendLine(@"); };");
                         List<object> contents = mi.Contents.Contents.ToList();
                         contents.Remove(contents.Last());
                         contents.Remove(contents.First());
@@ -909,7 +982,8 @@ namespace LayerCompiler.CodeGeneration
                 else if (item is VariableDeclaration)
                 {
                     addIndent(indent);
-                    stringBuilder.AppendLine(item.ToString());
+                    stringBuilder.Append(item.ToString());
+                    stringBuilder.AppendLine(@";");
                     indentFlag = true;
                 }
                 else if (item is IgnoreObjectBlock)

@@ -1,0 +1,15 @@
+// Layer1.lh
+
+// Layer1
+layer Layer1
+{
+	//=============================
+	// Aクラスの定義
+	//=============================
+	partial class A
+	{
+	public:
+		partial void m1();
+	};
+
+}

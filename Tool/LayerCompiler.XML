@@ -620,7 +620,12 @@
             式
             </summary>
         </member>
-        <member name="M:LayerCompiler.Parsers.Model.VariableDeclaration.#ctor(System.String,LayerCompiler.Parsers.Model.VariableType,System.Collections.Generic.IEnumerable{System.Int64},System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.IgnoreObject})">
+        <member name="P:LayerCompiler.Parsers.Model.VariableDeclaration.StorageClass">
+            <summary>
+            ストレージクラス
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.Parsers.Model.VariableDeclaration.#ctor(System.String,LayerCompiler.Parsers.Model.VariableType,System.Collections.Generic.IEnumerable{System.Int64},System.Collections.Generic.IEnumerable{LayerCompiler.Parsers.Model.IgnoreObject},System.String)">
             <summary>
             変数宣言
             </summary>
@@ -628,6 +633,7 @@
             <param name="type">型</param>
             <param name="arraySizes">配列サイズ</param>
             <param name="dexpression">式</param>
+            <param name="storageClass">ストレージクラス</param>
         </member>
         <member name="M:LayerCompiler.Parsers.Model.VariableDeclaration.ToString">
             <summary>
@@ -706,7 +712,7 @@
             <param name="reference">参照テキスト</param>
             <param name="referenceConst">参照の後ろのconst</param>
         </member>
-        <member name="M:LayerCompiler.Parsers.Model.VariableType.Equals(System.Object)">
+        <member name="M:LayerCompiler.Parsers.Model.VariableType.CompareType(LayerCompiler.Parsers.Model.VariableType)">
             <summary>
             型が一致しているかどうか
             </summary>
@@ -1586,7 +1592,7 @@
             <param name="isBase">IsBase</param>
             <returns>thisポインタ</returns>
         </member>
-        <member name="M:LayerCompiler.Parsers.Model.LayerdMethodDefinition.Equals(System.Object)">
+        <member name="M:LayerCompiler.Parsers.Model.LayerdMethodDefinition.CompareMethod(LayerCompiler.Parsers.Model.LayerdMethodDefinition)">
             <summary>
             メソッド定義が内容的に同じであるか
             </summary>

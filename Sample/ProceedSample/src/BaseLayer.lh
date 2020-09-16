@@ -1,0 +1,33 @@
+// BaseLayer.lh
+
+// ベースレイヤ
+baselayer
+{
+	// クラスBの宣言
+	class B;
+
+	//=============================
+	// Aクラスの定義
+	//=============================
+	base class A
+	{
+	protected:
+		B* b;
+	public:
+		A();
+		virtual ~A();
+		base void m1();
+	};
+
+	//=============================
+	// Bクラスの定義
+	//=============================
+	base class B
+	{
+	public:
+		B();
+		virtual ~B();
+		base void m2();
+	};
+
+}

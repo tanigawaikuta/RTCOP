@@ -173,7 +173,7 @@ namespace LayerCompiler.CodeGeneration
                         if (((lmd.IsBase != null) && lmd.IsBase.Value) || lmd.IsVirtual || lmd.IsPureVirtual)
                         {
                             var methodList = baseMethodLists[classId];
-                            if (!methodList.Exists((obj) => obj.Equals(lmd)))
+                            if (!methodList.Exists((obj) => (obj != null) && (obj.CompareMethod(lmd))))
                             {
                                 methodList.Add(lmd);
                             }

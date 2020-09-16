@@ -1,0 +1,39 @@
+// Sample.lh
+
+// ベースレイヤ
+baselayer
+{
+	// ベースクラス
+	base class Sample
+	{
+	protected:
+		// ベースクラスメンバ
+		int _BaseMember;
+	public:
+		Sample(int value);
+		base void Print();
+	};
+
+}
+
+// レイヤ1
+layer Layer1
+{
+	// パーシャルクラス
+	partial class Sample
+	{
+	private:
+		// レイヤ固有メンバ
+		int _LayerMember1;
+		// 静的なメンバ
+		static int _LayerMember2;
+		// copnewの際に実行されるイベントハンドラ
+		[eventhandler(initialize)]
+		void InitializeLayerMembers();
+	public:
+		// パーシャルクラスでは、コンストラクタを定義してはいけない！
+		//Hello(int value);
+		partial void Print();
+	};
+
+}

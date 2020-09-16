@@ -1,0 +1,47 @@
+// Sample.lh
+
+// ベースレイヤ
+baselayer
+{
+	// ベースクラス
+	base class Sample
+	{
+	public:
+		Sample();
+		virtual ~Sample();
+	};
+
+}
+
+// レイヤ1
+layer Layer1
+{
+	// パーシャルクラス
+	partial class Sample
+	{
+	private:
+		// copnewの際に実行されるイベントハンドラ
+		[eventhandler(initialize)]
+		void Initialize();
+		// deleteの際に実行されるイベントハンドラ
+		[eventhandler(finalize)]
+		void Finalize();
+	};
+
+	// アクティベート開始時に実行されるイベントハンドラ
+	[eventhandler(activating)]
+	void OnActivating();
+
+	// アクティベート終了時に実行されるイベントハンドラ
+	[eventhandler(activated)]
+	void OnActivated();
+
+	// ディアクティベート開始時に実行されるイベントハンドラ
+	[eventhandler(deactivating)]
+	void OnDeactivating();
+
+	// ディアクティベート終了時に実行されるイベントハンドラ
+	[eventhandler(deactivated)]
+	void OnDeactivated();
+
+}

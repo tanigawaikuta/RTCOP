@@ -156,7 +156,8 @@ namespace LayerCompiler.CodeGeneration
                 {
                     if (baseMethod != null)
                     {
-                        stringBuilderForHeader.Append(@"void ExecuteProceed_");
+                        stringBuilderForHeader.Append(baseMethod.ReturnType);
+                        stringBuilderForHeader.Append(@" ExecuteProceed_");
                         stringBuilderForHeader.Append(baseMethod.Name);
                         stringBuilderForHeader.Append(@"(void* layerdObject, volatile void* proceed");
                         foreach (var param in baseMethod.Parameters)

@@ -358,7 +358,8 @@ namespace LayerCompiler.CodeGeneration
                 else if (item is VariableDeclaration)
                 {
                     addIndent(indent);
-                    stringBuilder.AppendLine(item.ToString());
+                    stringBuilder.Append(item.ToString());
+                    stringBuilder.AppendLine(";");
                     indentFlag = true;
                 }
                 else if (item is IgnoreObjectBlock)

@@ -1,0 +1,43 @@
+// Sample.lcpp
+#import_lh "Sample.lh"
+#include <stdio.h>
+
+// ベースレイヤ
+baselayer
+{
+	// コンストラクタ
+	Sample::Sample(int value)
+	{
+		_BaseMember = value;
+	}
+
+	// ベースメソッド
+	void Sample::Print()
+	{
+		printf("_BaseMember:%d\n", _BaseMember);
+	}
+
+}
+
+// レイヤ1
+layer Layer1
+{
+	// staticメンバ
+	int Sample::_LayerMember2;
+
+	// copnewの際に実行されるイベントハンドラ
+	void Sample::InitializeLayerMembers()
+	{
+		// 静的なメンバは通常の方法でアクセス
+		Layer1::Sample::_LayerMember2 = 30;
+		// レイヤ固有のメンバはlayer_membersポインタからアクセス
+		layer_members->_LayerMember1 = _BaseMember + Layer1::Sample::_LayerMember2;
+	}
+
+	// パーシャルメソッド
+	void Sample::Print()
+	{
+		printf("_BaseMember:%d _LayerMember:%d\n", _BaseMember, layer_members->_LayerMember1);
+	}
+
+}

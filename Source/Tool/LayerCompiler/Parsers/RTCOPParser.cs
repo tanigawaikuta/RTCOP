@@ -19,8 +19,8 @@ namespace LayerCompiler.Parsers
         /// </summary>
         public static readonly Parser<Model.IgnoreObjectBlock> LayerdMethodBlock =
                                                     from beginblock in Parse.String("{").Text().TokenWithSkipComment()
-                                                    from contents in TokenParser.RTCOPKeyword.Where((keywood) => 
-                                                                        (keywood.Text == "proceed") || (keywood.Text == "layer_members"))
+                                                    from contents in TokenParser.RTCOPKeyword.Where((keyword) =>
+                                                                        (keyword.Text == "baselayer") || (keyword.Text == "proceed") || (keyword.Text == "layer_members"))
                                                                     .Or<object>(IgnoreParser.IgnoreObject)
                                                                     .TokenWithSkipComment().Many()
                                                     from endblock in Parse.String("}").Text().TokenWithSkipComment()
@@ -69,9 +69,7 @@ namespace LayerCompiler.Parsers
                                                     from tilde in Parse.String("~").Text().TokenWithSkipComment()
                                                     from identifier in TokenParser.RTCOPIdentifierString.TokenWithSkipComment()
                                                     from beginparentheses in Parse.String("(").Text().TokenWithSkipComment()
-                                                    from parameters in Parse.String("void").Return(new Model.VariableDeclaration[] { })
-                                                                    .Or(Parse.Return(new Model.VariableDeclaration[] { }))
-                                                                    .TokenWithSkipComment()
+                                                    from parameters in Parse.String("void").Or(Parse.Return("")).TokenWithSkipComment()
                                                     from endparentheses in Parse.String(")").Text().TokenWithSkipComment()
                                                     from noexceptkeyword in Parse.String("noexcept").Or(Parse.Return("")).Text().TokenWithSkipComment()
                                                     from overridekeyword in Parse.String("override").Or(Parse.Return("")).Text().TokenWithSkipComment()

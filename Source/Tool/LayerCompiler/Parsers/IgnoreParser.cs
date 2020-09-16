@@ -18,8 +18,9 @@ namespace LayerCompiler.Parsers
         /// </summary>
         public static readonly Parser<Model.IgnoreObject> Token =
                                                     from token in TokenParser.Token
-                                                    where !((token is Model.Identifier) && (TokenParser.RTCOPKeywordStrings.Contains(token.Text)))    // RTCOPのキーワードと一致しない
-                                                    where !((token is Model.Keyword) && (token.Text == "#" || token.Text == "##"))                    // #か##ではない
+                                                    where !((token is Model.Identifier) && (token.Text != "baselayer") &&                             // baselayerは特別にOK
+                                                            (TokenParser.RTCOPKeywordStrings.Contains(token.Text)))                                   // RTCOPのキーワードと一致しない
+                                                    where !((token is Model.OperatorOrPunctuator) && (token.Text == "#" || token.Text == "##"))       // #か##ではない
                                                     where !((token is Model.OperatorOrPunctuator) && (token.Text == "{" || token.Text == "}"))        // ブロックではない
                                                     select new Model.IgnoreObject(token);
 

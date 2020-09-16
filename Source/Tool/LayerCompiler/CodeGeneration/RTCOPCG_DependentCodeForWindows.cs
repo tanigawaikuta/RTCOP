@@ -47,7 +47,8 @@ namespace LayerCompiler.CodeGeneration
                 {
                     if (baseMethod != null)
                     {
-                        stringBuilderForSource.Append(@"void ExecuteProceed_");
+                        stringBuilderForSource.Append(baseMethod.ReturnType);
+                        stringBuilderForSource.Append(@" ExecuteProceed_");
                         stringBuilderForSource.Append(baseMethod.Name);
                         stringBuilderForSource.Append(@"(void* layerdObject, volatile void* proceed");
                         foreach (var param in baseMethod.Parameters)
@@ -58,13 +59,16 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilderForSource.AppendLine(@")");
                         stringBuilderForSource.AppendLine(@"{");
                         stringBuilderForSource.Append("\t");
-                        stringBuilderForSource.Append(@"void(*pProceed)(void*");
+                        stringBuilderForSource.Append(baseMethod.ReturnType);
+                        stringBuilderForSource.Append(@"(*pProceed)(void*");
                         foreach (var param in baseMethod.Parameters)
                         {
                             stringBuilderForSource.Append(@", ");
                             stringBuilderForSource.Append(param.Type);
                         }
-                        stringBuilderForSource.Append(@") = (void(*)(void*");
+                        stringBuilderForSource.Append(@") = (");
+                        stringBuilderForSource.Append(baseMethod.ReturnType);
+                        stringBuilderForSource.Append(@"(*)(void*");
                         foreach (var param in baseMethod.Parameters)
                         {
                             stringBuilderForSource.Append(@", ");
@@ -72,7 +76,11 @@ namespace LayerCompiler.CodeGeneration
                         }
                         stringBuilderForSource.AppendLine(@"))proceed;");
                         stringBuilderForSource.Append("\t");
-                        stringBuilderForSource.Append("pProceed(layerdObject");
+                        if (!((baseMethod.ReturnType.Type.ToString() == "void") && (baseMethod.ReturnType.Pointers.Count == 0)))
+                        {
+                            stringBuilderForSource.Append(@"return ");
+                        }
+                        stringBuilderForSource.Append(@"pProceed(layerdObject");
                         foreach (var param in baseMethod.Parameters)
                         {
                             stringBuilderForSource.Append(@", ");
@@ -413,7 +421,8 @@ namespace LayerCompiler.CodeGeneration
                 {
                     if (baseMethod != null)
                     {
-                        stringBuilderForSource.Append(@"void ExecuteProceed_");
+                        stringBuilderForSource.Append(baseMethod.ReturnType);
+                        stringBuilderForSource.Append(@" ExecuteProceed_");
                         stringBuilderForSource.Append(baseMethod.Name);
                         stringBuilderForSource.Append(@"(void* layerdObject, volatile void* proceed");
                         foreach (var param in baseMethod.Parameters)
@@ -900,7 +909,8 @@ namespace LayerCompiler.CodeGeneration
                 {
                     if (baseMethod != null)
                     {
-                        stringBuilderForSource.Append(@"void ExecuteProceed_");
+                        stringBuilderForSource.Append(baseMethod.ReturnType);
+                        stringBuilderForSource.Append(@" ExecuteProceed_");
                         stringBuilderForSource.Append(baseMethod.Name);
                         stringBuilderForSource.Append(@"(void* layerdObject, volatile void* proceed");
                         foreach (var param in baseMethod.Parameters)
@@ -911,13 +921,16 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilderForSource.AppendLine(@")");
                         stringBuilderForSource.AppendLine(@"{");
                         stringBuilderForSource.Append("\t");
-                        stringBuilderForSource.Append(@"void(*pProceed)(void*");
+                        stringBuilderForSource.Append(baseMethod.ReturnType);
+                        stringBuilderForSource.Append(@"(*pProceed)(void*");
                         foreach (var param in baseMethod.Parameters)
                         {
                             stringBuilderForSource.Append(@", ");
                             stringBuilderForSource.Append(param.Type);
                         }
-                        stringBuilderForSource.Append(@") = (void(*)(void*");
+                        stringBuilderForSource.Append(@") = (");
+                        stringBuilderForSource.Append(baseMethod.ReturnType);
+                        stringBuilderForSource.Append(@"(*)(void*");
                         foreach (var param in baseMethod.Parameters)
                         {
                             stringBuilderForSource.Append(@", ");
@@ -925,6 +938,10 @@ namespace LayerCompiler.CodeGeneration
                         }
                         stringBuilderForSource.AppendLine(@"))proceed;");
                         stringBuilderForSource.Append("\t");
+                        if (!((baseMethod.ReturnType.Type.ToString() == "void") && (baseMethod.ReturnType.Pointers.Count == 0)))
+                        {
+                            stringBuilderForSource.Append(@"return ");
+                        }
                         stringBuilderForSource.Append("pProceed(layerdObject");
                         foreach (var param in baseMethod.Parameters)
                         {

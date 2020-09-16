@@ -81,6 +81,11 @@ namespace LayerCompiler.Parsers.Model
         /// </summary>
         public List<Model.IgnoreObject> DefaultExpression { get; private set; }
 
+        /// <summary>
+        /// ストレージクラス
+        /// </summary>
+        public string StorageClass { get; protected set; }
+
         #endregion
 
         #region コンストラクタ
@@ -91,12 +96,14 @@ namespace LayerCompiler.Parsers.Model
         /// <param name="type">型</param>
         /// <param name="arraySizes">配列サイズ</param>
         /// <param name="dexpression">式</param>
-        public VariableDeclaration(string name, VariableType type, IEnumerable<long> arraySizes, IEnumerable<Model.IgnoreObject> dexpression)
+        /// <param name="storageClass">ストレージクラス</param>
+        public VariableDeclaration(string name, VariableType type, IEnumerable<long> arraySizes, IEnumerable<Model.IgnoreObject> dexpression, string storageClass)
         {
             Name = name;
             Type = type;
             ArraySizes = new List<long>(arraySizes);
             DefaultExpression = new List<IgnoreObject>(dexpression);
+            StorageClass = storageClass;
         }
 
         #endregion
@@ -108,7 +115,12 @@ namespace LayerCompiler.Parsers.Model
         /// <returns>文字列</returns>
         public override string ToString()
         {
-            string result = Type.ToString();
+            string result = StorageClass;
+            if (result != "")
+            {
+                result += " ";
+            }
+            result += Type.ToString();
             if (Name != "")
             {
                 result += (" " + Name);
@@ -326,50 +338,26 @@ namespace LayerCompiler.Parsers.Model
         /// </summary>
         /// <param name="obj">比較対象</param>
         /// <returns>一致しているかどうか</returns>
-        public override bool Equals(object obj)
+        public bool CompareType(VariableType obj)
         {
-            if (obj is VariableType)
+            // 修飾子で一致しないものが無いかチェック
+            if ((IsConst != obj.IsConst) || (IsVolatile != obj.IsVolatile) || (IsReference != obj.IsReference))
             {
-                var vt = (VariableType)obj;
-                // 修飾子で一致しないものが無いかチェック
-                if ((IsConst != vt.IsConst) || (IsVolatile != vt.IsVolatile) || (IsReference != vt.IsReference))
+                return false;
+            }
+            // 型情報の一致チェック
+            if (IsUserDefinedType && obj.IsUserDefinedType)
+            {
+                var udt1 = (UserDefinedType)Type;
+                var udt2 = (UserDefinedType)obj.Type;
+                if (udt1.Name != udt2.Name)
                 {
                     return false;
                 }
-                // 型情報の一致チェック
-                if (IsUserDefinedType && vt.IsUserDefinedType)
-                {
-                    var udt1 = (UserDefinedType)Type;
-                    var udt2 = (UserDefinedType)vt.Type;
-                    if (udt1.Name != udt2.Name)
-                    {
-                        return false;
-                    }
-                }
-                else if (!IsUserDefinedType && !vt.IsUserDefinedType)
-                {
-                    if (ByteSize != vt.ByteSize)
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-                // ポインタチェック
-                if (Pointers.Count == vt.Pointers.Count)
-                {
-                    int n = Pointers.Count;
-                    for (int i = 0; i < n; ++i)
-                    {
-                        if (Pointers[i].IsConst != vt.Pointers[i].IsConst)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                else
+            }
+            else if (!IsUserDefinedType && !obj.IsUserDefinedType)
+            {
+                if (ByteSize != obj.ByteSize)
                 {
                     return false;
                 }
@@ -378,7 +366,22 @@ namespace LayerCompiler.Parsers.Model
             {
                 return false;
             }
-
+            // ポインタチェック
+            if (Pointers.Count == obj.Pointers.Count)
+            {
+                int n = Pointers.Count;
+                for (int i = 0; i < n; ++i)
+                {
+                    if (Pointers[i].IsConst != obj.Pointers[i].IsConst)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
             return true;
         }
 
@@ -406,11 +409,6 @@ namespace LayerCompiler.Parsers.Model
                 result += (" " + Reference);
             }
             return result;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
         }
 
         #endregion
