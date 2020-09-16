@@ -208,23 +208,58 @@ namespace LayerCompiler.CodeGeneration
             }
             else if (Target == DevelopmentTarget.LinuxX64)
             {
-                GenerateDependentCodeForLinuxX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                if (Environment == DevelopmentEnvironment.GCC)
+                {
+                    GenerateDependentCodeForLinuxX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                }
+                else
+                {
+                    throw new Exception("ターゲットと開発環境の組み合わせが不正です");
+                }
             }
             else if (Target == DevelopmentTarget.LinuxX86)
             {
-                GenerateDependentCodeForLinuxX86(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                if (Environment == DevelopmentEnvironment.GCC)
+                {
+                    GenerateDependentCodeForLinuxX86(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                }
+                else
+                {
+                    throw new Exception("ターゲットと開発環境の組み合わせが不正です");
+                }
             }
             else if (Target == DevelopmentTarget.LinuxARM)
             {
-                GenerateDependentCodeForLinuxARM(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                if (Environment == DevelopmentEnvironment.GCC)
+                {
+                    GenerateDependentCodeForLinuxARM(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                }
+                else
+                {
+                    throw new Exception("ターゲットと開発環境の組み合わせが不正です");
+                }
             }
             else if (Target == DevelopmentTarget.LinuxARM64)
             {
-                GenerateDependentCodeForLinuxARM64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                if (Environment == DevelopmentEnvironment.GCC)
+                {
+                    GenerateDependentCodeForLinuxARM64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                }
+                else
+                {
+                    throw new Exception("ターゲットと開発環境の組み合わせが不正です");
+                }
             }
             else if (Target == DevelopmentTarget.macOSX64)
             {
-                GenerateDependentCodeForMacOSX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                if (Environment == DevelopmentEnvironment.GCC || Environment == DevelopmentEnvironment.Clang)
+                {
+                    GenerateDependentCodeForMacOSX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                }
+                else
+                {
+                    throw new Exception("ターゲットと開発環境の組み合わせが不正です");
+                }
             }
         }
 

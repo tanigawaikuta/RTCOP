@@ -22,6 +22,10 @@ Layer2* Layer2::GetInstance()
 Layer2::Layer2(const int id, const char* const name, int numOfBaseClasses, int* numOfBaseMethods)
 	:RTCOP::Core::Layer(id, name, numOfBaseClasses, numOfBaseMethods)
 {
+	int size0 = sizeof(volatile void*) * numOfBaseMethods[0];
+	volatile void** virtualFunctionTable0	 = DependentCode::baselayer::A::GetVirtualFunctionTable(this);
+	std::memcpy(_Private->_VirtualFunctionTables[0], virtualFunctionTable0, size0);
+	_Private->_VirtualFunctionTables[0][0] = 0;
 	int size1 = sizeof(volatile void*) * numOfBaseMethods[1];
 	volatile void** virtualFunctionTable1	 = DependentCode::baselayer::B::GetVirtualFunctionTable(this);
 	std::memcpy(_Private->_VirtualFunctionTables[1], virtualFunctionTable1, size1);
@@ -35,7 +39,17 @@ Layer2::~Layer2()
 void* Layer2::InitializeLayerdObject(void* obj, int classID)
 {
 	int layerID = _Private->_ID;
-	if (classID == 1)
+	if (classID == 0)
+	{
+		::Layer2::A* layerdObject = reinterpret_cast<::Layer2::A*>(obj);
+		layerdObject->_Private->_PartialClassMembers[layerID] = new ::Layer2::A::PartialClassMembers();
+		layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;
+		layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding = _Private->_VirtualFunctionTablesForProceeding[classID];
+		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
+		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
+		layerdObject->_RTCOP_InitializePartialClass();
+	}
+	else if (classID == 1)
 	{
 		::Layer2::B* layerdObject = reinterpret_cast<::Layer2::B*>(obj);
 		layerdObject->_Private->_PartialClassMembers[layerID] = new ::Layer2::B::PartialClassMembers();
@@ -69,6 +83,14 @@ void Layer2::_RTCOP_OnDeactivated()
 
 namespace Layer2
 {
+void A::m1 ()
+{
+	A::PartialClassMembers* layer_members = (A::PartialClassMembers*)_Private->_PartialClassMembers[2];
+	auto proceed = [this, layer_members]() { RTCOP::Generated::DependentCode::baselayer::A::ExecuteProceed_m1(this, layer_members->_VirtualFunctionTableForProceeding[1]); };
+	printf ( "Layer2::A::m1()\n" ) ;
+	proceed ( ) ;
+
+}
 void B::m2 ()
 {
 	B::PartialClassMembers* layer_members = (B::PartialClassMembers*)_Private->_PartialClassMembers[2];
@@ -82,6 +104,21 @@ void B::m2 ()
 
 
 namespace Layer2{
+
+A::A()
+	: RTCOP::Core::LayerdObject<baselayer::A>()
+{
+}
+
+void A::_RTCOP_InitializePartialClass()
+{
+}
+
+void A::_RTCOP_FinalizePartialClass()
+{
+}
+
+
 
 B::B()
 	: RTCOP::Core::LayerdObject<baselayer::B>()

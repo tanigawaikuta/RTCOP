@@ -957,7 +957,19 @@ namespace LayerCompiler.CodeGeneration
                             stringBuilder.Append(@"::ExecuteProceed_");
                             stringBuilder.Append(mi.MethodName);
                             stringBuilder.Append(@"(this, layer_members->_VirtualFunctionTableForProceeding[");
-                            stringBuilder.Append(methodId);
+                            int methodOffset = 0;
+                            if (Environment != DevelopmentEnvironment.VisualStudio)
+                            {
+                                for (int i = methodId - 1; i >= 0; --i)
+                                {
+                                    if (baseMethodLists[classId][i] == null)
+                                    {
+                                        methodOffset = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                            stringBuilder.Append(methodId + methodOffset);
                             stringBuilder.Append(@"]");
                             foreach (var param in mi.Parameters)
                             {

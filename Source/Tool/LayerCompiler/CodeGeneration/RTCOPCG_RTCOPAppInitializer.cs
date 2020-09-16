@@ -96,11 +96,11 @@ namespace LayerCompiler.CodeGeneration
             stringBuilderForSource.Append("\t");
             stringBuilderForSource.Append(@"int numOfLayers = ");
             stringBuilderForSource.Append(numOfLayers);
-            stringBuilderForSource.Append(@";");
+            stringBuilderForSource.AppendLine(@";");
             stringBuilderForSource.Append("\t");
             stringBuilderForSource.Append(@"int numOfClasses = ");
             stringBuilderForSource.Append(numOfClasses);
-            stringBuilderForSource.Append(@";");
+            stringBuilderForSource.AppendLine(@";");
             stringBuilderForSource.Append("\t");
             stringBuilderForSource.Append(@"int* numOfMethods = new int[numOfClasses] {");
             for (int i = 0; i < numOfMethods.Length; ++i)

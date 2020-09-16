@@ -30,6 +30,22 @@ protected:
 
 namespace Layer2
 {
+class A : public RTCOP::Core::LayerdObject<baselayer::A>
+{
+public:
+	friend RTCOP::Generated::Layer2;
+	class PartialClassMembers : public RTCOP::Core::PartialClassMembers
+	{
+	public:
+	};
+	A ();
+private:
+	void _RTCOP_InitializePartialClass();
+	void _RTCOP_FinalizePartialClass();
+	public:
+	virtual void m1 ();
+
+};
 class B : public RTCOP::Core::LayerdObject<baselayer::B>
 {
 public:

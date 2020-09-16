@@ -11,9 +11,6 @@ int main()
 	// Helloのインスタンス化
 	baselayer::Hello* hello = copnew<baselayer::Hello>();
 
-	// ベースメソッドの実行
-	hello->Print();
-
 	// EnglishLayerをアクティベート
 	activate(RTCOP::Generated::LayerID::English);
 	hello->Print();

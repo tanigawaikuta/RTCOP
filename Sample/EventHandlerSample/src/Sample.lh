@@ -23,6 +23,7 @@ layer Layer1
 		// copnewの際に実行されるイベントハンドラ
 		[eventhandler(initialize)]
 		void Initialize();
+
 		// deleteの際に実行されるイベントハンドラ
 		[eventhandler(finalize)]
 		void Finalize();

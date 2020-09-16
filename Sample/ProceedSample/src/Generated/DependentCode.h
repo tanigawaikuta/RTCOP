@@ -3,6 +3,7 @@
 
 namespace baselayer { class A; } 
 namespace Layer1 { class A; } 
+namespace Layer2 { class A; } 
 namespace baselayer { class B; } 
 namespace Layer2 { class B; } 
 
@@ -16,11 +17,13 @@ class Layer2;
 namespace DependentCode {
 
 volatile void* GetLayerdObjectFinalizer(::Layer1::A* obj);
+volatile void* GetLayerdObjectFinalizer(::Layer2::A* obj);
 volatile void* GetLayerdObjectFinalizer(::Layer2::B* obj);
 
 namespace baselayer { namespace A { 
 volatile void** GetVirtualFunctionTable(BaseLayer* layer);
 volatile void** GetVirtualFunctionTable(Layer1* layer);
+volatile void** GetVirtualFunctionTable(Layer2* layer);
 
 void ExecuteProceed_m1(void* layerdObject, volatile void* proceed);
 
