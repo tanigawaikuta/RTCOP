@@ -95,6 +95,7 @@ namespace LayerCompiler.CodeGeneration
             stringBuilderForNew.AppendLine(@"{");
             stringBuilderForNew.Append("\t");
             stringBuilderForNew.AppendLine(@"const int classId = Generated::GetBaseClassID<Base>();");
+            stringBuilderForNew.Append("\t");
             stringBuilderForNew.AppendLine(@"return COPNew<Base>(classId, args...);");
             stringBuilderForNew.AppendLine(@"}");
             stringBuilderForNew.AppendLine();
@@ -123,7 +124,7 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForActivation.Append(ls.LayerName);
                 stringBuilderForActivation.Append(@" = ");
                 stringBuilderForActivation.Append(layercount);
-                stringBuilderForActivation.Append(@",");
+                stringBuilderForActivation.AppendLine(@",");
                 ++layercount;
             }
             stringBuilderForActivation.AppendLine(@"};");

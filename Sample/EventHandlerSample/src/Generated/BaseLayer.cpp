@@ -42,13 +42,17 @@ void* BaseLayer::InitializeLayerdObject(void* obj, int classID)
 
 namespace baselayer
 {
-Sample :: Sample ( ) {
-	printf ( "baselayer::Sampleコンストラクタの実行\n" ) ;
-	}
+Sample :: Sample ( ) 
+{
+printf ( "baselayer::Sampleコンストラクタの実行\n" ) ;
 
-Sample :: ~ Sample ( ) {
-	printf ( "baselayer::Sampleデストラクタの実行\n" ) ;
-	}
+}
+
+Sample :: ~ Sample ( ) 
+{
+printf ( "baselayer::Sampleデストラクタの実行\n" ) ;
+
+}
 
 
 }

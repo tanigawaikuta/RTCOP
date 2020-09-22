@@ -222,8 +222,9 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForSource.Append(@" } ");
+                    stringBuilderForSource.Append(@"}");
                 }
+                stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine();
                 ++classCount;
             }
@@ -441,8 +442,9 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForSource.Append(@" } ");
+                    stringBuilderForSource.Append(@"}");
                 }
+                stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine();
                 ++classCount;
             }
@@ -699,8 +701,9 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForSource.Append(@" } ");
+                    stringBuilderForSource.Append(@"}");
                 }
+                stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine();
                 ++classCount;
             }
@@ -957,8 +960,9 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForSource.Append(@" } ");
+                    stringBuilderForSource.Append(@"}");
                 }
+                stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine();
                 ++classCount;
             }

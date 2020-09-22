@@ -43,13 +43,16 @@ void* BaseLayer::InitializeLayerdObject(void* obj, int classID)
 
 namespace baselayer
 {
-Hello :: Hello ( ) {
-	}
+Hello :: Hello ( ) 
+{
+
+}
 
 void Hello::Print ()
 {
 	printf ( "BaseClass\n" ) ;
-	}
+
+}
 
 
 }

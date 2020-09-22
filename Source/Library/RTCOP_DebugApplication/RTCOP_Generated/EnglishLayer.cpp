@@ -65,9 +65,6 @@ void* EnglishLayer::InitializeLayerdObject(void* obj, int classID)
 		layerdObject->_Private->_PartialClassMembers[layerID] = new EnglishLayer_Hello::PartialClassMembers();
 		// レイヤ
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;
-		// Proceed実現のための仮想関数テーブル
-		layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding =
-			_Private->_VirtualFunctionTablesForProceeding[classID];
 		// パーシャルクラスの処分を行うメソッドへの関数ポインタ
 		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
@@ -117,7 +114,8 @@ void EnglishLayer_Hello::Print()
 {
 	// 準備
 	EnglishLayer_Hello::PartialClassMembers* layermembers = (EnglishLayer_Hello::PartialClassMembers*)_Private->_PartialClassMembers[2];
-	auto proceed = [this, layermembers]() { DependentCode::HelloClass::ExecuteProceed_Print(this, layermembers->_VirtualFunctionTableForProceeding[0]); };
+	volatile void* proceedaddr = Framework::Instance->GetRTCOPManager()->GetLayer(2)->GetVirtualFunctionTableForProceeding(0)[0];  // classId methodId(+offset)
+	auto proceed = [this, proceedaddr]() { DependentCode::HelloClass::ExecuteProceed_Print(this, proceedaddr); };
 	// レイヤ記述の内容
 	printf("Print: Hello %d\n", layermembers->_EnglishMember);
 	proceed();

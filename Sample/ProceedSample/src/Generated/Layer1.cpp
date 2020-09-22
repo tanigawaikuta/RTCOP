@@ -40,7 +40,6 @@ void* Layer1::InitializeLayerdObject(void* obj, int classID)
 		::Layer1::A* layerdObject = reinterpret_cast<::Layer1::A*>(obj);
 		layerdObject->_Private->_PartialClassMembers[layerID] = new ::Layer1::A::PartialClassMembers();
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;
-		layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding = _Private->_VirtualFunctionTablesForProceeding[classID];
 		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
 		layerdObject->_RTCOP_InitializePartialClass();
@@ -72,11 +71,13 @@ namespace Layer1
 void A::m1 ()
 {
 	A::PartialClassMembers* layer_members = (A::PartialClassMembers*)_Private->_PartialClassMembers[1];
-	auto proceed = [this, layer_members]() { RTCOP::Generated::DependentCode::baselayer::A::ExecuteProceed_m1(this, layer_members->_VirtualFunctionTableForProceeding[1]); };
+	volatile void* _RTCOP_proceedaddr = RTCOP::Framework::Instance->GetRTCOPManager()->GetLayer(1)->GetVirtualFunctionTableForProceeding(0)[1];
+	auto proceed = [this, _RTCOP_proceedaddr]() { RTCOP::Generated::DependentCode::baselayer::A::ExecuteProceed_m1(this, _RTCOP_proceedaddr); };
 	printf ( "Layer1::A::m1()\n" ) ;
 	proceed ( ) ;
 
 }
+
 
 }
 

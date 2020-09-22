@@ -21,7 +21,7 @@ template<class Base, class... ArgTypes>
 inline Core::LayerdObject<Base>* copnew(ArgTypes... args)
 {
 	const int classId = Generated::GetBaseClassID<Base>();
-return COPNew<Base>(classId, args...);
+	return COPNew<Base>(classId, args...);
 }
 
 } // namespace RTCOP {}

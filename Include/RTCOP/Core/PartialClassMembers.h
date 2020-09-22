@@ -20,8 +20,6 @@ class PartialClassMembers
 public:
 	// パーシャルクラスが属するレイヤ
 	Layer* _Layer;
-	// Proceed実現のための仮想関数テーブル
-	volatile void** _VirtualFunctionTableForProceeding;
 	// パーシャルクラスの処分を行うメソッドへの関数ポインタ
 	volatile void* _Finalizer;
 };

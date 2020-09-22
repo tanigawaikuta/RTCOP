@@ -1,0 +1,14 @@
+// Hello.lcpp
+#import_lh "Japanese.lh"
+#include <stdio.h>
+
+// 日本語レイヤ
+layer Japanese
+{
+	// パーシャルメソッド
+	void Hello::Print()
+	{
+		printf("こんにちは世界\n");
+	}
+
+}

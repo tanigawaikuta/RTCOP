@@ -1,0 +1,28 @@
+// BaseLayer.lh
+
+// ベースレイヤ
+baselayer
+{
+	//=============================
+	// スーパークラスの定義
+	//=============================
+	base class SuperA
+	{
+	public:
+		SuperA();
+		virtual ~SuperA();
+		base void m1();
+	};
+
+	//=============================
+	// サブクラスの定義
+	//=============================
+	base class SubA : public SuperA
+	{
+	public:
+		SubA();
+		virtual ~SubA();
+		base void m1();
+	};
+
+}

@@ -9,7 +9,8 @@ namespace Generated {
 enum class LayerID : int
 {
 	baselayer = 0,
-	Layer1 = 1,};
+	Layer1 = 1,
+};
 } // namespace Generated {}
 
 inline void activate(Generated::LayerID layerid)

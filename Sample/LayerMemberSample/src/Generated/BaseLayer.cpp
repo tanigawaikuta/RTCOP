@@ -42,14 +42,17 @@ void* BaseLayer::InitializeLayerdObject(void* obj, int classID)
 
 namespace baselayer
 {
-Sample :: Sample ( int value ) {
-	_BaseMember = value ;
-	}
+Sample :: Sample ( int value ) 
+{
+_BaseMember = value ;
+
+}
 
 void Sample::Print ()
 {
 	printf ( "_BaseMember:%d\n" , _BaseMember ) ;
-	}
+
+}
 
 
 }

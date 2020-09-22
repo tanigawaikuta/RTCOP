@@ -93,8 +93,9 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForSource.Append(@" } ");
+                    stringBuilderForSource.Append(@"}");
                 }
+                stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine();
                 ++classCount;
             }
@@ -231,10 +232,10 @@ namespace LayerCompiler.CodeGeneration
             // 中身
             stringBuilderForAsm.AppendLine();
             stringBuilderForAsm.AppendLine(@"_TEXT segment");
-            stringBuilderForAsm.Append("\t");
-            stringBuilderForAsm.AppendLine(@"align 16");
             foreach (var baseClassName in baseClassNameList)
             {
+                stringBuilderForAsm.Append("\t");
+                stringBuilderForAsm.AppendLine(@"align 16");
                 stringBuilderForAsm.Append(@"?GetVirtualFunctionTable");
                 var nss = baseClassName.Split(new string[] { "::" }, StringSplitOptions.None);
                 for (int i = (nss.Length - 1); i >= 0; --i)
@@ -464,7 +465,7 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForSource.Append(@" } ");
+                    stringBuilderForSource.Append(@"}");
                 }
                 stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine();
@@ -609,10 +610,10 @@ namespace LayerCompiler.CodeGeneration
             // 中身
             stringBuilderForAsm.AppendLine();
             stringBuilderForAsm.AppendLine(@"_TEXT segment USE32");
-            stringBuilderForAsm.Append("\t");
-            stringBuilderForAsm.AppendLine(@"align 16");
             foreach (var baseClassName in baseClassNameList)
             {
+                stringBuilderForAsm.Append("\t");
+                stringBuilderForAsm.AppendLine(@"align 16");
                 stringBuilderForAsm.Append(@"?GetVirtualFunctionTable");
                 var nss = baseClassName.Split(new string[] { "::" }, StringSplitOptions.None);
                 for (int i = (nss.Length - 1); i >= 0; --i)
@@ -955,8 +956,9 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForSource.Append(@" } ");
+                    stringBuilderForSource.Append(@"}");
                 }
+                stringBuilderForSource.AppendLine();
                 stringBuilderForSource.AppendLine();
                 ++classCount;
             }

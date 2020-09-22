@@ -88,6 +88,7 @@ namespace LayerCompiler.CodeGeneration
             List<string> baseClassNameList = new List<string>();
             List<List<LayerdMethodDefinition>> baseMethodLists = new List<List<LayerdMethodDefinition>>();
             List<List<ConstructorDefinition>> constructorLists = new List<List<ConstructorDefinition>>();
+            List<int> superClassIDs = new List<int>();
             Action<IEnumerable<object>, string, int> createBaseClassAndMethodList = null;
             createBaseClassAndMethodList = (items, nspace, classId) =>
             {
@@ -120,19 +121,26 @@ namespace LayerCompiler.CodeGeneration
                             if (lcd.SuperClasses.Count >= 1)
                             {
                                 string superclassFullname = lcd.SuperClasses[0].ClassName;
-                                if (nspace != "") superclassFullname = nspace + "::" + classname;
+                                if (nspace != "") superclassFullname = nspace + "::" + superclassFullname;
                                 string[] superclassNspaces = superclassFullname.Split(new string[] { "::" }, StringSplitOptions.None);
                                 string sname = superclassFullname;
+                                int superId = -1;
                                 for (int i = 0; i < superclassNspaces.Length; ++i)
                                 {
-                                    int id2 = baseClassNameList.IndexOf(lcd.SuperClasses[0].ClassName);
+                                    int id2 = baseClassNameList.IndexOf(sname);
                                     if (id2 != -1)
                                     {
                                         baseMethodLists[id].AddRange(baseMethodLists[id2]);
+                                        superId = id2;
                                         break;
                                     }
-                                    sname = sname.Remove(0, (superclassNspaces[i].Length - 2));
+                                    sname = sname.Remove(0, (superclassNspaces[i].Length + 2));
                                 }
+                                superClassIDs.Add(superId);
+                            }
+                            else
+                            {
+                                superClassIDs.Add(-1);
                             }
                             createBaseClassAndMethodList(lcd.Contents, classname, id);
                             // デストラクタ無ければ追加
@@ -201,9 +209,9 @@ namespace LayerCompiler.CodeGeneration
             // API.h、COPNewForApp.h、ActivationForApp.hの生成
             GenerateAPIHeaders(result, mergedLSFile.LayerStructures, baseClassNameList, includeFilePath);
             // ベースレイヤの生成
-            GenerateBaseLayer(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, includeFilePath);
+            GenerateBaseLayer(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, baseMethodLists, superClassIDs, includeFilePath);
             // 各レイヤの生成
-            GenerateLayers(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, baseMethodLists, constructorLists, includeFilePath);
+            GenerateLayers(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, baseMethodLists, constructorLists, superClassIDs, includeFilePath);
             // 環境依存コードの生成
             GenerateDependentCode(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, baseMethodLists, includeFilePath);
 

@@ -19,7 +19,7 @@ namespace LayerCompiler.CodeGeneration
         /// <summary>
         /// 各種レイヤ
         /// </summary>
-        private void GenerateLayers(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists, List<List<ConstructorDefinition>> constructorLists, string includeFilePath)
+        private void GenerateLayers(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists, List<List<ConstructorDefinition>> constructorLists, List<int> superClassIDs, string includeFilePath)
         {
             int layerID = 1;
             foreach (LayerStructure layerStructure in layerStructures)
@@ -131,7 +131,7 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForHeader.AppendLine(@"} // namespace Generated {}");
                 stringBuilderForHeader.AppendLine(@"} // namespace RTCOP {}");
                 stringBuilderForHeader.AppendLine();
-                stringBuilderForHeader.AppendLine(ItemsToStringForLayers(layerStructure.HeaderFileItems, layerStructure, layerID, baseClassNameList,  constructorLists, baseMethodLists, 0, "", false));
+                stringBuilderForHeader.AppendLine(ItemsToStringForLayers(layerStructure.HeaderFileItems, layerStructure, layerID, baseClassNameList,  constructorLists, baseMethodLists, superClassIDs, 0, "", false));
                 stringBuilderForHeader.AppendLine();
                 stringBuilderForHeader.AppendLine(@"#endif");
                 result.CodeDictionary[layerStructure.LayerName + @".h"] = stringBuilderForHeader.ToString();
@@ -462,8 +462,6 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilderForSource.Append("\t\t");
                         stringBuilderForSource.AppendLine(@"layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;");
                         stringBuilderForSource.Append("\t\t");
-                        stringBuilderForSource.AppendLine(@"layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding = _Private->_VirtualFunctionTablesForProceeding[classID];");
-                        stringBuilderForSource.Append("\t\t");
                         stringBuilderForSource.AppendLine(@"volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);");
                         stringBuilderForSource.Append("\t\t");
                         stringBuilderForSource.AppendLine(@"layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;");
@@ -564,7 +562,7 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine(@"} // namespace Generated {}");
                 stringBuilderForSource.AppendLine(@"} // namespace RTCOP {}");
                 stringBuilderForSource.AppendLine();
-                stringBuilderForSource.AppendLine(ItemsToStringForLayers(layerStructure.SourceFileItems, layerStructure, layerID, baseClassNameList, constructorLists, baseMethodLists, 0, "", false));
+                stringBuilderForSource.AppendLine(ItemsToStringForLayers(layerStructure.SourceFileItems, layerStructure, layerID, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, 0, "", false));
                 stringBuilderForSource.AppendLine();
                 stringBuilderForSource.Append(@"namespace ");
                 stringBuilderForSource.Append(layerStructure.LayerName);
@@ -674,7 +672,7 @@ namespace LayerCompiler.CodeGeneration
         /// <summary>
         /// 要素の集合を文字列に変換
         /// </summary>
-        private string ItemsToStringForLayers(IEnumerable<object> items, LayerStructure layerStructure, int layerId, List<string> baseClassNameList, List<List<ConstructorDefinition>> constructorLists, List<List<LayerdMethodDefinition>> baseMethodLists, int indent, string ns, bool inLayer)
+        private string ItemsToStringForLayers(IEnumerable<object> items, LayerStructure layerStructure, int layerId, List<string> baseClassNameList, List<List<ConstructorDefinition>> constructorLists, List<List<LayerdMethodDefinition>> baseMethodLists, List<int> superClassIDs, int indent, string ns, bool inLayer)
         {
             StringBuilder stringBuilder = new StringBuilder();
             bool indentFlag = true;
@@ -695,7 +693,7 @@ namespace LayerCompiler.CodeGeneration
                     stringBuilder.AppendLine(ld.Name);
                     addIndent(indent);
                     stringBuilder.AppendLine(@"{");
-                    stringBuilder.AppendLine(ItemsToStringForLayers(ld.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent, ns, true));
+                    stringBuilder.AppendLine(ItemsToStringForLayers(ld.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent, ns, true));
                     addIndent(indent);
                     stringBuilder.AppendLine(@"}");
                     indentFlag = true;
@@ -718,7 +716,7 @@ namespace LayerCompiler.CodeGeneration
                     {
                         newns = ns + "::" + nd.Name;
                     }
-                    stringBuilder.AppendLine(ItemsToStringForLayers(nd.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent, newns, inLayer));
+                    stringBuilder.AppendLine(ItemsToStringForLayers(nd.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent, newns, inLayer));
                     addIndent(indent);
                     stringBuilder.AppendLine(@"}");
                     indentFlag = true;
@@ -742,16 +740,16 @@ namespace LayerCompiler.CodeGeneration
                     if (lcd.IsBase != null && !lcd.IsBase.Value)
                     {
                         stringBuilder.Append(@" : public RTCOP::Core::LayerdObject<");
-                        string superName = newns;
-                        if (!baseClassNameList.Contains(superName))
+                        string baseName = newns;
+                        if (!baseClassNameList.Contains(baseName))
                         {
-                            superName = "baselayer::" + superName;
-                            stringBuilder.Append(superName);
+                            baseName = "baselayer::" + baseName;
+                            stringBuilder.Append(baseName);
                         }
                         else
                         {
                             stringBuilder.Append(@"::");
-                            stringBuilder.Append(superName);
+                            stringBuilder.Append(baseName);
                         }
                         stringBuilder.AppendLine(@">");
                         addIndent(indent);
@@ -763,7 +761,29 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilder.Append(layerStructure.LayerName);
                         stringBuilder.AppendLine(@";");
                         addIndent(indent + 1);
-                        stringBuilder.AppendLine(@"class PartialClassMembers : public RTCOP::Core::PartialClassMembers");
+                        int classid = baseClassNameList.IndexOf(newns);
+                        if (classid == -1)
+                        {
+                            // 再検索
+                            classid = baseClassNameList.IndexOf("baselayer::" + newns);
+                        }
+                        int superClassId = superClassIDs[classid];
+                        stringBuilder.Append(@"class PartialClassMembers : public ");
+                        if (superClassId != -1)
+                        {
+                            stringBuilder.Append(@"::");
+                            stringBuilder.Append(layerStructure.LayerName);
+                            stringBuilder.Append(@"::");
+                            string superClassName = baseClassNameList[superClassId];
+                            if (superClassName.StartsWith(@"baselayer::"))
+                                superClassName = superClassName.Substring(@"baselayer::".Length);
+                            stringBuilder.Append(superClassName);
+                            stringBuilder.AppendLine(@"::PartialClassMembers");
+                        }
+                        else
+                        {
+                            stringBuilder.AppendLine(@"RTCOP::Core::PartialClassMembers");
+                        }
                         addIndent(indent + 1);
                         stringBuilder.AppendLine(@"{");
                         addIndent(indent + 1);
@@ -781,15 +801,9 @@ namespace LayerCompiler.CodeGeneration
                         }
                         addIndent(indent + 1);
                         stringBuilder.AppendLine(@"};");
-                        int id = baseClassNameList.IndexOf(newns);
-                        if (id == -1)
+                        if (classid != -1)
                         {
-                            // 再検索
-                            id = baseClassNameList.IndexOf("baselayer::" + newns);
-                        }
-                        if (id != -1)
-                        {
-                            var constructorList = constructorLists[id];
+                            var constructorList = constructorLists[classid];
                             ConstructorDefinition constructor = null;
                             foreach (var c in constructorList)
                             {
@@ -802,7 +816,15 @@ namespace LayerCompiler.CodeGeneration
                                     constructor = c;
                                 }
                             }
-                            ConstructorDefinition constructor2 = new ConstructorDefinition(constructor.Name, constructor.Parameters, ";", constructor.Modifiers, constructor.IsNoexcept);
+                            ConstructorDefinition constructor2 = null;
+                            if (constructor != null)
+                            {
+                                constructor2 = new ConstructorDefinition(constructor.Name, constructor.Parameters, ";", constructor.Modifiers, constructor.IsNoexcept);
+                            }
+                            else
+                            {
+                                constructor2 = new ConstructorDefinition(lcd.Name, new VariableDeclaration[] { }, ";", new string[] { }, false);
+                            }
                             constructorList.Add(constructor2);
                             stringBuilder.Append("\t");
                             stringBuilder.AppendLine(constructor2.ToString());
@@ -822,7 +844,7 @@ namespace LayerCompiler.CodeGeneration
                             addIndent(indent);
                             stringBuilder.AppendLine(@"public:");
                         }
-                        stringBuilder.AppendLine(ItemsToStringForLayers(lcd.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent + 1, newns, inLayer));
+                        stringBuilder.AppendLine(ItemsToStringForLayers(lcd.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent + 1, newns, inLayer));
                         addIndent(indent);
                         stringBuilder.AppendLine(@"};");
                     }
@@ -836,7 +858,7 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilder.AppendLine();
                         addIndent(indent);
                         stringBuilder.AppendLine(@"{");
-                        stringBuilder.AppendLine(ItemsToStringForLayers(lcd.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent + 1, newns, inLayer));
+                        stringBuilder.AppendLine(ItemsToStringForLayers(lcd.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent + 1, newns, inLayer));
                         addIndent(indent);
                         stringBuilder.AppendLine(@"};");
                     }
@@ -873,7 +895,7 @@ namespace LayerCompiler.CodeGeneration
                     if (lmd.Contents is IgnoreObjectBlock)
                     {
                         stringBuilder.AppendLine();
-                        stringBuilder.AppendLine(ItemsToStringForLayers(((IgnoreObjectBlock)lmd.Contents).Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent, ns + "::" + lmd.Name, inLayer));
+                        stringBuilder.AppendLine(ItemsToStringForLayers(((IgnoreObjectBlock)lmd.Contents).Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent, ns + "::" + lmd.Name, inLayer));
                     }
                     else
                     {
@@ -898,10 +920,10 @@ namespace LayerCompiler.CodeGeneration
                     }
                     if (mi.IsNoexcept) stringBuilder.Append(@" noexcept");
                     stringBuilder.AppendLine();
+                    addIndent(indent);
+                    stringBuilder.AppendLine(@"{");
                     if (inLayer)
                     {
-                        addIndent(indent);
-                        stringBuilder.AppendLine(@"{");
                         addIndent(indent + 1);
                         stringBuilder.Append(mi.ClassName);
                         stringBuilder.Append(@"::PartialClassMembers* layer_members = (");
@@ -924,11 +946,32 @@ namespace LayerCompiler.CodeGeneration
                         {
                             classId = baseClassNameList.IndexOf("baselayer::" + newns);
                         }
+                        // proceed
                         int methodId = baseMethodLists[classId].FindIndex((obj) => obj != null && obj.CompareMethod(mi.ToLayerdMethodDefinition()));
+                        int methodOffset = 0;
                         if (methodId != -1)
                         {
+                            if (Environment != DevelopmentEnvironment.VisualStudio)
+                            {
+                                for (int i = methodId - 1; i >= 0; --i)
+                                {
+                                    if (baseMethodLists[classId][i] == null)
+                                    {
+                                        methodOffset = 1;
+                                        break;
+                                    }
+                                }
+                            }
                             addIndent(indent + 1);
-                            stringBuilder.Append(@"auto proceed = [this, layer_members](");
+                            stringBuilder.Append(@"volatile void* _RTCOP_proceedaddr = RTCOP::Framework::Instance->GetRTCOPManager()->GetLayer(");
+                            stringBuilder.Append(layerId);
+                            stringBuilder.Append(@")->GetVirtualFunctionTableForProceeding(");
+                            stringBuilder.Append(classId);
+                            stringBuilder.Append(@")[");
+                            stringBuilder.Append(methodId + methodOffset);
+                            stringBuilder.AppendLine(@"];");
+                            addIndent(indent + 1);
+                            stringBuilder.Append(@"auto proceed = [this, _RTCOP_proceedaddr](");
                             int n = mi.Parameters.Count;
                             if (n > 0)
                             {
@@ -949,45 +992,53 @@ namespace LayerCompiler.CodeGeneration
                                 stringBuilder.Append(@"return ");
                             }
                             stringBuilder.Append(@"RTCOP::Generated::DependentCode::");
-                            if (baseClassNameList[classId].StartsWith("baselayer::"))
-                            {
-                                stringBuilder.Append(@"baselayer::");
-                            }
-                            stringBuilder.Append(mi.ClassName);
+                            stringBuilder.Append(baseClassNameList[classId]);
                             stringBuilder.Append(@"::ExecuteProceed_");
                             stringBuilder.Append(mi.MethodName);
-                            stringBuilder.Append(@"(this, layer_members->_VirtualFunctionTableForProceeding[");
-                            int methodOffset = 0;
-                            if (Environment != DevelopmentEnvironment.VisualStudio)
-                            {
-                                for (int i = methodId - 1; i >= 0; --i)
-                                {
-                                    if (baseMethodLists[classId][i] == null)
-                                    {
-                                        methodOffset = 1;
-                                        break;
-                                    }
-                                }
-                            }
-                            stringBuilder.Append(methodId + methodOffset);
-                            stringBuilder.Append(@"]");
+                            stringBuilder.Append(@"(this, _RTCOP_proceedaddr");
                             foreach (var param in mi.Parameters)
                             {
                                 stringBuilder.Append(@", ");
                                 stringBuilder.Append(param.Name);
                             }
                             stringBuilder.AppendLine(@"); };");
+                            // スーパーコール
+                            int superId = superClassIDs[classId];
+                            if (superId != -1)
+                            {
+                                addIndent(indent + 1);
+                                stringBuilder.Append(@"volatile void** _RTCOP_vft = RTCOP::Framework::Instance->GetRTCOPManager()->GetVirtualFunctionTable(");
+                                stringBuilder.Append(superId);
+                                stringBuilder.AppendLine(@");");
+                                addIndent(indent + 1);
+                                stringBuilder.Append(@"auto supercall = [this, _RTCOP_vft]() { RTCOP::Generated::DependentCode::");
+                                stringBuilder.Append(baseClassNameList[classId]);
+                                stringBuilder.Append(@"::ExecuteProceed_");
+                                stringBuilder.Append(mi.MethodName);
+                                stringBuilder.Append(@"(this, _RTCOP_vft[");
+                                stringBuilder.Append(methodId + methodOffset);
+                                stringBuilder.AppendLine(@"]); };");
+                            }
                         }
+                        // 中身
                         List<object> contents = mi.Contents.Contents.ToList();
                         contents.Remove(contents.Last());
                         contents.Remove(contents.First());
-                        stringBuilder.AppendLine(ItemsToStringForLayers(contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent + 1, ns + "::" + mi.FullName, inLayer));
+                        stringBuilder.AppendLine(ItemsToStringForLayers(contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent + 1, ns + "::" + mi.FullName, inLayer));
                         addIndent(indent);
                         stringBuilder.AppendLine(@"}");
+                        stringBuilder.AppendLine();
                     }
                     else
                     {
-                        stringBuilder.AppendLine(ItemsToStringForLayers(mi.Contents.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent, ns + "::" + mi.FullName, inLayer));
+                        List<object> contents = mi.Contents.Contents.ToList();
+                        contents.Remove(contents.Last());
+                        contents.Remove(contents.First());
+                        stringBuilder.AppendLine(ItemsToStringForLayers(contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent + 1, ns + "::" + mi.FullName, inLayer));
+                        addIndent(indent);
+                        stringBuilder.AppendLine(@"}");
+                        stringBuilder.AppendLine();
+                        indentFlag = true;
                     }
                     indentFlag = true;
                 }
@@ -1001,7 +1052,23 @@ namespace LayerCompiler.CodeGeneration
                 else if (item is IgnoreObjectBlock)
                 {
                     var iob = (IgnoreObjectBlock)item;
-                    stringBuilder.AppendLine(ItemsToStringForLayers(iob.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, indent, ns, inLayer));
+                    List<object> contents = iob.Contents.ToList();
+                    if (contents.First().ToString() == "{")
+                    {
+                        stringBuilder.AppendLine();
+                        contents.Remove(contents.Last());
+                        contents.Remove(contents.First());
+                        addIndent(indent);
+                        stringBuilder.AppendLine(@"{");
+                        stringBuilder.AppendLine(ItemsToStringForLayers(contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent + 1, ns, inLayer));
+                        addIndent(indent);
+                        stringBuilder.AppendLine(@"}");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendLine(ItemsToStringForLayers(iob.Contents, layerStructure, layerId, baseClassNameList, constructorLists, baseMethodLists, superClassIDs, indent, ns, inLayer));
+                    }
+                    stringBuilder.AppendLine();
                     indentFlag = true;
                 }
                 else if (item is IgnoreObject)

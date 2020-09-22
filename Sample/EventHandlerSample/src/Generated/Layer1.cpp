@@ -41,7 +41,6 @@ void* Layer1::InitializeLayerdObject(void* obj, int classID)
 		::Layer1::Sample* layerdObject = reinterpret_cast<::Layer1::Sample*>(obj);
 		layerdObject->_Private->_PartialClassMembers[layerID] = new ::Layer1::Sample::PartialClassMembers();
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;
-		layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding = _Private->_VirtualFunctionTablesForProceeding[classID];
 		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
 		layerdObject->_RTCOP_InitializePartialClass();
@@ -80,12 +79,14 @@ void Sample::Initialize ()
 	printf ( "Layer1::Sample::Initializeの実行\n" ) ;
 
 }
+
 void Sample::Finalize ()
 {
 	Sample::PartialClassMembers* layer_members = (Sample::PartialClassMembers*)_Private->_PartialClassMembers[1];
 	printf ( "Layer1::Sample::Finalizeの実行\n" ) ;
 
 }
+
 void OnActivating ()
 {
 	printf ( "Layer1::OnActivatingの実行\n" ) ;

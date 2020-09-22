@@ -42,7 +42,6 @@ void* English::InitializeLayerdObject(void* obj, int classID)
 		::English::Hello* layerdObject = reinterpret_cast<::English::Hello*>(obj);
 		layerdObject->_Private->_PartialClassMembers[layerID] = new ::English::Hello::PartialClassMembers();
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;
-		layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding = _Private->_VirtualFunctionTablesForProceeding[classID];
 		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
 		layerdObject->_RTCOP_InitializePartialClass();
@@ -74,10 +73,12 @@ namespace English
 void Hello::Print ()
 {
 	Hello::PartialClassMembers* layer_members = (Hello::PartialClassMembers*)_Private->_PartialClassMembers[1];
-	auto proceed = [this, layer_members]() { RTCOP::Generated::DependentCode::baselayer::Hello::ExecuteProceed_Print(this, layer_members->_VirtualFunctionTableForProceeding[0]); };
+	volatile void* _RTCOP_proceedaddr = RTCOP::Framework::Instance->GetRTCOPManager()->GetLayer(1)->GetVirtualFunctionTableForProceeding(0)[0];
+	auto proceed = [this, _RTCOP_proceedaddr]() { RTCOP::Generated::DependentCode::baselayer::Hello::ExecuteProceed_Print(this, _RTCOP_proceedaddr); };
 	printf ( "Hello World\n" ) ;
 
 }
+
 
 }
 

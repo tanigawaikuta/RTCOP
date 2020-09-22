@@ -19,7 +19,8 @@ volatile void** GetVirtualFunctionTable(BaseLayer* layer);
 volatile void** GetVirtualFunctionTable(Layer1* layer);
 
 
- }  } 
+}}
+
 
 } // namespace DependentCode {}
 } // namespace Generated {}

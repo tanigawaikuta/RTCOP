@@ -24,7 +24,8 @@ volatile void** GetVirtualFunctionTable(Japanese* layer);
 
 void ExecuteProceed_Print(void* layerdObject, volatile void* proceed);
 
- }  } 
+}}
+
 
 } // namespace DependentCode {}
 } // namespace Generated {}

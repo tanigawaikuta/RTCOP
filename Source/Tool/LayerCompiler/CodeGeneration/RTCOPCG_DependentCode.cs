@@ -171,8 +171,9 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForHeader.AppendLine();
                 for (int i = 0; i < nss.Length; ++i)
                 {
-                    stringBuilderForHeader.Append(@" } ");
+                    stringBuilderForHeader.Append(@"}");
                 }
+                stringBuilderForHeader.AppendLine();
                 stringBuilderForHeader.AppendLine();
                 ++classCount;
             }

@@ -46,30 +46,40 @@ void* BaseLayer::InitializeLayerdObject(void* obj, int classID)
 using namespace RTCOP ;
 namespace baselayer
 {
-A :: A ( ) {
-	b = copnew < baselayer :: B > ( ) ;
-	}
+A :: A ( ) 
+{
+b = copnew < baselayer :: B > ( ) ;
 
-A :: ~ A ( ) {
-	delete b ;
-	}
+}
+
+A :: ~ A ( ) 
+{
+delete b ;
+
+}
 
 void A::m1 ()
 {
 	printf ( "baselayer::A::m1()\n" ) ;
 	b -> m2 ( ) ;
-	}
 
-B :: B ( ) {
-	}
+}
 
-B :: ~ B ( ) {
-	}
+B :: B ( ) 
+{
+
+}
+
+B :: ~ B ( ) 
+{
+
+}
 
 void B::m2 ()
 {
 	printf ( "baselayer::B::m2()\n" ) ;
-	}
+
+}
 
 
 }

@@ -27,14 +27,16 @@ volatile void** GetVirtualFunctionTable(Layer2* layer);
 
 void ExecuteProceed_m1(void* layerdObject, volatile void* proceed);
 
- }  } 
+}}
+
 namespace baselayer { namespace B { 
 volatile void** GetVirtualFunctionTable(BaseLayer* layer);
 volatile void** GetVirtualFunctionTable(Layer2* layer);
 
 void ExecuteProceed_m2(void* layerdObject, volatile void* proceed);
 
- }  } 
+}}
+
 
 } // namespace DependentCode {}
 } // namespace Generated {}

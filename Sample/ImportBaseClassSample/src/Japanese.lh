@@ -1,0 +1,14 @@
+// Hello.lh
+#import_baseclass "Hello.h"
+
+// 日本語レイヤ
+layer Japanese
+{
+	// パーシャルクラス
+	partial class Hello
+	{
+	public:
+		partial void Print();
+	};
+
+}

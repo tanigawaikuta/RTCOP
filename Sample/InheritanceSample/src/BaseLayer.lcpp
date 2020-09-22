@@ -1,0 +1,44 @@
+// BaseLayer.lcpp
+#import_lh "BaseLayer.lh"
+#include "./Generated/API.h"
+#include <stdio.h>
+
+using namespace RTCOP;
+
+// ベースレイヤ
+baselayer
+{
+	//=============================
+	// スーパークラスの実装
+	//=============================
+	SuperA::SuperA()
+	{
+	}
+
+	SuperA::~SuperA()
+	{
+	}
+
+	void SuperA::m1()
+	{
+		printf("baselayer::SuperA::m1()\n");
+	}
+
+	//=============================
+	// サブクラスの実装
+	//=============================
+	SubA::SubA()
+	{
+	}
+
+	SubA::~SubA()
+	{
+	}
+
+	void SubA::m1()
+	{
+		printf("baselayer::SubA::m1()\n");
+		// スーパー呼び出し
+		supercall();
+	}
+}

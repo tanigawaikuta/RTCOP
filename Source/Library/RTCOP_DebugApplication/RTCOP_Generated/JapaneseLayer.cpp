@@ -64,9 +64,6 @@ void* JapaneseLayer::InitializeLayerdObject(void* obj, int classID)
 		layerdObject->_Private->_PartialClassMembers[layerID] = new JapaneseLayer_Hello::PartialClassMembers();
 		// レイヤ
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;
-		// Proceed実現のための仮想関数テーブル
-		layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding =
-			_Private->_VirtualFunctionTablesForProceeding[classID];
 		// パーシャルクラスの処分を行うメソッドへの関数ポインタ
 		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
@@ -116,7 +113,8 @@ void JapaneseLayer_Hello::Print()
 {
 	// 準備
 	JapaneseLayer_Hello::PartialClassMembers* members = (JapaneseLayer_Hello::PartialClassMembers*)_Private->_PartialClassMembers[1];
-	auto proceed = [this, members]() { DependentCode::HelloClass::ExecuteProceed_Print(this, members->_VirtualFunctionTableForProceeding[0]); };
+	volatile void* proceedaddr = Framework::Instance->GetRTCOPManager()->GetLayer(1)->GetVirtualFunctionTableForProceeding(0)[0];  // classId methodId(+offset)
+	auto proceed = [this, proceedaddr]() { DependentCode::HelloClass::ExecuteProceed_Print(this, proceedaddr); };
 	// レイヤ記述の内容
 	printf("Print: こんにちは\n");
 	proceed();
@@ -127,7 +125,8 @@ void JapaneseLayer_Hello::Print2(char arg)
 {
 	// 準備
 	JapaneseLayer_Hello::PartialClassMembers* members = (JapaneseLayer_Hello::PartialClassMembers*)_Private->_PartialClassMembers[1];
-	auto proceed = [this, members](char arg) { DependentCode::HelloClass::ExecuteProceed_Print2(this, members->_VirtualFunctionTableForProceeding[1], arg); };
+	volatile void* proceedaddr = Framework::Instance->GetRTCOPManager()->GetLayer(1)->GetVirtualFunctionTableForProceeding(0)[0];  // classId methodId(+offset)
+	auto proceed = [this, proceedaddr](char arg) { DependentCode::HelloClass::ExecuteProceed_Print2(this, proceedaddr, arg); };
 	// レイヤ記述の内容
 	printf("Print2: こんにちは %d\n", members->_JapaneseMember);
 	proceed(arg);

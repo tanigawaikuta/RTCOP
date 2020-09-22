@@ -19,7 +19,7 @@ namespace LayerCompiler.CodeGeneration
         /// <summary>
         /// ベースレイヤ
         /// </summary>
-        private void GenerateBaseLayer(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, string includeFilePath)
+        private void GenerateBaseLayer(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists, List<int> superClassIDs, string includeFilePath)
         {
             // 共通処理
             var headerIncludeFiles = from item in baseLayerStructure.HeaderFileItems
@@ -102,7 +102,7 @@ namespace LayerCompiler.CodeGeneration
             stringBuilderForHeader.AppendLine(@"} // namespace Generated {}");
             stringBuilderForHeader.AppendLine(@"} // namespace RTCOP {}");
             stringBuilderForHeader.AppendLine();
-            stringBuilderForHeader.AppendLine(ItemsToStringForBaseLayer(baseLayerStructure.HeaderFileItems, 0));
+            stringBuilderForHeader.AppendLine(ItemsToStringForBaseLayer(baseLayerStructure.HeaderFileItems, baseClassNameList, baseMethodLists, superClassIDs, 0, ""));
             stringBuilderForHeader.AppendLine();
             stringBuilderForHeader.AppendLine(@"#endif //!__RTCOP_GENERATED_JAPANESELAYER__");
             result.CodeDictionary[@"BaseLayer.h"] = stringBuilderForHeader.ToString();
@@ -222,7 +222,7 @@ namespace LayerCompiler.CodeGeneration
             stringBuilderForSource.AppendLine(@"} // namespace Generated {}");
             stringBuilderForSource.AppendLine(@"} // namespace RTCOP {}");
             stringBuilderForSource.AppendLine();
-            stringBuilderForSource.AppendLine(ItemsToStringForBaseLayer(baseLayerStructure.SourceFileItems, 0));
+            stringBuilderForSource.AppendLine(ItemsToStringForBaseLayer(baseLayerStructure.SourceFileItems, baseClassNameList, baseMethodLists, superClassIDs, 0, ""));
             stringBuilderForSource.AppendLine();
             result.CodeDictionary[@"BaseLayer.cpp"] = stringBuilderForSource.ToString();
         }
@@ -231,7 +231,7 @@ namespace LayerCompiler.CodeGeneration
         /// <summary>
         /// 要素の集合を文字列に変換
         /// </summary>
-        private string ItemsToStringForBaseLayer(IEnumerable<object> items, int indent)
+        private string ItemsToStringForBaseLayer(IEnumerable<object> items, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists, List<int> superClassIDs, int indent, string ns)
         {
             StringBuilder stringBuilder = new StringBuilder();
             bool indentFlag = true;
@@ -252,7 +252,7 @@ namespace LayerCompiler.CodeGeneration
                     stringBuilder.AppendLine(ld.Name);
                     addIndent(indent);
                     stringBuilder.AppendLine(@"{");
-                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(ld.Contents, indent));
+                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(ld.Contents, baseClassNameList, baseMethodLists, superClassIDs, indent, "baselayer"));
                     addIndent(indent);
                     stringBuilder.AppendLine(@"}");
                     indentFlag = true;
@@ -260,13 +260,22 @@ namespace LayerCompiler.CodeGeneration
                 else if (item is NamespaceDefinition)
                 {
                     var nd = (NamespaceDefinition)item;
+                    string newns = "";
+                    if (ns == "")
+                    {
+                        newns = nd.Name;
+                    }
+                    else
+                    {
+                        newns = ns + "::" + nd.Name;
+                    }
                     addIndent(indent);
                     if (nd.IsInline) stringBuilder.Append(@"inline ");
                     stringBuilder.Append(@"namespace ");
                     stringBuilder.AppendLine(nd.Name);
                     addIndent(indent);
                     stringBuilder.AppendLine(@"{");
-                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(nd.Contents, indent));
+                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(nd.Contents, baseClassNameList, baseMethodLists, superClassIDs, indent, newns));
                     addIndent(indent);
                     stringBuilder.AppendLine(@"}");
                     indentFlag = true;
@@ -274,6 +283,15 @@ namespace LayerCompiler.CodeGeneration
                 else if (item is LayerdClassDefinition)
                 {
                     var lcd = (LayerdClassDefinition)item;
+                    string newns = "";
+                    if (ns == "")
+                    {
+                        newns = lcd.Name;
+                    }
+                    else
+                    {
+                        newns = ns + "::" + lcd.Name;
+                    }
                     addIndent(indent);
                     stringBuilder.Append(lcd.ClassKey);
                     stringBuilder.Append(" ");
@@ -291,7 +309,7 @@ namespace LayerCompiler.CodeGeneration
                         ConstructorDefinition constructor = new ConstructorDefinition(lcd.Name, new VariableDeclaration[] { }, new IgnoreObjectBlock("{", "}", new object[] { }), new string[] { }, false);
                         lcd.Contents.Add(constructor);
                     }
-                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(lcd.Contents, indent + 1));
+                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(lcd.Contents, baseClassNameList, baseMethodLists, superClassIDs, indent + 1, newns));
                     addIndent(indent);
                     stringBuilder.AppendLine(@"};");
                     indentFlag = true;
@@ -327,7 +345,7 @@ namespace LayerCompiler.CodeGeneration
                     if (lmd.Contents is IgnoreObjectBlock)
                     {
                         stringBuilder.AppendLine();
-                        stringBuilder.AppendLine(ItemsToStringForBaseLayer(((IgnoreObjectBlock)lmd.Contents).Contents, indent));
+                        stringBuilder.AppendLine(ItemsToStringForBaseLayer(((IgnoreObjectBlock)lmd.Contents).Contents, baseClassNameList, baseMethodLists, superClassIDs, indent, ns));
                     }
                     else
                     {
@@ -352,7 +370,64 @@ namespace LayerCompiler.CodeGeneration
                     }
                     if (mi.IsNoexcept) stringBuilder.Append(@" noexcept");
                     stringBuilder.AppendLine();
-                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(mi.Contents.Contents, indent));
+                    addIndent(indent);
+                    stringBuilder.AppendLine(@"{");
+                    // supercall
+                    string newns = "";
+                    if (ns == "")
+                    {
+                        newns = mi.ClassName;
+                    }
+                    else
+                    {
+                        newns = ns + "::" + mi.ClassName;
+                    }
+                    int classId = -1;
+                    classId = baseClassNameList.IndexOf(newns);
+                    if (classId == -1)
+                    {
+                        classId = baseClassNameList.IndexOf("baselayer::" + newns);
+                    }
+                    int superId = superClassIDs[classId];
+                    if (superId != -1)
+                    {
+                        int methodId = baseMethodLists[classId].FindIndex((obj) => obj != null && obj.CompareMethod(mi.ToLayerdMethodDefinition()));
+                        if (methodId != -1)
+                        {
+                            int methodOffset = 0;
+                            if (Environment != DevelopmentEnvironment.VisualStudio)
+                            {
+                                for (int i = methodId - 1; i >= 0; --i)
+                                {
+                                    if (baseMethodLists[classId][i] == null)
+                                    {
+                                        methodOffset = 1;
+                                        break;
+                                    }
+                                }
+                            }
+                            addIndent(indent + 1);
+                            stringBuilder.Append(@"volatile void** _RTCOP_vft = RTCOP::Framework::Instance->GetRTCOPManager()->GetVirtualFunctionTable(");
+                            stringBuilder.Append(superId);
+                            stringBuilder.AppendLine(@");");
+                            addIndent(indent + 1);
+                            stringBuilder.Append(@"auto supercall = [this, _RTCOP_vft]() { RTCOP::Generated::DependentCode::");
+                            stringBuilder.Append(baseClassNameList[classId]);
+                            stringBuilder.Append(@"::ExecuteProceed_");
+                            stringBuilder.Append(mi.MethodName);
+                            stringBuilder.Append(@"(this, _RTCOP_vft[");
+                            stringBuilder.Append(methodId + methodOffset);
+                            stringBuilder.AppendLine(@"]); };");
+                        }
+                    }
+                    // 中身
+                    List<object> contents = mi.Contents.Contents.ToList();
+                    contents.Remove(contents.Last());
+                    contents.Remove(contents.First());
+                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(contents, baseClassNameList, baseMethodLists, superClassIDs, indent + 1, ns));
+                    addIndent(indent);
+                    stringBuilder.AppendLine(@"}");
+                    stringBuilder.AppendLine();
                     indentFlag = true;
                 }
                 else if (item is VariableDeclaration)
@@ -365,7 +440,23 @@ namespace LayerCompiler.CodeGeneration
                 else if (item is IgnoreObjectBlock)
                 {
                     var iob = (IgnoreObjectBlock)item;
-                    stringBuilder.AppendLine(ItemsToStringForBaseLayer(iob.Contents, indent));
+                    List<object> contents = iob.Contents.ToList();
+                    if (contents.First().ToString() == "{")
+                    {
+                        stringBuilder.AppendLine();
+                        contents.Remove(contents.Last());
+                        contents.Remove(contents.First());
+                        addIndent(indent);
+                        stringBuilder.AppendLine(@"{");
+                        stringBuilder.AppendLine(ItemsToStringForBaseLayer(contents, baseClassNameList, baseMethodLists, superClassIDs, indent, ns));
+                        addIndent(indent);
+                        stringBuilder.AppendLine(@"}");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendLine(ItemsToStringForBaseLayer(iob.Contents, baseClassNameList, baseMethodLists, superClassIDs, indent, ns));
+                    }
+                    stringBuilder.AppendLine();
                     indentFlag = true;
                 }
                 else if (item is IgnoreObject)

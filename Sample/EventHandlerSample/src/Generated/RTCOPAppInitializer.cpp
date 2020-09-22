@@ -18,7 +18,9 @@ RTCOPAppInitializer::~RTCOPAppInitializer()
 
 Core::RTCOPManager* RTCOPAppInitializer::InitializeRTCOPManager()
 {
-	int numOfLayers = 2;	int numOfClasses = 1;	int* numOfMethods = new int[numOfClasses] {1};
+	int numOfLayers = 2;
+	int numOfClasses = 1;
+	int* numOfMethods = new int[numOfClasses] {1};
 	return new Core::RTCOPManager(numOfLayers, numOfClasses, numOfMethods);
 }
 

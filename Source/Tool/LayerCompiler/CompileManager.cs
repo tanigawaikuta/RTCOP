@@ -408,7 +408,7 @@ namespace LayerCompiler
                 fileName2 = SourceRootPath + fileName;
                 if (!File.Exists(fileName2))
                 {
-                    throw new FileNotFoundException("存在しないファイルが指定されました", fileName);
+                    throw new FileNotFoundException(fileName + " が見つかりません", fileName);
                 }
             }
             // ファイルオープン

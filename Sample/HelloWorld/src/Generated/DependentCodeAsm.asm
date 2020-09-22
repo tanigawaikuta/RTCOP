@@ -1,44 +1,29 @@
-public ?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVBaseLayer@45@@Z
-public ?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVEnglish@45@@Z
-public ?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVJapanese@45@@Z
-public ?GetLayerdObjectFinalizer@DependentCode@Generated@RTCOP@@YAPECXPEAVHello@English@@@Z
-public ?GetLayerdObjectFinalizer@DependentCode@Generated@RTCOP@@YAPECXPEAVHello@Japanese@@@Z
+public	?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVBaseLayer@45@@Z
+public	?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVEnglish@45@@Z
+public	?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVJapanese@45@@Z
+extrn ??_7Hello@baselayer@@6B@:PTR
 extrn ??_7?$LayerdObject@VHello@baselayer@@@Core@RTCOP@@6B@:PTR
-extrn ??_7Hello@English@@6B@:PTR
-extrn ??_7Hello@Japanese@@6B@:PTR
-extrn ?_RTCOP_FinalizePartialClass@Hello@English@@AEAAXXZ:PROC
-extrn ?_RTCOP_FinalizePartialClass@Hello@Japanese@@AEAAXXZ:PROC
+extrn	??_7Hello@English@@6B@:PTR
+extrn	??_7Hello@Japanese@@6B@:PTR
 
-_TEXT segment
+_TEXT segment USE32
 	align 16
-?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVBaseLayer@45@@Z proc
-	mov rax, offset ??_7?$LayerdObject@VHello@baselayer@@@Core@RTCOP@@6B@
+?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVBaseLayer@45@@Z proc
+	mov eax, offset ??_7?$LayerdObject@VHello@baselayer@@@Core@RTCOP@@6B@
 	ret
-?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVBaseLayer@45@@Z endp
+?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVBaseLayer@45@@Z endp
 
 	align 16
-?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVEnglish@45@@Z proc
-	mov rax, offset ??_7Hello@English@@6B@
+?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVEnglish@45@@Z proc
+	mov eax, offset ??_7Hello@English@@6B@
 	ret
-?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVEnglish@45@@Z endp
+?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVEnglish@45@@Z endp
 
 	align 16
-?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVJapanese@45@@Z proc
-	mov rax, offset ??_7Hello@Japanese@@6B@
+?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVJapanese@45@@Z proc
+	mov eax, offset ??_7Hello@Japanese@@6B@
 	ret
-?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPEAPECXPEAVJapanese@45@@Z endp
-
-	align 16
-?GetLayerdObjectFinalizer@DependentCode@Generated@RTCOP@@YAPECXPEAVHello@English@@@Z proc
-	mov rax, offset ?_RTCOP_FinalizePartialClass@Hello@English@@AEAAXXZ
-	ret
-?GetLayerdObjectFinalizer@DependentCode@Generated@RTCOP@@YAPECXPEAVHello@English@@@Z endp
-
-	align 16
-?GetLayerdObjectFinalizer@DependentCode@Generated@RTCOP@@YAPECXPEAVHello@Japanese@@@Z proc
-	mov rax, offset ?_RTCOP_FinalizePartialClass@Hello@Japanese@@AEAAXXZ
-	ret
-?GetLayerdObjectFinalizer@DependentCode@Generated@RTCOP@@YAPECXPEAVHello@Japanese@@@Z endp
+?GetVirtualFunctionTable@Hello@baselayer@DependentCode@Generated@RTCOP@@YAPAPCXPAVJapanese@45@@Z endp
 
 _TEXT ends
 	end

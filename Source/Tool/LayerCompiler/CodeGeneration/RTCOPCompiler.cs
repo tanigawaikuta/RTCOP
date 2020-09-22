@@ -86,96 +86,104 @@ namespace LayerCompiler.CodeGeneration
             }
 
             // ヘッダファイルの解釈
-            foreach (RTCOPSourceFile impFile in sourceFile.ImportedFiles)
+            Action<RTCOPSourceFile> InterpretImportedFiles = null;
+            InterpretImportedFiles = (src) =>
             {
-                // パーサに通す
-                string impFileCode = impFile.Text;
-                var impFileItems = RTCOPParser.RTCOPSourceFile.Parse(impFileCode);
-                // ファイルの種類によって処理方法を変える
-                if (Path.GetExtension(impFile.FilePath) == ".lh")
+                foreach (RTCOPSourceFile impFile in src.ImportedFiles)
                 {
-                    List<string> layerNames = new List<string>();
-                    // 要素の解釈
-                    foreach (object item in impFileItems)
+                    // .lh内でさらに読み込まれているファイルをチェック
+                    InterpretImportedFiles(impFile);
+
+                    // パーサに通す
+                    string impFileCode = impFile.Text;
+                    var impFileItems = RTCOPParser.RTCOPSourceFile.Parse(impFileCode);
+                    // ファイルの種類によって処理方法を変える
+                    if (Path.GetExtension(impFile.FilePath) == ".lh")
                     {
-                        // レイヤ定義の場合
-                        if (item is LayerDefinition)
+                        List<string> layerNames = new List<string>();
+                        // 要素の解釈
+                        foreach (object item in impFileItems)
                         {
-                            var layerDefinition = (LayerDefinition)item;
-                            layerNames.Add(layerDefinition.Name);
-                            // ヘッダ要素の追加
-                            if (layerDefinition.Name == "baselayer")
+                            // レイヤ定義の場合
+                            if (item is LayerDefinition)
                             {
-                                // ベースレイヤ
-                                if (result.BaseLayerStructure == null)
+                                var layerDefinition = (LayerDefinition)item;
+                                layerNames.Add(layerDefinition.Name);
+                                // ヘッダ要素の追加
+                                if (layerDefinition.Name == "baselayer")
                                 {
-                                    result.BaseLayerStructure = new LayerStructure("baselayer");
+                                    // ベースレイヤ
+                                    if (result.BaseLayerStructure == null)
+                                    {
+                                        result.BaseLayerStructure = new LayerStructure("baselayer");
+                                    }
+                                    ImportedFileInfomation ifi = result.BaseLayerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
+                                    if (ifi == null)
+                                    {
+                                        ifi = new ImportedFileInfomation(impFile.FilePath);
+                                        ifi.StartIndex = result.BaseLayerStructure.HeaderFileItems.Count;
+                                        ifi.NumOfItems = 0;
+                                        result.BaseLayerStructure.ImportedLhInfomation.Add(ifi);
+                                    }
+                                    ++ifi.NumOfItems;
+                                    result.BaseLayerStructure.HeaderFileItems.Add(layerDefinition);
                                 }
-                                ImportedFileInfomation ifi = result.BaseLayerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
-                                if (ifi == null)
+                                else
                                 {
-                                    ifi = new ImportedFileInfomation(impFile.FilePath);
-                                    ifi.StartIndex = result.BaseLayerStructure.HeaderFileItems.Count;
-                                    ifi.NumOfItems = 0;
-                                    result.BaseLayerStructure.ImportedLhInfomation.Add(ifi);
+                                    // ベースレイヤ以外
+                                    var layerStructure = result.LayerStructures.Find((obj) => obj.LayerName == layerDefinition.Name);
+                                    if (layerStructure == null)
+                                    {
+                                        layerStructure = new LayerStructure(layerDefinition.Name);
+                                        result.LayerStructures.Add(layerStructure);
+                                    }
+                                    ImportedFileInfomation ifi = layerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
+                                    if (ifi == null)
+                                    {
+                                        ifi = new ImportedFileInfomation(impFile.FilePath);
+                                        ifi.StartIndex = layerStructure.HeaderFileItems.Count;
+                                        ifi.NumOfItems = 0;
+                                        layerStructure.ImportedLhInfomation.Add(ifi);
+                                    }
+                                    ++ifi.NumOfItems;
+                                    layerStructure.HeaderFileItems.Add(layerDefinition);
                                 }
-                                ++ifi.NumOfItems;
-                                result.BaseLayerStructure.HeaderFileItems.Add(layerDefinition);
                             }
+                            // それ以外
                             else
                             {
-                                // ベースレイヤ以外
-                                var layerStructure = result.LayerStructures.Find((obj) => obj.LayerName == layerDefinition.Name);
-                                if (layerStructure == null)
-                                {
-                                    layerStructure = new LayerStructure(layerDefinition.Name);
-                                    result.LayerStructures.Add(layerStructure);
-                                }
-                                ImportedFileInfomation ifi = layerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
-                                if (ifi == null)
-                                {
-                                    ifi = new ImportedFileInfomation(impFile.FilePath);
-                                    ifi.StartIndex = layerStructure.HeaderFileItems.Count;
-                                    ifi.NumOfItems = 0;
-                                    layerStructure.ImportedLhInfomation.Add(ifi);
-                                }
-                                ++ifi.NumOfItems;
-                                layerStructure.HeaderFileItems.Add(layerDefinition);
+                                commonItemsH.Add(item);
                             }
                         }
-                        // それ以外
-                        else
+                        // 各レイヤ共通のアイテムの反映
+                        if (layerNames.Contains("baselayer"))
                         {
-                            commonItemsH.Add(item);
-                        }
-                    }
-                    // 各レイヤ共通のアイテムの反映
-                    if (layerNames.Contains("baselayer"))
-                    {
-                        ImportedFileInfomation ifi = result.BaseLayerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
-                        ifi.NumOfItems += commonItemsH.Count;
-                        result.BaseLayerStructure.HeaderFileItems.InsertRange(ifi.StartIndex, commonItemsH);
-                    }
-                    foreach (var layerStructure in result.LayerStructures)
-                    {
-                        if (layerNames.Contains(layerStructure.LayerName))
-                        {
-                            ImportedFileInfomation ifi = layerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
+                            ImportedFileInfomation ifi = result.BaseLayerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
                             ifi.NumOfItems += commonItemsH.Count;
-                            layerStructure.HeaderFileItems.InsertRange(ifi.StartIndex, commonItemsH);
+                            result.BaseLayerStructure.HeaderFileItems.InsertRange(ifi.StartIndex, commonItemsH);
+                        }
+                        foreach (var layerStructure in result.LayerStructures)
+                        {
+                            if (layerNames.Contains(layerStructure.LayerName))
+                            {
+                                ImportedFileInfomation ifi = layerStructure.ImportedLhInfomation.Find((obj) => obj.FilePath == impFile.FilePath);
+                                ifi.NumOfItems += commonItemsH.Count;
+                                layerStructure.HeaderFileItems.InsertRange(ifi.StartIndex, commonItemsH);
+                            }
                         }
                     }
+                    // .lhファイル以外
+                    else
+                    {
+                        ImportedFileInfomation ifi = new ImportedFileInfomation(impFile.FilePath);
+                        ifi.StartIndex = result.BaseClassHeaderItems.Count;
+                        ifi.NumOfItems = impFileItems.Count();
+                        result.ImportedBaseClassHeaderInfomation.Add(ifi);
+                        result.BaseClassHeaderItems.AddRange(impFileItems);
+                    }
                 }
-                // .lhファイル以外
-                else
-                {
-                    ImportedFileInfomation ifi = new ImportedFileInfomation(impFile.FilePath);
-                    ifi.StartIndex = result.BaseClassHeaderItems.Count;
-                    ifi.NumOfItems = impFileItems.Count();
-                    result.ImportedBaseClassHeaderInfomation.Add(ifi);
-                    result.BaseClassHeaderItems.AddRange(impFileItems);
-                }
-            }
+            };
+            InterpretImportedFiles(sourceFile);
             // 結果を返す
             return result;
         }
@@ -201,7 +209,7 @@ namespace LayerCompiler.CodeGeneration
                         ifi2 = new ImportedFileInfomation(ifi.FilePath);
                         ifi2.StartIndex = result.BaseClassHeaderItems.Count;
                         ifi2.NumOfItems = ifi.NumOfItems;
-                        result.BaseClassHeaderItems.Add(ifi2);
+                        result.ImportedBaseClassHeaderInfomation.Add(ifi2);
                         var range = structureFile.BaseClassHeaderItems.GetRange(ifi.StartIndex, ifi.NumOfItems);
                         result.BaseClassHeaderItems.AddRange(range);
                     }

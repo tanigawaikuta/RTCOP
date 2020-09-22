@@ -1,0 +1,26 @@
+// Layer1.lcpp
+#import_lh "Layer1.lh"
+#include <stdio.h>
+
+// ベースレイヤ
+layer Layer1
+{
+	//=============================
+	// スーパークラスの実装
+	//=============================
+	void SuperA::m1()
+	{
+		printf("Layer1::SuperA::m1()\n");
+		proceed();
+	}
+
+	//=============================
+	// サブクラスの実装
+	//=============================
+	void SubA::m1()
+	{
+		printf("Layer1::SubA::m1()\n");
+		proceed();
+	}
+
+}

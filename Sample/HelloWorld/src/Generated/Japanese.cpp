@@ -42,7 +42,6 @@ void* Japanese::InitializeLayerdObject(void* obj, int classID)
 		::Japanese::Hello* layerdObject = reinterpret_cast<::Japanese::Hello*>(obj);
 		layerdObject->_Private->_PartialClassMembers[layerID] = new ::Japanese::Hello::PartialClassMembers();
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Layer = this;
-		layerdObject->_Private->_PartialClassMembers[layerID]->_VirtualFunctionTableForProceeding = _Private->_VirtualFunctionTablesForProceeding[classID];
 		volatile void* vfp = DependentCode::GetLayerdObjectFinalizer(layerdObject);
 		layerdObject->_Private->_PartialClassMembers[layerID]->_Finalizer = vfp;
 		layerdObject->_RTCOP_InitializePartialClass();
@@ -74,10 +73,12 @@ namespace Japanese
 void Hello::Print ()
 {
 	Hello::PartialClassMembers* layer_members = (Hello::PartialClassMembers*)_Private->_PartialClassMembers[2];
-	auto proceed = [this, layer_members]() { RTCOP::Generated::DependentCode::baselayer::Hello::ExecuteProceed_Print(this, layer_members->_VirtualFunctionTableForProceeding[0]); };
+	volatile void* _RTCOP_proceedaddr = RTCOP::Framework::Instance->GetRTCOPManager()->GetLayer(2)->GetVirtualFunctionTableForProceeding(0)[0];
+	auto proceed = [this, _RTCOP_proceedaddr]() { RTCOP::Generated::DependentCode::baselayer::Hello::ExecuteProceed_Print(this, _RTCOP_proceedaddr); };
 	printf ( "こんにちは世界\n" ) ;
 
 }
+
 
 }
 
