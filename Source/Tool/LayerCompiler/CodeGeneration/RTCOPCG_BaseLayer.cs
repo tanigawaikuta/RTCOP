@@ -411,13 +411,34 @@ namespace LayerCompiler.CodeGeneration
                             stringBuilder.Append(superId);
                             stringBuilder.AppendLine(@");");
                             addIndent(indent + 1);
-                            stringBuilder.Append(@"auto supercall = [this, _RTCOP_vft]() { RTCOP::Generated::DependentCode::");
+                            stringBuilder.Append(@"auto supercall = [this, _RTCOP_vft](");
+                            int n = mi.Parameters.Count;
+                            if (n > 0)
+                            {
+                                stringBuilder.Append(mi.Parameters[0].Type);
+                                stringBuilder.Append(" ");
+                                stringBuilder.Append(mi.Parameters[0].Name);
+                                for (int i = 1; i < n; ++i)
+                                {
+                                    stringBuilder.Append(", ");
+                                    stringBuilder.Append(mi.Parameters[i].Type);
+                                    stringBuilder.Append(" ");
+                                    stringBuilder.Append(mi.Parameters[i].Name);
+                                }
+                            }
+                            stringBuilder.Append(@") { RTCOP::Generated::DependentCode::");
                             stringBuilder.Append(baseClassNameList[classId]);
                             stringBuilder.Append(@"::ExecuteProceed_");
                             stringBuilder.Append(mi.MethodName);
                             stringBuilder.Append(@"(this, _RTCOP_vft[");
                             stringBuilder.Append(methodId + methodOffset);
-                            stringBuilder.AppendLine(@"]); };");
+                            stringBuilder.Append(@"]");
+                            foreach (var param in mi.Parameters)
+                            {
+                                stringBuilder.Append(@", ");
+                                stringBuilder.Append(param.Name);
+                            }
+                            stringBuilder.AppendLine(@"); };");
                         }
                     }
                     // 中身
