@@ -75,6 +75,9 @@
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\LayerStructureFile.cs">
       <Link>Source\CodeGeneration\Model\LayerStructureFile.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\RTCOPConfigFile.cs">
+      <Link>Source\CodeGeneration\Model\RTCOPConfigFile.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\Source\Tool\LayerCompiler\CodeGeneration\Model\RTCOPSourceFile.cs">
       <Link>Source\CodeGeneration\Model\RTCOPSourceFile.cs</Link>
     </Compile>

@@ -17,12 +17,22 @@ namespace LayerCompiler.CodeGeneration
     /// </summary>
     class RTCOPCompiler
     {
+        #region フィールド
+        /// <summary>
+        /// コンフィグファイル
+        /// </summary>
+        private RTCOPConfigFile _RTCOPConfigFile;
+
+        #endregion
+
         #region コンストラクタ
         /// <summary>
         /// RTCOPファイルのコンパイラ
         /// </summary>
-        public RTCOPCompiler()
+        /// <param name="configFile">コンフィグファイル</param>
+        public RTCOPCompiler(RTCOPConfigFile configFile)
         {
+            _RTCOPConfigFile = configFile;
         }
 
         #endregion
@@ -263,8 +273,42 @@ namespace LayerCompiler.CodeGeneration
                     }
                 }
             }
+            // レイヤコンフィグの反映
+            //result = ReflectConfigFile(result);
             // 結果を返す
             return result;
+        }
+
+        /// <summary>
+        /// コンフィグファイルの反映
+        /// </summary>
+        /// <param name="lsFile">レイヤ構造ファイル</param>
+        /// <returns>反映後のレイヤ構造ファイル</returns>
+        private LayerStructureFile ReflectConfigFile(LayerStructureFile lsFile)
+        {
+            if (_RTCOPConfigFile != null)
+            {
+                // 実行優先度に基づいたソート
+                List<LayerStructure> newLayerStructureList = new List<LayerStructure>();
+                foreach (var lconfig in _RTCOPConfigFile.LayerConfigs)
+                {
+                    var ls = lsFile.LayerStructures.Find((obj) => obj.LayerName == lconfig.LayerName);
+                    if (ls != null)
+                    {
+                        newLayerStructureList.Add(ls);
+                        lsFile.LayerStructures.Remove(ls);
+                    }
+                }
+                // コンフィグファイルに載ってなかったものを突っ込む
+                if (lsFile.LayerStructures.Count > 0)
+                {
+                    newLayerStructureList.AddRange(lsFile.LayerStructures);
+                    lsFile.LayerStructures.Clear();
+                }
+                // ソート済みのものを入れなおす
+                lsFile.LayerStructures.AddRange(newLayerStructureList);
+            }
+            return lsFile;
         }
 
         #endregion

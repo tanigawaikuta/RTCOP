@@ -1,7 +1,3 @@
-_ZTVN5RTCOP4Core12LayerdObjectI5HelloEE
-_ZTVN5RTCOP4Core12LayerdObjectIN9baselayer5HelloEEE
-
-
 
 sudo apt install libc6-dev-i386 gcc-multilib g++-multilib
 

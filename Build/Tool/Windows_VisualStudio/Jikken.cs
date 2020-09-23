@@ -44,7 +44,7 @@ baselayer
             var f2 = p.Run(f);
             Console.WriteLine(f2.Text);
 
-            RTCOPCompiler c = new RTCOPCompiler();
+            RTCOPCompiler c = new RTCOPCompiler(null);
             var of = c.Compile(f2);
             LayerStructureFile.SaveFile(@"C:\Users\Ikuta\Desktop\aaa.lobj", of);
             var of2 = LayerStructureFile.LoadFile(@"C:\Users\Ikuta\Desktop\aaa.lobj");

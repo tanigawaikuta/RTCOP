@@ -30,6 +30,11 @@ namespace LayerCompiler
         /// </summary>
         private RTCOPCodeGenerator _RTCOPCodeGenerator;
 
+        /// <summary>
+        /// コンフィグファイル
+        /// </summary>
+        private RTCOPConfigFile _RTCOPConfigFile;
+
         #endregion
 
         #region プロパティ
@@ -44,6 +49,11 @@ namespace LayerCompiler
         /// ディレクトリパスの場合、その場所にC++ソースコードを出力する
         /// </summary>
         public string OutputFile { get; protected set; } = "./";
+
+        /// <summary>
+        /// コンフィグファイル
+        /// </summary>
+        public string ConfigFilePath { get; protected set; } = "";
 
         /// <summary>
         /// ヘッダファイルのディレクトリパス
@@ -122,9 +132,14 @@ namespace LayerCompiler
             // コンパイルオプションのチェック
             CheckCompileOptions(args);
 
+            // コンフィグファイルの読み込み
+            if (ConfigFilePath != "")
+            {
+                _RTCOPConfigFile = LoadConfigFile(ConfigFilePath);
+            }
             // プリプロセッサ・コンパイラの生成
             _RTCOPPreprocessor = new RTCOPPreprocessor(Macros, IncludePaths, Encoding);
-            _RTCOPCompiler = new RTCOPCompiler();
+            _RTCOPCompiler = new RTCOPCompiler(_RTCOPConfigFile);
             _RTCOPCodeGenerator = new RTCOPCodeGenerator(Namespace, LineTerminator, Target, Environment, IncludePaths);
         }
 
@@ -159,6 +174,15 @@ namespace LayerCompiler
                         if ((i + 1) < args.Length)
                         {
                             OutputFile = args[i + 1];
+                        }
+                        offset = 2;
+                        break;
+                    // コンフィグファイル
+                    case "-c":
+                    case "-C":
+                        if ((i + 1) < args.Length)
+                        {
+                            ConfigFilePath = args[i + 1];
                         }
                         offset = 2;
                         break;
@@ -297,11 +321,11 @@ namespace LayerCompiler
                                     break;
                                 case "gcc":
                                 case "g++":
-                                case "mingw":
                                     Environment = DevelopmentEnvironment.GCC;
                                     break;
                                 case "clang":
                                 case "llvm":
+                                case "mingw":
                                     Environment = DevelopmentEnvironment.Clang;
                                     break;
                                 default:
@@ -392,6 +416,27 @@ namespace LayerCompiler
             {
                 LayerStructureFile.SaveFile(OutputFile, mergedLSFile);
             }
+        }
+
+        /// <summary>
+        /// コンフィグファイルの読み込み
+        /// </summary>
+        /// <param name="fileName">ファイル名</param>
+        /// <returns>コンフィグファイル</returns>
+        private RTCOPConfigFile LoadConfigFile(string fileName)
+        {
+            // ファイルチェック
+            string fileName2 = fileName;
+            if (!File.Exists(fileName2))
+            {
+                fileName2 = SourceRootPath + fileName;
+                if (!File.Exists(fileName2))
+                {
+                    throw new FileNotFoundException(fileName + " が見つかりません", fileName);
+                }
+            }
+            // ファイルオープン
+            return RTCOPConfigFile.LoadFile(fileName);
         }
 
         /// <summary>

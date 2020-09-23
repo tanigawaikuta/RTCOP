@@ -133,6 +133,60 @@
             </summary>
             <returns>文字列</returns>
         </member>
+        <member name="T:LayerCompiler.CodeGeneration.Model.RTCOPConfigFile">
+            <summary>
+            RTCOPコンフィグファイル
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.RTCOPConfigFile.BaseLayerConfig">
+            <summary>
+            ベースレイヤコンフィグ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.RTCOPConfigFile.LayerConfigs">
+            <summary>
+            レイヤコンフィグ
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.RTCOPConfigFile.#ctor">
+            <summary>
+            RTCOPコンフィグファイル
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.RTCOPConfigFile.SaveFile(System.String,LayerCompiler.CodeGeneration.Model.RTCOPConfigFile)">
+            <summary>
+            RTCOPコンフィグファイルの保存
+            </summary>
+            <param name="path">ファイルパス</param>
+            <param name="file">RTCOPコンフィグファイル</param>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.RTCOPConfigFile.LoadFile(System.String)">
+            <summary>
+            RTCOPコンフィグファイルの読み込み
+            </summary>
+            <param name="path">ファイルパス</param>
+            <returns>RTCOPコンフィグファイル</returns>
+        </member>
+        <member name="T:LayerCompiler.CodeGeneration.Model.LayerConfig">
+            <summary>
+            レイヤコンフィグ
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerConfig.LayerName">
+            <summary>
+            レイヤ名
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CodeGeneration.Model.LayerConfig.ExecutionPriority">
+            <summary>
+            実行優先度
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.Model.LayerConfig.#ctor(System.String,System.Int32)">
+            <summary>
+            レイヤコンフィグ
+            </summary>
+        </member>
         <member name="T:LayerCompiler.CodeGeneration.Model.RTCOPSourceFile">
             <summary>
             RTCOPのソースファイル
@@ -318,10 +372,16 @@
             RTCOPファイルのコンパイラ
             </summary>
         </member>
-        <member name="M:LayerCompiler.CodeGeneration.RTCOPCompiler.#ctor">
+        <member name="F:LayerCompiler.CodeGeneration.RTCOPCompiler._RTCOPConfigFile">
+            <summary>
+            コンフィグファイル
+            </summary>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCompiler.#ctor(LayerCompiler.CodeGeneration.Model.RTCOPConfigFile)">
             <summary>
             RTCOPファイルのコンパイラ
             </summary>
+            <param name="configFile">コンフィグファイル</param>
         </member>
         <member name="M:LayerCompiler.CodeGeneration.RTCOPCompiler.Compile(LayerCompiler.CodeGeneration.Model.RTCOPSourceFile)">
             <summary>
@@ -336,6 +396,13 @@
             </summary>
             <param name="structureFiles">マージしたいレイヤ構造ファイル</param>
             <returns>マージされたレイヤ構造ファイル</returns>
+        </member>
+        <member name="M:LayerCompiler.CodeGeneration.RTCOPCompiler.ReflectConfigFile(LayerCompiler.CodeGeneration.Model.LayerStructureFile)">
+            <summary>
+            コンフィグファイルの反映
+            </summary>
+            <param name="lsFile">レイヤ構造ファイル</param>
+            <returns>反映後のレイヤ構造ファイル</returns>
         </member>
         <member name="T:LayerCompiler.CodeGeneration.RTCOPPreprocessor">
             <summary>
@@ -417,6 +484,11 @@
             コードジェネレータ
             </summary>
         </member>
+        <member name="F:LayerCompiler.CompileManager._RTCOPConfigFile">
+            <summary>
+            コンフィグファイル
+            </summary>
+        </member>
         <member name="P:LayerCompiler.CompileManager.SourceFiles">
             <summary>
             入力ファイル
@@ -427,6 +499,11 @@
             <summary>
             出力ファイル。.lobjファイルかディレクトリパスを指定する
             ディレクトリパスの場合、その場所にC++ソースコードを出力する
+            </summary>
+        </member>
+        <member name="P:LayerCompiler.CompileManager.ConfigFilePath">
+            <summary>
+            コンフィグファイル
             </summary>
         </member>
         <member name="P:LayerCompiler.CompileManager.IncludePaths">
@@ -485,6 +562,13 @@
             <summary>
             コンパイル実行。
             </summary>
+        </member>
+        <member name="M:LayerCompiler.CompileManager.LoadConfigFile(System.String)">
+            <summary>
+            コンフィグファイルの読み込み
+            </summary>
+            <param name="fileName">ファイル名</param>
+            <returns>コンフィグファイル</returns>
         </member>
         <member name="M:LayerCompiler.CompileManager.CompileLCppToObjectFile(System.String)">
             <summary>
