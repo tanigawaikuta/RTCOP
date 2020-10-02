@@ -19,22 +19,17 @@ namespace LayerCompiler.CodeGeneration
         /// <summary>
         /// 環境依存コード(macOS)
         /// </summary>
-        private void GenerateDependentCodeForMacOSX64(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists, string includeFilePath)
+        private void GenerateDependentCodeForMacOSX64(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists)
         {
             // cppファイル
             StringBuilder stringBuilderForSource = new StringBuilder();
-            stringBuilderForSource.Append(@"#include """);
-            stringBuilderForSource.Append(includeFilePath);
-            stringBuilderForSource.AppendLine(@"DependentCode.h""");
+            stringBuilderForSource.AppendLine(@"#include ""DependentCode.h""");
             stringBuilderForSource.AppendLine(@"#include ""RTCOP/Core/LayerdObject.h""");
             stringBuilderForSource.AppendLine();
-            stringBuilderForSource.Append(@"#include """);
-            stringBuilderForSource.Append(includeFilePath);
-            stringBuilderForSource.AppendLine(@"BaseLayer.h""");
+            stringBuilderForSource.AppendLine(@"#include ""BaseLayer.h""");
             foreach (var layerStructure in layerStructures)
             {
                 stringBuilderForSource.Append(@"#include """);
-                stringBuilderForSource.Append(includeFilePath);
                 stringBuilderForSource.Append(layerStructure.LayerName);
                 stringBuilderForSource.AppendLine(@".h""");
             }
@@ -50,14 +45,12 @@ namespace LayerCompiler.CodeGeneration
                 foreach (var inc in headerIncludeFiles)
                 {
                     stringBuilderForSource.Append(@"#include """);
-                    stringBuilderForSource.Append(includeFilePath);
                     stringBuilderForSource.Append(inc.Param1);
                     stringBuilderForSource.AppendLine(@"""");
                 }
                 foreach (var inc in srcIncludeFiles)
                 {
                     stringBuilderForSource.Append(@"#include """);
-                    stringBuilderForSource.Append(includeFilePath);
                     stringBuilderForSource.Append(inc.Param1);
                     stringBuilderForSource.AppendLine(@"""");
                 }

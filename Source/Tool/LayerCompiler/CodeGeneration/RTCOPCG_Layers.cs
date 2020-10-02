@@ -59,11 +59,7 @@ namespace LayerCompiler.CodeGeneration
                 }
                 stringBuilderForHeader.AppendLine();
                 var headerImportFilesArray = headerImportFiles.ToArray();
-                List<string> layerNamesH = new List<string>() { layerStructure.LayerName };
-                stringBuilderForHeader.Append(@"#include """);
-                stringBuilderForHeader.Append(includeFilePath);
-                stringBuilderForHeader.AppendLine(@"BaseLayer.h""");
-                layerNamesH.Add("baselayer");
+                List<string> layerNamesH = new List<string>();
                 foreach (var impFile in headerImportFilesArray)
                 {
                     string filePath = "";
@@ -79,21 +75,37 @@ namespace LayerCompiler.CodeGeneration
                     }
                     foreach (var ls in layerStructures)
                     {
-                        if (layerNamesH.Contains(ls.LayerName))
+                        if (ls.LayerName == "baselayer" || ls.LayerName == layerStructure.LayerName || layerNamesH.Contains(ls.LayerName))
                         {
                             continue;
                         }
                         if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                         {
-                            stringBuilderForHeader.Append(@"#include """);
-                            stringBuilderForHeader.Append(includeFilePath);
-                            stringBuilderForHeader.Append(ls.LayerName);
-                            stringBuilderForHeader.AppendLine(@".h""");
                             layerNamesH.Add(ls.LayerName);
                         }
                     }
                     layerStructure.HeaderFileItems.Remove(impFile);
                 }
+                stringBuilderForHeader.AppendLine(@"#ifdef __RTCOP_GENERAED_CODE_FLAG__");
+                stringBuilderForHeader.AppendLine(@"#include ""BaseLayer.h""");
+                foreach (string lname in layerNamesH)
+                {
+                    stringBuilderForHeader.Append(@"#include """);
+                    stringBuilderForHeader.Append(lname);
+                    stringBuilderForHeader.AppendLine(@".h""");
+                }
+                stringBuilderForHeader.AppendLine(@"#else");
+                stringBuilderForHeader.Append(@"#include """);
+                stringBuilderForHeader.Append(includeFilePath);
+                stringBuilderForHeader.AppendLine(@"BaseLayer.h""");
+                foreach (string lname in layerNamesH)
+                {
+                    stringBuilderForHeader.Append(@"#include """);
+                    stringBuilderForHeader.Append(includeFilePath);
+                    stringBuilderForHeader.Append(lname);
+                    stringBuilderForHeader.AppendLine(@".h""");
+                }
+                stringBuilderForHeader.AppendLine(@"#endif");
                 stringBuilderForHeader.AppendLine();
                 stringBuilderForHeader.AppendLine(@"namespace RTCOP {");
                 stringBuilderForHeader.AppendLine(@"namespace Generated {");
@@ -138,20 +150,13 @@ namespace LayerCompiler.CodeGeneration
 
                 // ソースファイル
                 StringBuilder stringBuilderForSource = new StringBuilder();
-                stringBuilderForSource.Append(@"#include """);
-                stringBuilderForSource.Append(includeFilePath);
-                stringBuilderForSource.AppendLine(@"API.h""");
-                stringBuilderForSource.Append(@"#include """);
-                stringBuilderForSource.Append(includeFilePath);
-                stringBuilderForSource.AppendLine(@"Layer_Private.h""");
-                stringBuilderForSource.Append(@"#include """);
-                stringBuilderForSource.Append(includeFilePath);
-                stringBuilderForSource.AppendLine(@"LayerdObject_Private.h""");
+                stringBuilderForSource.AppendLine(@"#include ""COPNewForApp.h""");
+                stringBuilderForSource.AppendLine(@"#include ""ActivationForApp.h""");
+                stringBuilderForSource.AppendLine(@"#include ""Layer_Private.h""");
+                stringBuilderForSource.AppendLine(@"#include ""LayerdObject_Private.h""");
+                stringBuilderForSource.AppendLine(@"#include ""DependentCode.h""");
                 stringBuilderForSource.AppendLine(@"#include ""RTCOP/Framework.h""");
                 stringBuilderForSource.AppendLine(@"#include ""RTCOP/Core/RTCOPManager.h""");
-                stringBuilderForSource.Append(@"#include """);
-                stringBuilderForSource.Append(includeFilePath);
-                stringBuilderForSource.AppendLine(@"DependentCode.h""");
                 stringBuilderForSource.AppendLine(@"#include <iostream>");
                 stringBuilderForSource.AppendLine(@"#include <cstring>");
                 stringBuilderForSource.AppendLine();
@@ -162,6 +167,7 @@ namespace LayerCompiler.CodeGeneration
                     layerStructure.SourceFileItems.Remove(incFile);
                 }
                 stringBuilderForSource.AppendLine();
+                stringBuilderForSource.AppendLine(@"#define __RTCOP_GENERAED_CODE_FLAG__");
                 var srcImportFilesArray = srcImportFiles.ToArray();
                 List<string> layerNamesS = new List<string>() { layerStructure.LayerName };
                 foreach (var impFile in srcImportFilesArray)
@@ -179,9 +185,7 @@ namespace LayerCompiler.CodeGeneration
                     }
                     if (!layerNamesS.Contains("baselayer") && baseLayerStructure.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                     {
-                        stringBuilderForSource.Append(@"#include """);
-                        stringBuilderForSource.Append(includeFilePath);
-                        stringBuilderForSource.AppendLine(@"BaseLayer.h""");
+                        stringBuilderForSource.AppendLine(@"#include ""BaseLayer.h""");
                         layerNamesS.Add("baselayer");
                     }
                     foreach (var ls in layerStructures)
@@ -193,7 +197,6 @@ namespace LayerCompiler.CodeGeneration
                         if (ls.ImportedLhInfomation.Exists((obj) => obj.FilePath == filePath))
                         {
                             stringBuilderForSource.Append(@"#include """);
-                            stringBuilderForSource.Append(includeFilePath);
                             stringBuilderForSource.Append(ls.LayerName);
                             stringBuilderForSource.AppendLine(@".h""");
                             layerNamesS.Add(ls.LayerName);
@@ -202,7 +205,6 @@ namespace LayerCompiler.CodeGeneration
                     layerStructure.SourceFileItems.Remove(impFile);
                 }
                 stringBuilderForSource.Append(@"#include """);
-                stringBuilderForSource.Append(includeFilePath);
                 stringBuilderForSource.Append(layerStructure.LayerName);
                 stringBuilderForSource.AppendLine(@".h""");
                 stringBuilderForSource.AppendLine();

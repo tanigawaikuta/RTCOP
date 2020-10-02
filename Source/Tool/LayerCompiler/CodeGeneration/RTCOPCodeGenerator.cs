@@ -205,7 +205,7 @@ namespace LayerCompiler.CodeGeneration
             // ↓これらは別ファイルで定義
             //=======================================
             // RTCOPAppInitializerの生成
-            GenerateRTCOPAppInitializer(result, numOfLayers, numOfClasses, numOfMethods, mergedLSFile.LayerStructures, includeFilePath);
+            GenerateRTCOPAppInitializer(result, numOfLayers, numOfClasses, numOfMethods, mergedLSFile.LayerStructures);
             // API.h、COPNewForApp.h、ActivationForApp.hの生成
             GenerateAPIHeaders(result, mergedLSFile.LayerStructures, baseClassNameList, includeFilePath);
             // ベースレイヤの生成
@@ -213,7 +213,7 @@ namespace LayerCompiler.CodeGeneration
             // 各レイヤの生成
             GenerateLayers(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, baseMethodLists, constructorLists, superClassIDs, includeFilePath);
             // 環境依存コードの生成
-            GenerateDependentCode(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+            GenerateDependentCode(result, baselayerStructure, mergedLSFile.LayerStructures, baseClassNameList, baseMethodLists);
 
             // 結果を返す
             return result;

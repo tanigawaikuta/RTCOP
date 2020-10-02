@@ -19,7 +19,7 @@ namespace LayerCompiler.CodeGeneration
         /// <summary>
         /// 環境依存コード
         /// </summary>
-        private void GenerateDependentCode(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists, string includeFilePath)
+        private void GenerateDependentCode(GeneratedCodes result, LayerStructure baseLayerStructure, List<LayerStructure> layerStructures, List<string> baseClassNameList, List<List<LayerdMethodDefinition>> baseMethodLists)
         {
             // ヘッダファイル
             StringBuilder stringBuilderForHeader = new StringBuilder();
@@ -189,29 +189,29 @@ namespace LayerCompiler.CodeGeneration
             {
                 if (Environment == DevelopmentEnvironment.VisualStudio)
                 {
-                    GenerateDependentCodeForWindowsX64VisualStudio(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForWindowsX64VisualStudio(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
                 else
                 {
-                    GenerateDependentCodeForWindowsX64MinGW(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForWindowsX64MinGW(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
             }
             else if (Target == DevelopmentTarget.WindowsX86)
             {
                 if (Environment == DevelopmentEnvironment.VisualStudio)
                 {
-                    GenerateDependentCodeForWindowsX86VisualStudio(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForWindowsX86VisualStudio(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
                 else
                 {
-                    GenerateDependentCodeForWindowsX86MinGW(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForWindowsX86MinGW(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
             }
             else if (Target == DevelopmentTarget.LinuxX64)
             {
                 if (Environment == DevelopmentEnvironment.GCC)
                 {
-                    GenerateDependentCodeForLinuxX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForLinuxX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
                 else
                 {
@@ -222,7 +222,7 @@ namespace LayerCompiler.CodeGeneration
             {
                 if (Environment == DevelopmentEnvironment.GCC)
                 {
-                    GenerateDependentCodeForLinuxX86(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForLinuxX86(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
                 else
                 {
@@ -233,7 +233,7 @@ namespace LayerCompiler.CodeGeneration
             {
                 if (Environment == DevelopmentEnvironment.GCC)
                 {
-                    GenerateDependentCodeForLinuxARM(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForLinuxARM(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
                 else
                 {
@@ -244,7 +244,7 @@ namespace LayerCompiler.CodeGeneration
             {
                 if (Environment == DevelopmentEnvironment.GCC)
                 {
-                    GenerateDependentCodeForLinuxARM64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForLinuxARM64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
                 else
                 {
@@ -255,7 +255,7 @@ namespace LayerCompiler.CodeGeneration
             {
                 if (Environment == DevelopmentEnvironment.GCC || Environment == DevelopmentEnvironment.Clang)
                 {
-                    GenerateDependentCodeForMacOSX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists, includeFilePath);
+                    GenerateDependentCodeForMacOSX64(result, baseLayerStructure, layerStructures, baseClassNameList, baseMethodLists);
                 }
                 else
                 {

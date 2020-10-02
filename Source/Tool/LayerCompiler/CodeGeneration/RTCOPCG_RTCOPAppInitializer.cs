@@ -19,7 +19,7 @@ namespace LayerCompiler.CodeGeneration
         /// <summary>
         /// RTCOPAppInitializerの生成
         /// </summary>
-        private void GenerateRTCOPAppInitializer(GeneratedCodes result, int numOfLayers, int numOfClasses, int[] numOfMethods, List<LayerStructure> layerStructures, string includeFilePath)
+        private void GenerateRTCOPAppInitializer(GeneratedCodes result, int numOfLayers, int numOfClasses, int[] numOfMethods, List<LayerStructure> layerStructures)
         {
             // RTCOPAppInitializer.h
             StringBuilder stringBuilderForHeader = new StringBuilder();
@@ -63,19 +63,14 @@ namespace LayerCompiler.CodeGeneration
 
             // RTCOPAppInitializer.cpp
             StringBuilder stringBuilderForSource = new StringBuilder();
-            stringBuilderForSource.Append(@"#include """);
-            stringBuilderForSource.Append(includeFilePath);
-            stringBuilderForSource.AppendLine(@"RTCOPAppInitializer.h""");
+            stringBuilderForSource.AppendLine(@"#include ""RTCOPAppInitializer.h""");
             stringBuilderForSource.AppendLine(@"#include ""RTCOP/Core/RTCOPManager.h""");
             stringBuilderForSource.AppendLine(@"#include ""RTCOP/Core/LayerdObjectInitializer.h""");
             stringBuilderForSource.AppendLine(@"#include ""RTCOP/Core/LayerActivater.h""");
-            stringBuilderForSource.Append(@"#include """);
-            stringBuilderForSource.Append(includeFilePath);
-            stringBuilderForSource.AppendLine(@"BaseLayer.h""");
+            stringBuilderForSource.AppendLine(@"#include ""BaseLayer.h""");
             foreach (LayerStructure ls in layerStructures)
             {
                 stringBuilderForSource.Append(@"#include """);
-                stringBuilderForSource.Append(includeFilePath);
                 stringBuilderForSource.Append(ls.LayerName);
                 stringBuilderForSource.AppendLine(@".h""");
             }
