@@ -11,3 +11,11 @@
 ・Test:		テストプログラムと、テストするための場所の提供
 			ビルド時のアセンブリは、ここに出力される
 			テストを終えたら、開発者がLibraryやToolにアセンブリを移す
+
+# ROS package
+
+1. Clone this project into your catkin workspace
+2. catkin build
+
+Refer following URL how to use RTCOP from your ROS project
+https://github.com/hisazumi/crostest
