@@ -157,8 +157,6 @@ namespace LayerCompiler.CodeGeneration
                 stringBuilderForSource.AppendLine(@"#include ""DependentCode.h""");
                 stringBuilderForSource.AppendLine(@"#include ""RTCOP/Framework.h""");
                 stringBuilderForSource.AppendLine(@"#include ""RTCOP/Core/RTCOPManager.h""");
-                stringBuilderForSource.AppendLine(@"#include <iostream>");
-                stringBuilderForSource.AppendLine(@"#include <cstring>");
                 stringBuilderForSource.AppendLine();
                 var srcIncludeFilesArray = srcIncludeFiles.ToArray();
                 foreach (var incFile in srcIncludeFilesArray)
@@ -344,12 +342,6 @@ namespace LayerCompiler.CodeGeneration
                     if (findedPartialClass != null)
                     {
                         stringBuilderForSource.Append("\t");
-                        stringBuilderForSource.Append(@"int size");
-                        stringBuilderForSource.Append(classCount);
-                        stringBuilderForSource.Append(@" = sizeof(volatile void*) * numOfBaseMethods[");
-                        stringBuilderForSource.Append(classCount);
-                        stringBuilderForSource.AppendLine(@"];");
-                        stringBuilderForSource.Append("\t");
                         stringBuilderForSource.Append(@"volatile void** virtualFunctionTable");
                         stringBuilderForSource.Append(classCount);
                         stringBuilderForSource.Append("\t");
@@ -357,13 +349,14 @@ namespace LayerCompiler.CodeGeneration
                         stringBuilderForSource.Append(baseClassName);
                         stringBuilderForSource.AppendLine(@"::GetVirtualFunctionTable(this);");
                         stringBuilderForSource.Append("\t");
-                        stringBuilderForSource.Append(@"std::memcpy(_Private->_VirtualFunctionTables[");
+                        stringBuilderForSource.Append(@"for (int i = 0; i < ");
+                        stringBuilderForSource.Append(@"numOfBaseMethods[");
                         stringBuilderForSource.Append(classCount);
-                        stringBuilderForSource.Append(@"], virtualFunctionTable");
+                        stringBuilderForSource.Append(@"]; ++i) _Private->_VirtualFunctionTables[");
                         stringBuilderForSource.Append(classCount);
-                        stringBuilderForSource.Append(@", size");
+                        stringBuilderForSource.Append(@"][i] = virtualFunctionTable");
                         stringBuilderForSource.Append(classCount);
-                        stringBuilderForSource.AppendLine(@");");
+                        stringBuilderForSource.AppendLine(@"[i];");
                         var baseMethodList = baseMethodLists[classCount];
                         int methodCount = 0;
                         int offset = 0;

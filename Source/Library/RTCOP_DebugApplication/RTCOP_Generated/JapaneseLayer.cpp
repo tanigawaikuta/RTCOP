@@ -13,8 +13,8 @@
 #include "RTCOP_Generated/DependentCode/ExecuteProceed.h"
 #include "RTCOP_Generated/DependentCode/GetVirtualFunctionTable.h"
 #include "RTCOP_Generated/DependentCode/GetLayerdObjectFinalizer.h"
-#include <iostream>
-#include <cstring>
+//#include <iostream>
+//#include <cstring>
 
 #include "Hello.h"
 #include <stdio.h>
@@ -36,9 +36,13 @@ JapaneseLayer::JapaneseLayer(const int id, const char* const name, int numOfBase
 	:RTCOP::Core::Layer(id, name, numOfBaseClasses, numOfBaseMethods)
 {
 	// Helloクラスの仮想関数テーブル
-	int size0 = sizeof(volatile void*) * numOfBaseMethods[0];
+	//int size0 = sizeof(volatile void*) * numOfBaseMethods[0];
 	volatile void** virtualFunctionTable0 = DependentCode::HelloClass::GetVirtualFunctionTable(this);
-	std::memcpy(_Private->_VirtualFunctionTables[0], virtualFunctionTable0, size0);
+	for (int i = 0; i < numOfBaseMethods[0]; ++i)
+	{
+		_Private->_VirtualFunctionTables[0][i] = virtualFunctionTable0[i];
+	}
+	//std::memcpy(_Private->_VirtualFunctionTables[0], virtualFunctionTable0, size0);
 	// 再定義なしのメソッドやデストラクタは0にしておく
 	_Private->_VirtualFunctionTables[0][2] = 0;
 	_Private->_VirtualFunctionTables[0][3] = 0;

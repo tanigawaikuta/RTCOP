@@ -2,6 +2,7 @@
 /Object/
 /Sample/*/bin/
 /Sample/*/obj/
+/Sample/*/src/Generated/
 .vs/
 .DS_Store
 *~
